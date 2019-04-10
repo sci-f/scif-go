@@ -14,6 +14,7 @@ Here is how I figured this out, because I really didn't have a sense of what I w
  3. I read through [this post](https://medium.com/golang-learn/go-project-layout-e5213cdcfaa2) carefully to understand the repository structure, and what should go in each folder. For each section, I would inspect my cloned repository, and look at the README.md in the folder of inspection. You will find examples! It's essential to read about the folder's purpose, and then look at a lot of examples to see it in action. Only stop looking at examples when you "get it."
  4. I then started with the cmd folder, and slowly started writing (skeleton / dummy) implementations for what I thought would work. If there was an example that I liked that I wanted to remember to do, I added it to the TODO list below. This came down to:
    a. First noticing that the `cmd/internal/cli/scif.go` could import documentation templates, and writing those.
+   b. I need somewhere to write the version that goes into the client.
 
 ### TODO
 
