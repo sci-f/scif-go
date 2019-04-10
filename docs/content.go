@@ -42,7 +42,7 @@ const (
 	// shell
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-	ShellUse   string = `scif shell [-h] [app]`
+	ShellUse   string = `shell [-h] [app]`
 	ShellShort string = `Shell into a Scientific Filesystem or a specific app.`
 	ShellLong  string = `
         positional arguments:
@@ -50,12 +50,16 @@ const (
 
         optional arguments:
           -h, --help  show this help message and exit`
+	ShellExample string = `
+
+        $ scif shell
+        $ scif shell <app>`
 
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// preview
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-	PreviewUse   string = `scif preview [-h] [recipe [recipe ...]]`
+	PreviewUse   string = `preview [-h] [recipe [recipe ...]]`
 	PreviewShort string = `Preview the operations to be done for an install without doing it.`
 	PreviewLong  string = `  
         positional arguments:
@@ -63,11 +67,14 @@ const (
 
         optional arguments:
           -h, --help  show this help message and exit`
+	PreviewExample string = `
+
+        $ scif preview <recipe>`
 
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// install
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	InstallUse   string = `scif install [-h] [recipe [recipe ...]]`
+	InstallUse   string = `install [-h] [recipe [recipe ...]]`
 	InstallShort string = `Install a recipe for a Scientific Filesystem`
 	InstallLong  string = `
         positional arguments:
@@ -75,11 +82,14 @@ const (
 
         optional arguments:
           -h, --help  show this help message and exit`
+	InstallExample string = `
+
+        $ scif install <recipe>`
 
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// inspect
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	InspecttUse  string = `scif inspect [-h] [attributes [attributes ...]]`
+	InspecttUse  string = `inspect [-h] [attributes [attributes ...]]`
 	InspectShort string = `inspect attributes for a scif application`
 	InpectLong   string = `
         positional arguments:
@@ -88,11 +98,14 @@ const (
 
         optional arguments:
           -h, --help  show this help message and exit`
+	InspectExample string = `
+
+        $ scif inspect <app>`
 
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// run
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	RunUse   string = `scif run [-h] [cmd [cmd ...]]`
+	RunUse   string = `run [-h] [cmd [cmd ...]]`
 	RunShort string = `Run a Scientific Filesystem application.`
 	RunLong  string = `
         positional arguments:
@@ -100,11 +113,15 @@ const (
 
         optional arguments:
           -h, --help  show this help message and exit`
+	RunExample string = `
+
+        $ scif run <app>
+        $ scif run <app> [args]`
 
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// test
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	TestUse   string = `scif test [-h] [cmd [cmd ...]]`
+	TestUse   string = `test [-h] [cmd [cmd ...]]`
 	TestShort string = `Test a Scientific Filesystem application.`
 	TestLong  string = `
         positional arguments:
@@ -112,6 +129,10 @@ const (
 
         optional arguments:
           -h, --help  show this help message and exit`
+	TestExample string = `
+
+        $ scif test
+        $ scif test <app>`
 
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// apps
@@ -122,6 +143,10 @@ const (
         optional arguments:
           -h, --help  show this help message and exit
           -l          show long listing, including paths.`
+	AppsExample string = `
+
+        $ scif apps
+        $ scif apps -l`
 
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// dump
@@ -131,6 +156,9 @@ const (
 	DumpLong  string = `
         optional arguments:
           -h, --help  show this help message and exit`
+	DumpExample string = `
+
+        $ scif dump`
 
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// exec
@@ -143,4 +171,8 @@ const (
 
         optional arguments:
           -h, --help  show this help message and exit`
+	ExecExample string = `
+
+        $ scif exec <app> [cmd]
+        $ scif exec appname echo "Hello?"`
 )
