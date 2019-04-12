@@ -16,37 +16,35 @@
 package scif
 
 import (
-        "fmt"
+	"fmt"
 	"os"
 
-	"github.com/spf13/cobra"
 	"github.com/sci-f/scif-go/docs"
 	"github.com/sci-f/scif-go/internal/pkg/logger"
-
+	"github.com/spf13/cobra"
 )
 
 // ScifRecipe is an interface to hold a scif client functions
 // cli := ScifRecipe()
-// cli.Run(...) 
+// cli.Run(...)
 
 type ScifRecipe interface {
 
-  // Commands
-  Execute()
-  Run()
-  Test()
-  Shell()
+	// Commands
+	Execute()
+	Run()
+	Test()
+	Shell()
 
-  // Helpers
-  ////ScifRecipe._run_command = run_command
-  ////ScifRecipe._set_entrypoint = set_entrypoint
-  ////ScifRecipe.help = help
+	// Helpers
+	////ScifRecipe._run_command = run_command
+	////ScifRecipe._set_entrypoint = set_entrypoint
+	////ScifRecipe.help = help
 
 }
- 
+
 type Scif struct {
 }
-
 
 // Commands
 
@@ -55,7 +53,6 @@ type Scif struct {
 //    fmt.Println("Execute() here")
 //    //ScifRecipe._exec = _exec
 //}
-
 
 //# Environment
 //ScifRecipe.append_path = append_path
@@ -66,7 +63,6 @@ type Scif struct {
 //ScifRecipe.get_env = get_env
 //ScifRecipe.load_env = load_env
 //ScifRecipe.update_env = update_env
-
 
 // Preview
 //ScifRecipe.preview = preview

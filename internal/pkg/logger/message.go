@@ -30,23 +30,23 @@ import (
 type messageLevel int
 
 const (
-	fatal    messageLevel = iota - 4 // fatal    : -4
-	error                            // error    : -3
-	warn                             // warn     : -2
-	log                              // log      : -1
-	_                                // SKIP     : 0
-	info                             // info     : 1
-	debug                            // debug    : 5
+	fatal messageLevel = iota - 4 // fatal    : -4
+	error                         // error    : -3
+	warn                          // warn     : -2
+	log                           // log      : -1
+	_                             // SKIP     : 0
+	info                          // info     : 1
+	debug                         // debug    : 5
 )
 
 // Labels to describe the levels above
 var messageLabels = map[messageLevel]string{
-	fatal:    "FATAL",
-	error:    "ERROR",
-	warn:     "WARNING",
-	log:      "LOG",
-	info:     "INFO",
-	debug:    "DEBUG",
+	fatal: "FATAL",
+	error: "ERROR",
+	warn:  "WARNING",
+	log:   "LOG",
+	info:  "INFO",
+	debug: "DEBUG",
 }
 
 // Colors to describe the levels above
@@ -57,7 +57,6 @@ var messageColors = map[messageLevel]string{
 	info:  "\x1b[34m",
 }
 
-
 func (l messageLevel) String() string {
 	str, ok := messageLabels[l]
 	if !ok {
@@ -65,7 +64,6 @@ func (l messageLevel) String() string {
 	}
 	return str
 }
-
 
 var colorReset = "\x1b[0m"
 var loggerLevel messageLevel

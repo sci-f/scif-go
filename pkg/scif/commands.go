@@ -16,35 +16,34 @@
 package scif
 
 import (
-        "fmt"
+	"fmt"
 	"os"
 
-	"github.com/spf13/cobra"
 	"github.com/sci-f/scif-go/docs"
 	"github.com/sci-f/scif-go/internal/pkg/logger"
-
+	"github.com/spf13/cobra"
 )
 
 // Execute will execute a command to a scientific filesystem
 func (f Scif) Execute() {
-    fmt.Println("Execute() here")
-    //ScifRecipe._exec = _exec
+	fmt.Println("Execute() here")
+	//ScifRecipe._exec = _exec
 }
 
 // Run will run a scientific application runscript
 func (f Scif) Run() {
-    fmt.Println("Run() here")
+	fmt.Println("Run() here")
 }
 
 // Shell will shell into a scientific filesystem
 // TODO add SCIF_SHELL as envar
 func (f Scif) Shell() {
-    fmt.Println("Shell() here")
+	fmt.Println("Shell() here")
 }
 
 // Test a scientific filesystem
 func (f Scif) Test() {
-    fmt.Println("Test() here")
+	fmt.Println("Test() here")
 }
 
 //# Environment
@@ -56,7 +55,6 @@ func (f Scif) Test() {
 //ScifRecipe.get_env = get_env
 //ScifRecipe.load_env = load_env
 //ScifRecipe.update_env = update_env
-
 
 // Preview
 //ScifRecipe.preview = preview

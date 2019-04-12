@@ -13,17 +13,16 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-
 package cli
 
 import (
 	"fmt"
 	"os"
 
-	"github.com/spf13/cobra"
 	"github.com/sci-f/scif-go/docs"
 	"github.com/sci-f/scif-go/internal/pkg/logger"
 	client "github.com/sci-f/scif-go/pkg/client"
+	"github.com/spf13/cobra"
 )
 
 func init() {
@@ -32,23 +31,23 @@ func init() {
 }
 
 // RunCmd: scif run <appname>
-var RunCmd = &cobra.Command {
+var RunCmd = &cobra.Command{
 	DisableFlagsInUseLine: true,
 	Args:                  cobra.ArbitraryArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 
-                // If no args, exit with warning "You must supply an appname to run"
-                logger.Debugf(args)       
-                 // Remove the first appname from args (pop)
+		// If no args, exit with warning "You must supply an appname to run"
+		logger.Debugf(args)
+		// Remove the first appname from args (pop)
 
-                // if no remaining args, send None (or empty list?)
+		// if no remaining args, send None (or empty list?)
 
-                //    client = ScifRecipe(quiet=True, writable=args.writable)
-                //    client.run(app, args=cmd)
-        	//err := client.Run(args[0], args[1], PushLibraryURI, authToken, "No Description")
-        	//if err != nil {
-        	//	logger.Fatalf("%v\n", err)
-        	//}
+		//    client = ScifRecipe(quiet=True, writable=args.writable)
+		//    client.run(app, args=cmd)
+		//err := client.Run(args[0], args[1], PushLibraryURI, authToken, "No Description")
+		//if err != nil {
+		//	logger.Fatalf("%v\n", err)
+		//}
 	},
 
 	Use:     docs.RunUse,

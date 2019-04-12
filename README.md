@@ -5,6 +5,14 @@ that I'm developing.
 
 **under development**
 
+## Install
+
+If you want to install dependencies (golint):
+
+```bash
+$ make deps
+```
+
 ## Development
 
 Here is how I figured this out, because I really didn't have a sense of what I was doing.

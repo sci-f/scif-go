@@ -25,9 +25,9 @@ import (
 	"text/template"
 
 	"github.com/sci-f/scif-go/docs"
+	"github.com/sci-f/scif-go/pkg" // version
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
-        "github.com/sci-f/scif-go/pkg" // version
 	// each import here should be from /internal/pkg/<folder>
 	//"github.com/sci-f/scif-go/internal/pkg/buildcfg"
 	"github.com/sci-f/scif-go/internal/pkg/logger"
@@ -44,7 +44,6 @@ var (
 
 // COMMANDS ....................................................................
 
-
 func init() {
 	ScifCmd.Flags().SetInterspersed(false)
 	ScifCmd.PersistentFlags().SetInterspersed(false)
@@ -57,7 +56,7 @@ func init() {
 	ScifCmd.SetHelpTemplate(docs.HelpTemplate)
 	ScifCmd.SetUsageTemplate(docs.UseTemplate)
 
-        // Set a custom version template string
+	// Set a custom version template string
 	vt := fmt.Sprintf("%s version {{printf \"%%s\" .Version}}\n", scif.Version)
 	ScifCmd.SetVersionTemplate(vt)
 
@@ -99,7 +98,6 @@ func TraverseParentsUses(cmd *cobra.Command) string {
 	return cmd.Use + " "
 }
 
-
 // LOGGING .....................................................................
 
 // setLoggerLevel: set the logging level, with default 1 (info0
@@ -108,7 +106,7 @@ func setLoggerLevel(cmd *cobra.Command, args []string) {
 
 	if debug {
 		level = 5
-        } else if quiet {
+	} else if quiet {
 		level = -1
 	} else if silent {
 		level = -3
@@ -121,17 +119,15 @@ func setLoggerLevel(cmd *cobra.Command, args []string) {
 // setLoggerColor allows the user to disable the color
 func setLoggerColor(cmd *cobra.Command, args []string) {
 	if nocolor {
-	        logger.DisableColor()
+		logger.DisableColor()
 	}
 }
-
 
 func persistentPreRun(cmd *cobra.Command, args []string) {
 	setLoggerLevel(cmd, args)
 	setLoggerColor(cmd, args)
 	updateFlagsFromEnv(cmd)
 }
-
 
 // ENTRYPOINT ..................................................................
 
@@ -153,12 +149,10 @@ func ExecuteScif() {
 	}
 }
 
-
-
 // VERSION .....................................................................
 
 // VersionCmd displays installed scif version
-var VersionCmd = &cobra.Command {
+var VersionCmd = &cobra.Command{
 	DisableFlagsInUseLine: true,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println(scif.Version)

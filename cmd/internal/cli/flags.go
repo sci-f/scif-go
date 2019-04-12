@@ -25,11 +25,11 @@ import (
 // https://godoc.org/github.com/spf13/pflag
 // Most of scif include positional arguments, with a few booleans here
 var (
-	AppsLonglist            bool            // longlist apps (with paths)
-        InspectRunscript        bool
-        InspectEnv              bool
-        InspectLabels           bool
-        InspectAll              bool            // default for inspect
+	AppsLonglist     bool // longlist apps (with paths)
+	InspectRunscript bool
+	InspectEnv       bool
+	InspectLabels    bool
+	InspectAll       bool // default for inspect
 )
 
 // boolFlags instantiates the flag set, to be used by subcommands
@@ -38,7 +38,6 @@ var boolFlags = pflag.NewFlagSet("BoolFlags", pflag.ExitOnError)
 func init() {
 	initBoolFlags()
 }
-
 
 // initBoolFlags initializes the few boolean arguments for scif
 func initBoolFlags() {
