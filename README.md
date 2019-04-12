@@ -14,13 +14,19 @@ Here is how I figured this out, because I really didn't have a sense of what I w
  3. I read through [this post](https://medium.com/golang-learn/go-project-layout-e5213cdcfaa2) carefully to understand the repository structure, and what should go in each folder. For each section, I would inspect my cloned repository, and look at the README.md in the folder of inspection. You will find examples! It's essential to read about the folder's purpose, and then look at a lot of examples to see it in action. Only stop looking at examples when you "get it."
  4. I then started with the cmd folder, and slowly started writing (skeleton / dummy) implementations for what I thought would work. If there was an example that I liked that I wanted to remember to do, I added it to the TODO list below. This came down to:
    a. First noticing that the `cmd/internal/cli/scif.go` could import documentation templates, and writing those.
-   b. I need somewhere to write the version that goes into the client.
 
 ### TODO
 
  - there should be programmatic docs in a (top level) docs folder that is imported in cmd/internal/cli/scif.go (the help strings, etc.)
  - create examples in examples folder, and testing on circle
  - Add badges: [Go Report Card](https://goreportcard.com/), [GoDoc](http://godoc.org), release, [![Go Report Card](https://goreportcard.com/badge/github.com/golang-standards/project-layout?style=flat-square)](https://goreportcard.com/report/github.com/golang-standards/project-layout) [![Go Doc](https://img.shields.io/badge/godoc-reference-blue.svg?style=flat-square)](http://godoc.org/github.com/golang-standards/project-layout) [![Release](https://img.shields.io/github/release/golang-standards/project-layout.svg?style=flat-square)](https://github.com/golang-standards/project-layout/releases/latest)
+ - internal/pkg/logger should have the logger
+
+## Variables
+
+Version. The version is kept in [pkg/scif.go](pkg.scif.go) and then piped into the Makefile and 
+imported into the client to print. This isn't the only way to do it, but seemed reasonable.
+At some point I'll want to integrate GitHub tags for between official releases.
 
 ## Organization
 
