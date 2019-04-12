@@ -20,7 +20,6 @@ import (
 	"os"
 
 	"github.com/spf13/pflag"
-	"github.com/sylabs/singularity/internal/pkg/util/user"
 )
 
 // https://godoc.org/github.com/spf13/pflag
