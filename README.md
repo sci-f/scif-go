@@ -24,7 +24,7 @@ Here is how I figured this out, because I really didn't have a sense of what I w
 
 ## Variables
 
-Version. The version is kept in [pkg/scif.go](pkg.scif.go) and then piped into the Makefile and 
+Version. The version is kept in [pkg/version.go](pkg/version.go) and then piped into the Makefile and 
 imported into the client to print. This isn't the only way to do it, but seemed reasonable.
 At some point I'll want to integrate GitHub tags for between official releases.
 
