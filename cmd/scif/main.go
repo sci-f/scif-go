@@ -1,4 +1,4 @@
-// Copyright (C) 2019 Vanessa Sochat.
+// Copyright (C) 2017-2019 Vanessa Sochat.
 
 // This program is free software: you can redistribute it and/or modify it
 // under the terms of the GNU Affero General Public License as published by
@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-package cli
+package main
 
 import (
 	"errors"
@@ -24,7 +24,6 @@ import (
 	"strings"
 	"text/template"
 
-	"github.com/sci-f/scif-go/docs"
 	"github.com/sci-f/scif-go/pkg" // version
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"

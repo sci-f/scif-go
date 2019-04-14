@@ -13,7 +13,6 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-
 package client
 
 import (
@@ -23,19 +22,18 @@ import (
 	"time"
 
 	"github.com/sci-f/scif-go/internal/pkg/logger"
-        scif "github.com/sci-f/scif-go/pkg/scif"
 	//util "github.com/sci-f/scif-go/pkg/util"
-        // jRes, err := util.ParseErrorBody(resp.Body)
+	// jRes, err := util.ParseErrorBody(resp.Body)
 )
 
 // Run an app for a scientific filesystem
-func Run(appname string, cmd string[]) (err error) {
+func Run(appname string, cmd []string) (err error) {
 	logger.Debugf("Downloading container from Shub")
 
-        cli := scif.ScifRecipe()
-        logger.Debugf(cli)
-        // cli.Run(...) 
+	cli := ScifRecipe()
+	logger.Debugf(cli)
+	// cli.Run(...)
 
-        err := nil
+	err := nil
 	return err
 }

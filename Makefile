@@ -1,10 +1,10 @@
-GOPATH=$(shell pwd)/vendor:$(shell pwd)
-GOBIN=$(shell pwd)/bin
-GOFILES=$(wildcard *.go)
-GONAME=$(shell basename "$(PWD)")
-GOFMT_FILES?=$$(find . -name '*.go' | grep -v vendor)
-VERSION=$(shell cat pkg/version.go |grep "const Version ="|cut -d"\"" -f2)
-GIT_COMMIT=$(git rev-parse HEAD)
+GOPATH := $(shell pwd)/vendor:$(shell pwd):$(shell echo $$GOPATH)
+PATH := $(PATH):$(shell echo $$GOPATH/bin)
+GOBIN := $(shell pwd)/bin
+GONAME := $(shell basename "$(PWD)")
+GOFILES?=$$(find . -name '*.go' | grep -v vendor)
+VERSION := $(shell cat pkg/version.go |grep "const Version ="|cut -d"\"" -f2)
+GIT_COMMIT := $(shell git rev-parse HEAD)
 TARGET := $(shell echo $${PWD\#\#*/})
 PID=/tmp/go-$(GONAME).pid
 
@@ -15,18 +15,16 @@ LDFLAGS=-ldflags "-X=main.Version=$(VERSION) -X=main.Build=$(GIT_COMMIT)"
 SRC = $(shell find . -type f -name '*.go' -not -path "./vendor/*")
 
 $(TARGET): $(SRC)
-	@go build $(LDFLAGS) -o $(TARGET)
+	@GOPATH=$(GOPATH) GOBIN=$(GOBIN) go build $(LDFLAGS) -o $(TARGET)
 
 build:
-  @GOPATH=$(GOPATH) GOBIN=$(GOBIN) go build $(LDFLAGS) -o bin/$(GONAME) $(GOFILES)
-
-check:
-	@test -z $(shell gofmt -l cmd/scif/cli.go | tee /dev/stderr) || echo "[WARN] Fix formatting issues with 'make fmt'"
-	@for d in $$(@GOPATH=$(GOPATH) GOBIN=$(GOBIN) go list ./... | grep -v /vendor/); do golint $${d}; done
-	@go tool vet ${SRC}
+	@echo "LDFLAGS: $(LDFLAGS)"
+	@echo "GOFILES: $(GOFILES)"
+	@GOPATH=$(GOPATH) GOBIN=$(GOBIN) go build $(LDFLAGS) -o bin/$(GONAME) ./cmd/scif
 
 deps:
 	@GOPATH=$(GOPATH) GOBIN=$(GOBIN) go get -u golang.org/x/lint/golint
+	@GOPATH=$(GOPATH) GOBIN=$(GOBIN) go get -u github.com/spf13/cobra
 
 # dev creates binaries for testing scif locally. These are put
 # into ./bin/ as well as $GOPATH/bin
@@ -34,7 +32,7 @@ dev: fmtcheck
 	go install -mod=vendor .
 
 fmt:
-	gofmt -w $(GOFMT_FILES)
+	gofmt -w $(GOFILES)
 
 fmtcheck:
 	@sh -c "'$(CURDIR)/scripts/gofmtcheck.sh'"
@@ -55,4 +53,4 @@ clean:
 simplify:
 	@gofmt -s -l -w $(SRC)
 
-.PHONY: all build check clean deps dev fmt fmtcheck get install uninstall simplify quickdev run
+.PHONY: all build clean deps dev fmt fmtcheck get install uninstall simplify quickdev run

@@ -17,11 +17,40 @@ $ make deps
 
 Here is how I figured this out, because I really didn't have a sense of what I was doing.
 
- 1. I started with an [empty project template](https://github.com/golang-standards/project-layout).
- 2. I read through the (original) README.md for a high level overview of the structure, and rewrote the sections (below) to further develop my own understanding.
- 3. I read through [this post](https://medium.com/golang-learn/go-project-layout-e5213cdcfaa2) carefully to understand the repository structure, and what should go in each folder. For each section, I would inspect my cloned repository, and look at the README.md in the folder of inspection. You will find examples! It's essential to read about the folder's purpose, and then look at a lot of examples to see it in action. Only stop looking at examples when you "get it."
- 4. I then started with the cmd folder, and slowly started writing (skeleton / dummy) implementations for what I thought would work. If there was an example that I liked that I wanted to remember to do, I added it to the TODO list below. This came down to:
-   a. First noticing that the `cmd/internal/cli/scif.go` could import documentation templates, and writing those.
+### Attempt # 1
+I started with an [empty project template](https://github.com/golang-standards/project-layout).
+I read through the (original) README.md for a high level overview of the structure, and rewrote the sections (below) to further develop my own understanding.
+I read through [this post](https://medium.com/golang-learn/go-project-layout-e5213cdcfaa2) carefully to understand the repository structure, and what should go in each folder. For each section, I would inspect my cloned repository, and look at the README.md in the folder of inspection. You will find examples! It's essential to read about the folder's purpose, and then look at a lot of examples to see it in action. Only stop looking at examples when you "get it."
+I then started with the cmd folder, and slowly started writing (skeleton / dummy) implementations for what I thought would work. If there was an example that I liked that I wanted to remember to do, I added it to the TODO list below. As I was working on this, I was unhappy with the confusing organization of the folders.
+It was too scattered, and I could never find things where I expected them to be. Since this all gets compiled into a binary anyway,
+the organization *should* be for the human. So I decided on the following (more intuitive) structure:
+
+## cmd
+
+This is where I expect to find commands, organized by folders. So the main scif entrypoint (scif) would be here:
+
+```bash
+cmd/
+   scif/
+      main.go
+      ...
+      docs
+      run.go
+```
+
+Everything under "scif" above is package "main." Each of the go files in the folder above is the client entrypoint for that command. I had
+originally put the help strings for the various clients in the top level docs folder, but it wasn't intuitive to find them there,
+so I added them to the main package. This is logical because they are not used elsewhere.
+
+## pkg
+
+### client
+
+The scif main entrypoint is going to be using client functions, namely from a package called "client" that is (also intuitively)
+under "pkg/client." The go files here are named to match the files in the `cmd/scif` folder. The developer can easily jump from
+an entrypoint command to the function that is run.
+
+**under development**
 
 ### TODO
 

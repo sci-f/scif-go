@@ -13,13 +13,12 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-package cli
+package main
 
 import (
 	"fmt"
 	"os"
 
-	"github.com/sci-f/scif-go/docs"
 	"github.com/sci-f/scif-go/internal/pkg/logger"
 	client "github.com/sci-f/scif-go/pkg/client"
 	"github.com/spf13/cobra"
