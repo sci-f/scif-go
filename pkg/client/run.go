@@ -16,10 +16,6 @@
 package client
 
 import (
-	"fmt"
-	"io"
-	"os"
-	"time"
 
 	"github.com/sci-f/scif-go/internal/pkg/logger"
 	//util "github.com/sci-f/scif-go/pkg/util"
@@ -34,6 +30,5 @@ func Run(appname string, cmd []string) (err error) {
 	logger.Debugf(cli)
 	// cli.Run(...)
 
-	err := nil
 	return err
 }

@@ -17,10 +17,8 @@ package client
 
 import (
 	"fmt"
-	"os"
 
 	"github.com/sci-f/scif-go/internal/pkg/logger"
-	"github.com/spf13/cobra"
 )
 
 // ScifRecipe is an interface to hold a scif client functions
@@ -107,7 +105,7 @@ type Scif struct {
 
 // Execute will execute a command to a scientific filesystem
 func (f Scif) Execute() {
-	fmt.Println("Execute() here")
+	logger.Debugf("Execute() here")
 	//ScifRecipe._exec = _exec
 }
 

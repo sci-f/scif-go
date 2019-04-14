@@ -28,7 +28,6 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
 	// each import here should be from /internal/pkg/<folder>
-	//"github.com/sci-f/scif-go/internal/pkg/buildcfg"
 	"github.com/sci-f/scif-go/internal/pkg/logger"
 )
 
