@@ -21,30 +21,26 @@ import (
 	"github.com/sci-f/scif-go/internal/pkg/logger"
 )
 
-// ScifRecipe is an interface to hold a scif client functions
-// cli := ScifRecipe()
-// cli.Run(...)
+// ScifClient holds scif client functions and settings
+// The final client is provided as Scif
 
-type ScifClient interface {
-
-	// Commands
-	Execute()
-	Run()
-	Test()
-	Shell()
-	// Helpers
-	////ScifRecipe._run_command = run_command
-	////ScifRecipe._set_entrypoint = set_entrypoint
-	////ScifRecipe.help = help
-
+type ScifClient struct {
+	base string
 }
-
-type Scif struct{}
 
 // Printing
-func (client Scif) String() string {
+func (client ScifClient) String() string {
 	return fmt.Sprintf("[scif]")
 }
+
+// Handles grabbing settings from the environment
+func NewScifClient() *ScifClient {
+	base := getenv("SCIF_BASE", getStringDefault("BASE"))
+	return &ScifClient{base: base}
+}
+
+// provide client to user as "Scif"
+var Scif ScifClient = *NewScifClient()
 
 // Commands
 
@@ -107,24 +103,24 @@ func (client Scif) String() string {
 //ScifRecipe._install_test = install_test
 
 // Execute will execute a command to a scientific filesystem
-func (cli Scif) Execute() {
+func (client ScifClient) Execute() {
 	logger.Debugf("Execute() here")
 	//ScifRecipe._exec = _exec
 }
 
 // Run will run a scientific application runscript
-func (cli Scif) Run() {
+func (cli ScifClient) Run() {
 	fmt.Println("Run() here")
 }
 
 // Shell will shell into a scientific filesystem
 // TODO add SCIF_SHELL as envar
-func (cli Scif) Shell() {
+func (cli ScifClient) Shell() {
 	fmt.Println("Shell() here")
 }
 
 // Test a scientific filesystem
-func (cli Scif) Test() {
+func (cli ScifClient) Test() {
 	fmt.Println("Test() here")
 }
 

@@ -26,39 +26,33 @@ import (
 )
 
 func init() {
-	RunCmd.Flags().SetInterspersed(false)
-	ScifCmd.AddCommand(RunCmd)
+	InstallCmd.Flags().SetInterspersed(false)
+	ScifCmd.AddCommand(InstallCmd)
 }
 
 // RunCmd: scif run <appname>
-var RunCmd = &cobra.Command{
+var InstallCmd = &cobra.Command{
 	DisableFlagsInUseLine: true,
 	Args:                  cobra.ArbitraryArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 
-		fmt.Printf("%v", args)
+		fmt.Printf("Args: %v\n", args)
 
 		// If no args, exit with warning "You must supply an appname to run"
 		if len(args) == 0 {
-			logger.Exitf("You must supply an appname to run")
+			logger.Exitf("You must supply a recipe to install")
 		}
 
-		// Remove the first appname from args (pop)
-		appname := args[0]
+		// Remove the first argument (the recipe)
+		recipe := args[0]
 		args = args[1:]
 
 		// appname string, cmd []string
-		client.Run(appname, args)
-		//    client = ScifRecipe(quiet=True, writable=args.writable)
-		//    client.run(app, args=cmd)
-		//err := client.Run(args[0], args[1], PushLibraryURI, authToken, "No Description")
-		//if err != nil {
-		//	logger.Fatalf("%v\n", err)
-		//}
+		client.Install(recipe, args)
 	},
 
-	Use:     docs.RunUse,
-	Short:   docs.RunShort,
-	Long:    docs.RunLong,
-	Example: docs.RunExample,
+	Use:     docs.InstallUse,
+	Short:   docs.InstallShort,
+	Long:    docs.InstallLong,
+	Example: docs.InstallExample,
 }

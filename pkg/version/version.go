@@ -13,23 +13,10 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-package client
+package version
 
-import (
-	"fmt"
+// Version is a constant variable containing the version number for the Merlin package
+const Version = "0.0.1.rc"
 
-	"github.com/sci-f/scif-go/internal/pkg/logger"
-	//util "github.com/sci-f/scif-go/pkg/util"
-	// jRes, err := util.ParseErrorBody(resp.Body)
-)
-
-// Run an app for a scientific filesystem
-func Run(appname string, cmd []string) (err error) {
-	logger.Debugf("Downloading container from Shub")
-
-	cli := ScifClient{}
-	fmt.Println(cli)
-	// cli.Run(...)
-
-	return err
-}
+// Build is the unique number based off the git commit in which it is compiled against
+var Build = "nonRelease"

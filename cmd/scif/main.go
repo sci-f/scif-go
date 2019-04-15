@@ -24,7 +24,7 @@ import (
 	"strings"
 	"text/template"
 
-        "github.com/sci-f/scif-go/cmd/scif/docs"
+	"github.com/sci-f/scif-go/cmd/scif/docs"
 	"github.com/sci-f/scif-go/pkg/version" // version
 	"github.com/spf13/cobra"
 	//"github.com/spf13/pflag"
@@ -34,6 +34,7 @@ import (
 
 // Global variables
 var (
+	base     string
 	debug    bool
 	nocolor  bool
 	quiet    bool
@@ -64,6 +65,7 @@ func init() {
 	ScifCmd.Flags().BoolVarP(&silent, "silent", "s", false, "only print errors")
 	ScifCmd.Flags().BoolVarP(&quiet, "quiet", "q", false, "suppress normal output")
 	ScifCmd.Flags().BoolVarP(&writable, "writable", "w", false, "use scif with writable")
+	ScifCmd.Flags().StringVarP(&base, "base", "b", "/scif", "the base of the scientific filesystem")
 
 	VersionCmd.Flags().SetInterspersed(false)
 	ScifCmd.AddCommand(VersionCmd)
@@ -74,7 +76,7 @@ func init() {
 var ScifCmd = &cobra.Command{
 	TraverseChildren:      true,
 	DisableFlagsInUseLine: true,
-	PersistentPreRun:      persistentPreRun,
+	PersistentPreRun:      runSetup,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		return errors.New("Invalid command")
 	},
@@ -122,7 +124,7 @@ func setLoggerColor(cmd *cobra.Command, args []string) {
 	}
 }
 
-func persistentPreRun(cmd *cobra.Command, args []string) {
+func runSetup(cmd *cobra.Command, args []string) {
 	setLoggerLevel(cmd, args)
 	setLoggerColor(cmd, args)
 	updateFlagsFromEnv(cmd)
@@ -133,7 +135,6 @@ func main() {
 	ExecuteScif()
 }
 
-
 // ExecuteScif adds all child commands to the root command and sets flags
 func ExecuteScif() {
 	if cmd, err := ScifCmd.ExecuteC(); err != nil {
@@ -142,7 +143,7 @@ func ExecuteScif() {
 			ScifCmd.Printf("Invalid flag %q for command %q.\n\nOptions:\n\n%s\n",
 				flag,
 				cmd.Name(),
-                                // Return flag usage wrapped (0 means no columns)
+				// Return flag usage wrapped (0 means no columns)
 				cmd.Flags().FlagUsagesWrapped(0))
 		} else {
 			ScifCmd.Println(cmd.UsageString())
