@@ -47,8 +47,8 @@ var InstallCmd = &cobra.Command{
 		recipe := args[0]
 		args = args[1:]
 
-		// appname string, cmd []string
-		client.Install(recipe, args)
+		// appname string, cmd []string, and writable (bool)
+		client.Install(recipe, args, !readonly)
 	},
 
 	Use:     docs.InstallUse,

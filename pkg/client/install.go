@@ -19,7 +19,7 @@ import (
         "os"
 
 	"github.com/sci-f/scif-go/internal/pkg/logger"
-	//util "github.com/sci-f/scif-go/pkg/util"
+	"github.com/sci-f/scif-go/pkg/util"
 	// jRes, err := util.ParseErrorBody(resp.Body)
 )
 
@@ -32,7 +32,7 @@ import (
 // 1. Install base folders to base, creating a folder for each app
 // 2. Install one or more apps to it, the config is already loaded
 
-func Install(recipe string, apps []string) (err error) {
+func Install(recipe string, apps []string, writable bool) (err error) {
 
 	logger.Debugf("Installing recipe %s", recipe)
 
@@ -41,16 +41,28 @@ func Install(recipe string, apps []string) (err error) {
                 logger.Exitf("Recipe %s does not exist.", recipe)
         }
 
+        // Ensure we have writable if asking for it
+        if (writable && !util.HasWriteAccess(Scif.Base)) {
+                logger.Exitf("No write access to %s", Scif.Base)
+        }
+
         // Create the client
 	cli := ScifClient{}
 
         // install Base folders
 	cli.installBase()
+        cli.installApps(apps)
 
 	return err
 }
 
-// Functions to add to struct for install
+
+// Install Helper Functions
+// these functions are added to the ScifClient struct base, and have access
+// to other variables via the (initialized) Scif.<varname>)
+// .............................................................................
+
+// installBase is a private function to install the base, apps, and data folder
 func (client ScifClient) installBase() {
 	logger.Infof("Installing base to %s", Scif.Base)
 
@@ -65,34 +77,17 @@ func (client ScifClient) installBase() {
         }
 }
 
+// installApps installs one or more apps to the base, apps is a list of apps.
+func (client ScifClient) installApps(apps []string) {
 
+        // If no apps defined, get those found at base        
 
-//def install(self, app=None):
-//    '''install recipes to a base. We assume this is the root of a system
-//       or container, and will write the /scif directory on top of it.
-//       If an app name is provided, install that app if it is found 
-//       in the config. This function goes through all steps to:
+        // Loop through apps to install
+        for _, app := range apps {
 
-//       1. Install base folders to base, creating a folder for each app
-//       2. Install one or more apps to it, the config is already loaded
-//    '''
-
-//    self._install_base()             # Generate the folder structure
-//    self._install_apps(app)          # App install
-
-
-//def init_app(self, app):
-//    '''initialize an app, meaning adding the metadata folder, bin, and 
-//       lib to it. The app is created at the base
-//    '''
-//    settings = self.get_appenv_lookup(app)[app]
-
-//    # Create base directories for metadata
-//    for folder in ['appmeta', 'appbin', 'applib', 'appdata']:
-//        mkdir_p(settings[folder])
-//    return settings
-
-
+                logger.Infof(app)
+        } 
+}
 //def install_apps(self, apps=None):
 //    '''install one or more apps to the base. If app is defined, only
 //       install app specified. Otherwise, install all found in config.
@@ -135,6 +130,36 @@ func (client ScifClient) installBase() {
 
 //        # After we install, in case interactive, deactivate last app
 //        self.deactivate(app)
+
+
+
+
+
+//def install(self, app=None):
+//    '''install recipes to a base. We assume this is the root of a system
+//       or container, and will write the /scif directory on top of it.
+//       If an app name is provided, install that app if it is found 
+//       in the config. This function goes through all steps to:
+
+//       1. Install base folders to base, creating a folder for each app
+//       2. Install one or more apps to it, the config is already loaded
+//    '''
+
+//    self._install_base()             # Generate the folder structure
+//    self._install_apps(app)          # App install
+
+
+//def init_app(self, app):
+//    '''initialize an app, meaning adding the metadata folder, bin, and 
+//       lib to it. The app is created at the base
+//    '''
+//    settings = self.get_appenv_lookup(app)[app]
+
+//    # Create base directories for metadata
+//    for folder in ['appmeta', 'appbin', 'applib', 'appdata']:
+//        mkdir_p(settings[folder])
+//    return settings
+
 
 
 //def install_labels(self, app, settings, config):

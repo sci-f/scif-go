@@ -39,7 +39,7 @@ var (
 	nocolor  bool
 	quiet    bool
 	silent   bool
-	writable bool
+	readonly bool
 )
 
 // COMMANDS ....................................................................
@@ -64,7 +64,7 @@ func init() {
 	ScifCmd.Flags().BoolVar(&nocolor, "nocolor", false, "print without color output (default False)")
 	ScifCmd.Flags().BoolVarP(&silent, "silent", "s", false, "only print errors")
 	ScifCmd.Flags().BoolVarP(&quiet, "quiet", "q", false, "suppress normal output")
-	ScifCmd.Flags().BoolVarP(&writable, "writable", "w", false, "use scif with writable")
+	ScifCmd.Flags().BoolVarP(&readonly, "readonly", "r", false, "use scif without writable")
 
 	VersionCmd.Flags().SetInterspersed(false)
 	ScifCmd.AddCommand(VersionCmd)

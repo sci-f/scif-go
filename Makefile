@@ -25,6 +25,7 @@ build:
 deps:
 	@GOPATH=$(GOPATH) GOBIN=$(GOBIN) go get -u golang.org/x/lint/golint
 	@GOPATH=$(GOPATH) GOBIN=$(GOBIN) go get -u github.com/spf13/cobra
+	@GOPATH=$(GOPATH) GOBIN=$(GOBIN) go get -u github.com/google/shlex
 
 # dev creates binaries for testing scif locally. These are put
 # into ./bin/ as well as $GOPATH/bin
