@@ -43,7 +43,7 @@ func init() {
 func initBoolFlags() {
 
 	// -l|--longlist
-	boolFlags.BoolVarP(&AppsLongList, "longlist", "l", false, "show long listing, including paths")
+	boolFlags.BoolVarP(&AppsLongList, "longlist", "L", false, "show long listing, including paths")
 	boolFlags.SetAnnotation("longlist", "envkey", []string{"LONGLIST"})
 
 	// -r|--runscript
