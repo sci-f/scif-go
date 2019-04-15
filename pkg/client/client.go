@@ -39,17 +39,14 @@ type ScifClient interface {
 
 }
 
-type Scif struct {}
-
+type Scif struct{}
 
 // Printing
 func (client Scif) String() string {
-        return fmt.Sprintf("[scif]")
+	return fmt.Sprintf("[scif]")
 }
 
-
 // Commands
-
 
 // Execute will execute a command to a scientific filesystem
 //func (f Scif) Execute() {

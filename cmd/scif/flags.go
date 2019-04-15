@@ -16,8 +16,8 @@
 package main
 
 import (
-	"log"
-	"os"
+	//"log"
+	//"os"
 
 	"github.com/spf13/pflag"
 )
@@ -25,7 +25,7 @@ import (
 // https://godoc.org/github.com/spf13/pflag
 // Most of scif include positional arguments, with a few booleans here
 var (
-	AppsLonglist     bool // longlist apps (with paths)
+	AppsLongList     bool // longlist apps (with paths)
 	InspectRunscript bool
 	InspectEnv       bool
 	InspectLabels    bool

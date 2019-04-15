@@ -17,8 +17,9 @@ package main
 
 import (
 	"fmt"
-	"os"
+	//"os"
 
+        "github.com/sci-f/scif-go/cmd/scif/docs"
 	"github.com/sci-f/scif-go/internal/pkg/logger"
 	client "github.com/sci-f/scif-go/pkg/client"
 	"github.com/spf13/cobra"
@@ -26,7 +27,7 @@ import (
 
 func init() {
 	RunCmd.Flags().SetInterspersed(false)
-	ScifCmd.AddCommand(PushCmd)
+	ScifCmd.AddCommand(RunCmd)
 }
 
 // RunCmd: scif run <appname>
@@ -35,12 +36,19 @@ var RunCmd = &cobra.Command{
 	Args:                  cobra.ArbitraryArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 
+                fmt.Printf("%v", args)
+
 		// If no args, exit with warning "You must supply an appname to run"
-		logger.Debugf(args)
+                if len(args) == 0 {
+                        logger.Exitf("You must supply an appname to run")
+                }
+
 		// Remove the first appname from args (pop)
+                appname := args[0]
+                args = args[1:]
 
-		// if no remaining args, send None (or empty list?)
-
+                // appname string, cmd []string
+                client.Run(appname, args)
 		//    client = ScifRecipe(quiet=True, writable=args.writable)
 		//    client.run(app, args=cmd)
 		//err := client.Run(args[0], args[1], PushLibraryURI, authToken, "No Description")

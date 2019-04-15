@@ -19,14 +19,15 @@ import (
 	"errors"
 	"fmt"
 	"os"
-	"os/user"
-	"path"
+	//"os/user"
+	//"path"
 	"strings"
 	"text/template"
 
-	"github.com/sci-f/scif-go/pkg" // version
+        "github.com/sci-f/scif-go/cmd/scif/docs"
+	"github.com/sci-f/scif-go/pkg/version" // version
 	"github.com/spf13/cobra"
-	"github.com/spf13/pflag"
+	//"github.com/spf13/pflag"
 	// each import here should be from /internal/pkg/<folder>
 	"github.com/sci-f/scif-go/internal/pkg/logger"
 )
@@ -55,7 +56,7 @@ func init() {
 	ScifCmd.SetUsageTemplate(docs.UseTemplate)
 
 	// Set a custom version template string
-	vt := fmt.Sprintf("%s version {{printf \"%%s\" .Version}}\n", scif.Version)
+	vt := fmt.Sprintf("scif version {{printf \"%%s\" .Version}}\n", version.Version)
 	ScifCmd.SetVersionTemplate(vt)
 
 	ScifCmd.Flags().BoolVarP(&debug, "debug", "d", false, "print debugging information (highest verbosity)")
@@ -79,7 +80,7 @@ var ScifCmd = &cobra.Command{
 	},
 
 	Use:           docs.ScifUse,
-	Version:       scif.Version,
+	Version:       version.Version,
 	Short:         docs.ScifShort,
 	Long:          docs.ScifLong,
 	Example:       docs.ScifExample,
@@ -128,16 +129,21 @@ func persistentPreRun(cmd *cobra.Command, args []string) {
 }
 
 // ENTRYPOINT ..................................................................
+func main() {
+	ExecuteScif()
+}
+
 
 // ExecuteScif adds all child commands to the root command and sets flags
 func ExecuteScif() {
-	if cmd, err := ScifCmd.Execute(); err != nil {
+	if cmd, err := ScifCmd.ExecuteC(); err != nil {
 		if str := err.Error(); strings.Contains(str, "unknown flag: ") {
 			flag := strings.TrimPrefix(str, "unknown flag: ")
 			ScifCmd.Printf("Invalid flag %q for command %q.\n\nOptions:\n\n%s\n",
 				flag,
 				cmd.Name(),
-				cmd.Flags().FlagUsagesWrapped(getColumns()))
+                                // Return flag usage wrapped (0 means no columns)
+				cmd.Flags().FlagUsagesWrapped(0))
 		} else {
 			ScifCmd.Println(cmd.UsageString())
 		}
@@ -153,7 +159,7 @@ func ExecuteScif() {
 var VersionCmd = &cobra.Command{
 	DisableFlagsInUseLine: true,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println(scif.Version)
+		fmt.Println(version.Version)
 	},
 
 	Use:   "version",

@@ -16,7 +16,7 @@
 package client
 
 import (
-        "fmt"
+	"fmt"
 
 	"github.com/sci-f/scif-go/internal/pkg/logger"
 	//util "github.com/sci-f/scif-go/pkg/util"
