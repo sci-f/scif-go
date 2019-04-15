@@ -65,7 +65,6 @@ func init() {
 	ScifCmd.Flags().BoolVarP(&silent, "silent", "s", false, "only print errors")
 	ScifCmd.Flags().BoolVarP(&quiet, "quiet", "q", false, "suppress normal output")
 	ScifCmd.Flags().BoolVarP(&writable, "writable", "w", false, "use scif with writable")
-	ScifCmd.Flags().StringVarP(&base, "base", "b", "/scif", "the base of the scientific filesystem")
 
 	VersionCmd.Flags().SetInterspersed(false)
 	ScifCmd.AddCommand(VersionCmd)

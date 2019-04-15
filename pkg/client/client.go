@@ -17,26 +17,63 @@ package client
 
 import (
 	"fmt"
+	"path"
 
 	"github.com/sci-f/scif-go/internal/pkg/logger"
 )
 
 // ScifClient holds scif client functions and settings
-// The final client is provided as Scif
+// The final client is provided as Scif. See other named files in this folder
+// for functions specific to the client, and below for the init function.
 
 type ScifClient struct {
-	base string
+	Base        string // /scif is the overall base
+	Data        string // <Base>/data is the data base
+	Apps        string // <Base>/apps is the apps base
+	ShellCmd    string // default shell
+	EntryPoint  string // default entrypoint to an app
+	EntryFolder string // default entryfolder TODO: what should this be?
+	allowAppend bool   // allow appending to path
+	appendPaths [3]string
+	scifApps    []string
 }
 
 // Printing
 func (client ScifClient) String() string {
-	return fmt.Sprintf("[scif]")
+	return fmt.Sprintf("[scif][base:%s]", Scif.Base)
 }
 
-// Handles grabbing settings from the environment
+// NewScifClient handles grabbing settings from the environment (an init)
 func NewScifClient() *ScifClient {
+
 	base := getenv("SCIF_BASE", getStringDefault("BASE"))
-	return &ScifClient{base: base}
+	scifApps := getenvNamespace("SCIF_APP")
+
+	// Set the default apps and data (overridden if user sets)
+	data := fmt.Sprintf(path.Join(base, "data"))
+	apps := fmt.Sprintf(path.Join(base, "apps"))
+
+	data = getenv("SCIF_BASE", data)
+	apps = getenv("SCIF_BASE", apps)
+
+	// Permissions
+	allowAppend := getBoolEnv("SCIF_ALLOW_APPEND_PATHS", getBoolDefault("ALLOW_APPEND_PATHS"))
+	scifAppendPaths := [3]string{"PYTHONPATH", "PATH", "LD_LIBRARY_PATH"}
+
+	// Entry points
+	shell := getenv("SCIF_SHELL", getStringDefault("SHELL"))
+	entrypoint := getenv("SCIF_ENTRYPOINT", getStringDefault("ENTRYPOINT"))
+	entryfolder := getenv("SCIF_ENTRYFOLDER", getStringDefault("ENTRYFOLDER"))
+
+	return &ScifClient{Base: base,
+		Data:        data,
+		Apps:        apps,
+		ShellCmd:    shell,
+		EntryPoint:  entrypoint,
+		EntryFolder: entryfolder,
+		allowAppend: allowAppend,
+		appendPaths: scifAppendPaths,
+		scifApps:    scifApps}
 }
 
 // provide client to user as "Scif"
