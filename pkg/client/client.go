@@ -25,14 +25,13 @@ import (
 // cli := ScifRecipe()
 // cli.Run(...)
 
-type ScifRecipe interface {
+type ScifClient interface {
 
 	// Commands
 	Execute()
 	Run()
 	Test()
 	Shell()
-
 	// Helpers
 	////ScifRecipe._run_command = run_command
 	////ScifRecipe._set_entrypoint = set_entrypoint
@@ -40,10 +39,17 @@ type ScifRecipe interface {
 
 }
 
-type Scif struct {
+type Scif struct {}
+
+
+// Printing
+func (client Scif) String() string {
+        return fmt.Sprintf("[scif]")
 }
 
+
 // Commands
+
 
 // Execute will execute a command to a scientific filesystem
 //func (f Scif) Execute() {
@@ -104,24 +110,24 @@ type Scif struct {
 //ScifRecipe._install_test = install_test
 
 // Execute will execute a command to a scientific filesystem
-func (f Scif) Execute() {
+func (cli Scif) Execute() {
 	logger.Debugf("Execute() here")
 	//ScifRecipe._exec = _exec
 }
 
 // Run will run a scientific application runscript
-func (f Scif) Run() {
+func (cli Scif) Run() {
 	fmt.Println("Run() here")
 }
 
 // Shell will shell into a scientific filesystem
 // TODO add SCIF_SHELL as envar
-func (f Scif) Shell() {
+func (cli Scif) Shell() {
 	fmt.Println("Shell() here")
 }
 
 // Test a scientific filesystem
-func (f Scif) Test() {
+func (cli Scif) Test() {
 	fmt.Println("Test() here")
 }
 

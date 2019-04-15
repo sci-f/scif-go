@@ -16,6 +16,7 @@
 package client
 
 import (
+        "fmt"
 
 	"github.com/sci-f/scif-go/internal/pkg/logger"
 	//util "github.com/sci-f/scif-go/pkg/util"
@@ -26,8 +27,8 @@ import (
 func Run(appname string, cmd []string) (err error) {
 	logger.Debugf("Downloading container from Shub")
 
-	cli := ScifRecipe()
-	logger.Debugf(cli)
+	cli := Scif{}
+	fmt.Println(cli)
 	// cli.Run(...)
 
 	return err
