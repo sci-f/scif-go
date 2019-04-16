@@ -81,7 +81,7 @@ func (client ScifClient) installApps(apps []string) {
 
 	// If no apps defined, get those found at base
 
-        // TODO: write code here
+	// TODO: write code here
 	// Loop through apps to install
 	for _, app := range apps {
 

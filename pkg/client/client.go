@@ -33,17 +33,31 @@ import (
 // defaults.go: used below to load defaults for client
 
 type ScifClient struct {
-	Base        string              // /scif is the overall base
-	Data        string              // <Base>/data is the data base
-	Apps        string              // <Base>/apps is the apps base
-	ShellCmd    string              // default shell
-	EntryPoint  []string            // default entrypoint to an app (parsed to list)
-	EntryFolder string              // default entryfolder TODO: what should this be?
-	allowAppend bool                // allow appending to path
+	Base        string   // /scif is the overall base
+	Data        string   // <Base>/data is the data base
+	Apps        string   // <Base>/apps is the apps base
+	ShellCmd    string   // default shell
+	EntryPoint  []string // default entrypoint to an app (parsed to list)
+	EntryFolder string   // default entryfolder TODO: what should this be?
+	allowAppend bool     // allow appending to path
 	appendPaths [3]string
 	scifApps    []string
-	activeApp   string                   // the active app (if one is defined)
-        config      map[string]interface{}   // a loaded configuration (can have nested maps)
+	activeApp   string                 // the active app (if one is defined)
+	config      map[string]AppSettings // a loaded configuration
+}
+
+// AppSettings: ScifClient data objects (under apps) include:
+// Env, Labels, Help, Runscript, Test, Install.
+// Each has it's own Data structure under the config["apps"]
+
+type AppSettings struct {
+	labels    []string
+	environ   []string
+	help      []string
+	runscript []string
+	test      []string
+	install   []string
+	files	  []string
 }
 
 // Printing
@@ -104,7 +118,7 @@ var Scif ScifClient = *NewScifClient()
 
 //            Parameters
 //            ==========
-//            path: the complete path to the config (recipe file) to load, or 
+//            path: the complete path to the config (recipe file) to load, or
 //                  root path of filesystem (that from calling function defaults to
 //                  /scif)
 //            app:  if running with context of an active app, this will load the

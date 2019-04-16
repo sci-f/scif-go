@@ -17,14 +17,14 @@ package util
 
 // Prepend adds an element to the front of an array
 func Prepend(element string, array []string) []string {
-        return append([]string{element}, array...)
+	return append([]string{element}, array...)
 }
 
 func Contains(a string, list []string) bool {
-    for _, b := range list {
-        if b == a {
-            return true
-        }
-    }
-    return false
+	for _, b := range list {
+		if b == a {
+			return true
+		}
+	}
+	return false
 }
