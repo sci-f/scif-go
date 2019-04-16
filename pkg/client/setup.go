@@ -16,32 +16,68 @@
 package client
 
 import (
-//	"fmt"
-//        "os"
-//	"path"
+	//	"fmt"
+	        "os"
+	//	"path"
 
 	"github.com/sci-f/scif-go/internal/pkg/logger"
-//        "github.com/sci-f/scif-go/pkg/util"
+	//        "github.com/sci-f/scif-go/pkg/util"
 )
 
 func (client ScifClient) Setup() {
-	logger.Debugf("Setup() here")
+	logger.Debugf("Running Setup()")
 	//ScifRecipe._exec = _exec
 }
 
-// TODO: on init, need to know to read in file system (or not)
-//        # If recipe path not provided, try default base
-//        if path is None:
-//            path = SCIF_BASE
 
-//        # 1. Determine if path is a recipe or base
-//        if path is not None:
+func (client ScifClient) Load(path string, apps []string, writable bool) *ScifClient {
+        logger.Infof("Running Load()")
 
-//            self.set_base(SCIF_BASE, writable=writable) # /scif
-//            self.load(path, app, quiet)                 # recipe, environment
+        // If the recipe is not provided (empty string) set it to be the base.
+        if path == "" {
+                path = Scif.Base
+        }
 
-//        # 2. Neither, development client
-//        else:
-//            bot.info('[skeleton] session!')
-//            bot.info('           load a recipe: client.load("recipe.scif")')
-//            bot.info('           change default base:  client.set_base("/")')
+
+        // Check if we have a file or a directory
+        if fp, err := os.Stat(path); err == nil {
+
+                // Case 1: It's a directory on the filesystem (scif base)
+        	if fp.IsDir() {
+
+                        // Load the filesystem and exit on error
+                        if err := client.loadFilesystem(path); err != nil {
+                                logger.Exitf("%s", err)
+                        }
+
+                // Case 2: It's a path to a recipe
+        	} else {
+
+                        // Load the recipe and exit on error
+                        if err := client.loadRecipe(path); err != nil {
+                                logger.Exitf("%s", err)
+                        }
+        	}
+
+        // Otherwise, not a recipe or directory, development mode
+        } else {
+                logger.Warningf("No recipe or filesystem loaded, development mode.")
+        }
+
+        //self.update_env(app)
+        return &client
+}
+
+func (client ScifClient) loadRecipe(path string) error {
+        logger.Infof("Calling loadRecipe, recipe %s", path)        
+// TODO this should load the recipe as self.config
+//             self._config = load_recipe(path)
+        return nil
+}
+
+func (client ScifClient) loadFilesystem(path string) error {
+        logger.Infof("Calling loadFilesystem, path %s", path)  
+// TODO this should load the filesystem as self.config
+//             self._config = load_recipe(path)
+        return nil
+}

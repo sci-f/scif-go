@@ -17,32 +17,33 @@ package client
 
 import (
 	"fmt"
-        "os"
+	"os"
 	"path"
 
 	"github.com/sci-f/scif-go/internal/pkg/logger"
-        "github.com/sci-f/scif-go/pkg/util"
+	"github.com/sci-f/scif-go/pkg/util"
 )
 
 // ScifClient holds scif client functions and settings
 // The final client is provided as Scif. See other named files in this folder
 // for functions specific to the client, and below for the init function.
-// 
+//
 // setup.go:    Setup() that should be called to auto load a scif
 // install.go:  installation of base, apps, data folders
 // defaults.go: used below to load defaults for client
 
 type ScifClient struct {
-	Base        string      // /scif is the overall base
-	Data        string      // <Base>/data is the data base
-	Apps        string      // <Base>/apps is the apps base
-	ShellCmd    string      // default shell
-	EntryPoint  []string    // default entrypoint to an app (parsed to list)
-	EntryFolder string      // default entryfolder TODO: what should this be?
-	allowAppend bool        // allow appending to path
+	Base        string              // /scif is the overall base
+	Data        string              // <Base>/data is the data base
+	Apps        string              // <Base>/apps is the apps base
+	ShellCmd    string              // default shell
+	EntryPoint  []string            // default entrypoint to an app (parsed to list)
+	EntryFolder string              // default entryfolder TODO: what should this be?
+	allowAppend bool                // allow appending to path
 	appendPaths [3]string
 	scifApps    []string
-        activeApp   string      // the active app (if one is defined)
+	activeApp   string              // the active app (if one is defined)
+        config      map[string]string   // a loaded configuration
 }
 
 // Printing
@@ -71,16 +72,16 @@ func NewScifClient() *ScifClient {
 	shell := getenv("SCIF_SHELL", getStringDefault("SHELL"))
 	entrypoint := getenv("SCIF_ENTRYPOINT", getStringDefault("ENTRYPOINT"))
 	entryfolder := getenv("SCIF_ENTRYFOLDER", getStringDefault("ENTRYFOLDER"))
-        entrylist := util.ParseEntrypoint(entrypoint)
+	entrylist := util.ParseEntrypoint(entrypoint)
 
-        // Update Environment
-        os.Setenv("SCIF_DATA", data)
-        os.Setenv("SCIF_APPS", apps)
-        os.Setenv("SCIF_BASE", base)
+	// Update Environment
+	os.Setenv("SCIF_DATA", data)
+	os.Setenv("SCIF_APPS", apps)
+	os.Setenv("SCIF_BASE", base)
 
-        // Instantiate the client
+	// Instantiate the client
 	client := &ScifClient{Base: base,
-		 Data:        data,
+		Data:        data,
 		Apps:        apps,
 		ShellCmd:    shell,
 		EntryPoint:  entrylist,
@@ -89,15 +90,40 @@ func NewScifClient() *ScifClient {
 		appendPaths: scifAppendPaths,
 		scifApps:    scifApps}
 
-        // Setup includes loading a scif, if found at base
-        client.Setup()
+	// Setup includes loading a scif, if found at base
+	client.Setup()
 
-        return client
+	return client
 }
-
 
 // provide client to user as "Scif"
 var Scif ScifClient = *NewScifClient()
+
+//    def load(self, path, app=None, quiet=False):
+//        '''load a scif recipe into the object
+
+//            Parameters
+//            ==========
+//            path: the complete path to the config (recipe file) to load, or 
+//                  root path of filesystem (that from calling function defaults to
+//                  /scif)
+//            app:  if running with context of an active app, this will load the
+//                  active app environment for it as well.
+//        '''
+//        # 1. path is a recipe
+//        if os.path.isfile(path):
+//            self._config = load_recipe(path)
+
+//        # 2. path is a base
+//        elif os.path.isdir(path):
+//            self._config = load_filesystem(path, quiet=quiet)
+
+//        else:
+//            bot.warning('%s is not detected as a recipe or base.' %path)
+//            self._config = None
+
+//        self.update_env(app)
+
 // Commands
 
 // Execute will execute a command to a scientific filesystem

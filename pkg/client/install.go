@@ -16,7 +16,7 @@
 package client
 
 import (
-        "os"
+	"os"
 
 	"github.com/sci-f/scif-go/internal/pkg/logger"
 	"github.com/sci-f/scif-go/pkg/util"
@@ -26,7 +26,7 @@ import (
 // Install an app for a scientific filesystem
 // install recipes to a base. We assume this is the root of a system
 // or container, and will write the /scif directory on top of it.
-// If an app name is provided, install that app if it is found 
+// If an app name is provided, install that app if it is found
 // in the config. This function goes through all steps to:
 //
 // 1. Install base folders to base, creating a folder for each app
@@ -36,26 +36,25 @@ func Install(recipe string, apps []string, writable bool) (err error) {
 
 	logger.Debugf("Installing recipe %s", recipe)
 
-        // Ensure that recipe exists
-        if _, err := os.Stat(recipe); os.IsNotExist(err) {
-                logger.Exitf("Recipe %s does not exist.", recipe)
-        }
+	// Ensure that recipe exists
+	if _, err := os.Stat(recipe); os.IsNotExist(err) {
+		logger.Exitf("Recipe %s does not exist.", recipe)
+	}
 
-        // Ensure we have writable if asking for it
-        if (writable && !util.HasWriteAccess(Scif.Base)) {
-                logger.Exitf("No write access to %s", Scif.Base)
-        }
+	// Ensure we have writable if asking for it
+	if writable && !util.HasWriteAccess(Scif.Base) {
+		logger.Exitf("No write access to %s", Scif.Base)
+	}
 
-        // Create the client
-	cli := ScifClient{}
+	// Create the client, load the recipe
+	cli := ScifClient{}.Load(recipe, apps, writable)
 
-        // install Base folders
+	// install Base folders
 	cli.installBase()
-        cli.installApps(apps)
+	cli.installApps(apps)
 
 	return err
 }
-
 
 // Install Helper Functions
 // these functions are added to the ScifClient struct base, and have access
@@ -66,28 +65,30 @@ func Install(recipe string, apps []string, writable bool) (err error) {
 func (client ScifClient) installBase() {
 	logger.Infof("Installing base to %s", Scif.Base)
 
-        // Create the base, apps folder, and data folders
-        folders := []string{Scif.Base, Scif.Apps, Scif.Data}
+	// Create the base, apps folder, and data folders
+	folders := []string{Scif.Base, Scif.Apps, Scif.Data}
 
-        // Exit on any kind of error
-        for _, folder := range folders {
-                if err := os.MkdirAll(folder, os.ModePerm); err != nil {
-                        logger.Exitf("%s", err)
-                }
-        }
+	// Exit on any kind of error
+	for _, folder := range folders {
+		if err := os.MkdirAll(folder, os.ModePerm); err != nil {
+			logger.Exitf("%s", err)
+		}
+	}
 }
 
 // installApps installs one or more apps to the base, apps is a list of apps.
 func (client ScifClient) installApps(apps []string) {
 
-        // If no apps defined, get those found at base        
+	// If no apps defined, get those found at base
 
-        // Loop through apps to install
-        for _, app := range apps {
+        // TODO: write code here
+	// Loop through apps to install
+	for _, app := range apps {
 
-                logger.Infof(app)
-        } 
+		logger.Infof(app)
+	}
 }
+
 //def install_apps(self, apps=None):
 //    '''install one or more apps to the base. If app is defined, only
 //       install app specified. Otherwise, install all found in config.
@@ -131,14 +132,10 @@ func (client ScifClient) installApps(apps []string) {
 //        # After we install, in case interactive, deactivate last app
 //        self.deactivate(app)
 
-
-
-
-
 //def install(self, app=None):
 //    '''install recipes to a base. We assume this is the root of a system
 //       or container, and will write the /scif directory on top of it.
-//       If an app name is provided, install that app if it is found 
+//       If an app name is provided, install that app if it is found
 //       in the config. This function goes through all steps to:
 
 //       1. Install base folders to base, creating a folder for each app
@@ -148,9 +145,8 @@ func (client ScifClient) installApps(apps []string) {
 //    self._install_base()             # Generate the folder structure
 //    self._install_apps(app)          # App install
 
-
 //def init_app(self, app):
-//    '''initialize an app, meaning adding the metadata folder, bin, and 
+//    '''initialize an app, meaning adding the metadata folder, bin, and
 //       lib to it. The app is created at the base
 //    '''
 //    settings = self.get_appenv_lookup(app)[app]
@@ -159,8 +155,6 @@ func (client ScifClient) installApps(apps []string) {
 //    for folder in ['appmeta', 'appbin', 'applib', 'appdata']:
 //        mkdir_p(settings[folder])
 //    return settings
-
-
 
 //def install_labels(self, app, settings, config):
 //    '''install labels will add labels to the app labelfile
@@ -179,10 +173,9 @@ func (client ScifClient) installApps(apps []string) {
 //        bot.info('+ ' + 'applabels '.ljust(5) + app)
 //        for line in labels:
 //            label, value = get_parts(line, default='')
-//            lookup[label] = value 
+//            lookup[label] = value
 //        write_json(lookup, settings['applabels'])
 //    return lookup
-
 
 //def install_files(self, app, settings, config):
 //    '''install files will add files (or directories) to a destination.
@@ -200,7 +193,7 @@ func (client ScifClient) installApps(apps []string) {
 //        bot.info('+ ' + 'appfiles '.ljust(5) + app)
 
 //        for pair in files:
-//        
+//
 //            # Step 1: determine source and destination
 //            src, dest = get_parts(pair, default=settings['approot'])
 
@@ -212,10 +205,8 @@ func (client ScifClient) installApps(apps []string) {
 //            elif os.path.exists(src):
 //                cmd = cmd + [src, dest]
 //                result = self._run_command(cmd)
-//            else:    
+//            else:
 //                bot.warning('%s does not exist, skipping.' %src)
-
-
 
 //def install_commands(self, app, settings, config):
 //    '''install will finally, issue commands to install the app.
@@ -232,7 +223,7 @@ func (client ScifClient) installApps(apps []string) {
 //        # Change directory so the APP is $PWD
 //        pwd = os.getcwd()
 //        os.chdir(settings['approot'])
-//        
+//
 //        # issue install commands
 //        cmd = '\n'.join(config['appinstall'])
 //        bot.info('+ ' + 'appinstall '.ljust(5) + app)
@@ -240,7 +231,6 @@ func (client ScifClient) installApps(apps []string) {
 
 //        # Go back to previous location
 //        os.chdir(pwd)
-
 
 //def install_recipe(self, app, settings, config):
 //    '''Write the initial recipe for the app to its metadata folder.
@@ -253,7 +243,7 @@ func (client ScifClient) installApps(apps []string) {
 
 //    '''
 //    recipe_file = settings['apprecipe']
-//    recipe = '' 
+//    recipe = ''
 
 //    for section_name, section_content in config.items():
 //        content = '\n'.join(section_content)
@@ -262,7 +252,6 @@ func (client ScifClient) installApps(apps []string) {
 
 //    write_file(recipe_file, recipe)
 //    return recipe
-
 
 //# Scripts
 
@@ -289,27 +278,24 @@ func (client ScifClient) installApps(apps []string) {
 //        if executable is True:
 //            make_executable(settings[section])
 
-
 //def install_runscript(self, app, settings, config, executable=True):
 //    '''install runscript will prepare the runscript for an app.
 //       the parameters are shared by _install_script
 //    '''
 //    return self._install_script('apprun', app, settings, config, executable)
 
-//            
+//
 //def install_environment(self, app, settings, config):
 //    '''install will run the content to export environment variables, if defined
 //       the parameters are shared by _install_script
 //    '''
 //    return self._install_script('appenv', app, settings, config)
 
-
 //def install_help(self, app, settings, config):
 //    '''install will write the help section, if defined.
 //       the parameters are shared by _install_script
 //    '''
 //    return self._install_script('apphelp', app, settings, config)
-
 
 //def install_test(self, app, settings, config, executable=True):
 //    '''install test will prepare a test script for an app.

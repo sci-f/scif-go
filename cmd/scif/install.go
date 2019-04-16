@@ -21,7 +21,7 @@ import (
 
 	"github.com/sci-f/scif-go/cmd/scif/docs"
 	"github.com/sci-f/scif-go/internal/pkg/logger"
-	"github.com/sci-f/scif-go/pkg/client"  // client.Scif
+	"github.com/sci-f/scif-go/pkg/client" // client.Scif
 	"github.com/spf13/cobra"
 )
 
