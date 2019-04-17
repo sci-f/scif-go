@@ -17,6 +17,8 @@ package client
 
 import (
 	"os"
+	"os/exec"
+	"strings"
 
 	"github.com/sci-f/scif-go/internal/pkg/logger"
 	"github.com/sci-f/scif-go/pkg/util"
@@ -82,83 +84,66 @@ func (client ScifClient) installBase() {
 func (client ScifClient) installApps(apps []string) {
 
 	// If no apps defined, get those found at base
-	
+	if len(apps) == 0 {
+		apps = client.apps()
+	}	
 
-	// TODO: write code here
+	// Init environment for all apps
+	client.initEnv(apps)
+
 	// Loop through apps to install
 	for _, app := range apps {
 
-		logger.Infof(app)
+		// Exit quickly if app isn't in the config
+		if ok := util.Contains(app, client.apps()); !ok {
+			logger.Exitf("App %s not found in loaded config.", app)
+		}
+
+		logger.Infof("Installing app %s", app)
+
+		// install the individual app (create folders)
+		lookup := client.installApp(app)
+		
+		// Handle environment, runscript, labels
+		client.installRunscript(app, lookup)
+		client.installEnvironment(app, lookup)
+		client.installHelp(app, lookup)
+		//TODO client.installFiles(app, lookup)
+		client.installCommands(app, lookup)
+		client.installRecipe(app, lookup)
+		client.installTest(app, lookup)
+
+//        self._install_test(app, settings, config)
+		// After we install, in case interactive, deactivate last app
+		//TODO client.deactivate(app)
+
 	}
+
+	// Export environment for all apps
+	client.exportEnv()
 
 }
 
-//def install_apps(self, apps=None):
-//    '''install one or more apps to the base. If app is defined, only
-//       install app specified. Otherwise, install all found in config.
-//    '''
-//    if apps in [None, '']:
-//        apps = self.apps()
+// installApp initializes environment and installs folders for an app,
+// including folders for metadata, bin, and lib to it at the SCIF_BASE
+// Return appsettings so we only need to generate once
+func (client ScifClient) installApp(name string) map[string]string {
 
-//    if not isinstance(apps, list):
-//        apps = [apps]
+	// Get a lookup for the folders
+	lookup := client.getAppenvLookup(name)
 
-//    if len(apps) == 0:
-//        bot.warning('No apps to install. Load a recipe or base with .load()')
+	// Create these paths
+	keys := []string{"appmeta", "appbin", "applib", "appdata"}
 
-//    for app in apps:
+	// Exit on any kind of error
+	for _, key := range keys {
+		if err := os.MkdirAll(lookup[key], os.ModePerm); err != nil {
+			logger.Exitf("%s", err)
+		}
+	}
+	return lookup
+}
 
-//        # We must have the app defined in the config
-//        if app not in self._config['apps']:
-//            bot.error('Cannot find app %s in config.' %app)
-//            sys.exit(1)
-
-//        # Make directories
-//        settings = self._init_app(app)
-
-//        # Get the app configuration
-//        config = self.app(app)
-
-//        # Get the app environment and export for install
-//        self.get_appenv(app, isolated=False, update=True)
-//        self.export_env(ps1=False)
-
-//        # Handle environment, runscript, labels
-//        self._install_runscript(app, settings, config)
-//        self._install_environment(app, settings, config)
-//        self._install_help(app, settings, config)
-//        self._install_labels(app, settings, config)
-//        self._install_files(app, settings, config)
-//        self._install_commands(app, settings, config)
-//        self._install_recipe(app, settings, config)
-//        self._install_test(app, settings, config)
-
-//        # After we install, in case interactive, deactivate last app
-//        self.deactivate(app)
-
-//def install(self, app=None):
-//    '''install recipes to a base. We assume this is the root of a system
-//       or container, and will write the /scif directory on top of it.
-//       If an app name is provided, install that app if it is found
-//       in the config. This function goes through all steps to:
-
-//       1. Install base folders to base, creating a folder for each app
-//       2. Install one or more apps to it, the config is already loaded
-//    '''
-
-//    self._install_base()             # Generate the folder structure
-//    self._install_apps(app)          # App install
-
-//def init_app(self, app):
-//    '''initialize an app, meaning adding the metadata folder, bin, and
-//       lib to it. The app is created at the base
-//    '''
-//    settings = self.get_appenv_lookup(app)[app]
-
-//    # Create base directories for metadata
-//    for folder in ['appmeta', 'appbin', 'applib', 'appdata']:
-//        mkdir_p(settings[folder])
-//    return settings
 
 //def install_labels(self, app, settings, config):
 //    '''install labels will add labels to the app labelfile
@@ -212,97 +197,134 @@ func (client ScifClient) installApps(apps []string) {
 //            else:
 //                bot.warning('%s does not exist, skipping.' %src)
 
-//def install_commands(self, app, settings, config):
-//    '''install will finally, issue commands to install the app.
 
-//       Parameters
-//       ==========
-//       app should be the name of the app, for lookup in config['apps']
-//       settings: the output of _init_app(), a dictionary of environment vars
-//       config: should be the config for the app obtained with self.app(app)
+// install labels to a labels.json
+func (client ScifClient) installLabels(name string, lookup map[string]string) {
 
-//    '''
-//    if "appinstall" in config:
+	// Exit early if no labels
+	if len(lookup["applabels"]) > 0 {
 
-//        # Change directory so the APP is $PWD
-//        pwd = os.getcwd()
-//        os.chdir(settings['approot'])
-//
-//        # issue install commands
-//        cmd = '\n'.join(config['appinstall'])
-//        bot.info('+ ' + 'appinstall '.ljust(5) + app)
-//        os.system(cmd)
 
-//        # Go back to previous location
-//        os.chdir(pwd)
+		labels := make(map[string]string)
+		logger.Debugf("+ applabels %s", name)
 
-//def install_recipe(self, app, settings, config):
-//    '''Write the initial recipe for the app to its metadata folder.
+		var updated, key string
+		var parts []string
+		for _, line := range(lookup["applabels"]) {
 
-//       Parameters
-//       ==========
-//       app should be the name of the app, for lookup in config['apps']
-//       settings: the output of _init_app(), a dictionary of environment vars
-//       config: should be the config for the app obtained with self.app(app)
+			// Split the pair by the =
+			updated = strings.Replace(string(line), `=`, " ", 1)
+			parts = strings.Split(updated, " ")
+			key = strings.Trim(parts[0], " ")
 
-//    '''
-//    recipe_file = settings['apprecipe']
-//    recipe = ''
+			// Only export if value defined
+			if len(parts) > 1 {
+				labels[key] = strings.Trim(parts[1], " ")
+			}
+		}
+	
+		// Write to json file
+		if err := util.WriteJson(labels, lookup["applabels"]); err != nil {
+			logger.Exitf("%s", err)
+		}
+	}
+}
 
-//    for section_name, section_content in config.items():
-//        content = '\n'.join(section_content)
-//        header = '%' + section_name
-//        recipe += '%s %s\n%s\n' %(header, app, content)
+// install commands will finally issue commands to install the app
+func (client ScifClient) installCommands(name string, lookup map[string]string) {
 
-//    write_file(recipe_file, recipe)
-//    return recipe
+	if len(lookup["appinstall"]) > 0 {
 
-//# Scripts
+		logger.Debugf("+ appinstall %s", name)
 
-//def install_script(self, section, app, settings, config, executable=False):
-//    '''a general function used by install_runscript, install_help, and
-//       install_environment to write a script to a file from a config setting
-//       section
+		// Get the present working directory
+		pwd, err := os.Getwd()
+		if err != nil {
+			logger.Exitf("%s", err)
+		}
 
-//       Parameters
-//       ==========
-//       section: should be the name of the section in the config (e.g., apprun)
-//       app should be the name of the app, for lookup in config['apps']
-//       settings: the output of _init_app(), a dictionary of environment vars
-//       config: should be the config for the app obtained with self.app(app)
-//       executable: if the file is written, make it executable (defaults False)
+		// Change directory to the approot
+		if err := os.Chdir(lookup["approot"]); err != nil {
+			logger.Exitf("%s", err)
+		}
 
-//    '''
-//    if section in config:
-//        content = '\n'.join(config[section])
-//        bot.info('+ ' + section + ' '.ljust(5) + app)
-//        write_file(settings[section], content)
+		// Issue lines to the system (not yet tested)
+		_, err = exec.Command("sh","-c", lookup["appinstall"]).Output()
+		if err != nil {
+			logger.Exitf("%s", err)
+		}
 
-//        # Should we make the script executable (checks for exists)
-//        if executable is True:
-//            make_executable(settings[section])
+		// Change back to pwd
+		if err := os.Chdir(pwd); err != nil {
+			logger.Exitf("%s", err)
+		}
+	}
+}
 
-//def install_runscript(self, app, settings, config, executable=True):
-//    '''install runscript will prepare the runscript for an app.
-//       the parameters are shared by _install_script
-//    '''
-//    return self._install_script('apprun', app, settings, config, executable)
+// install a recipe, meaning writing the <name>.scif to the app metadata folder
+func (client ScifClient) installRecipe(name string, lookup map[string]string) {
 
-//
-//def install_environment(self, app, settings, config):
-//    '''install will run the content to export environment variables, if defined
-//       the parameters are shared by _install_script
-//    '''
-//    return self._install_script('appenv', app, settings, config)
+	var lines []string
 
-//def install_help(self, app, settings, config):
-//    '''install will write the help section, if defined.
-//       the parameters are shared by _install_script
-//    '''
-//    return self._install_script('apphelp', app, settings, config)
+	// Alert the user install the app
+	logger.Debugf("+ apprecipe %s", name)
 
-//def install_test(self, app, settings, config, executable=True):
-//    '''install test will prepare a test script for an app.
-//       the parameters are shared by _install_script
-//    '''
-//    return self._install_script('apptest', app, settings, config, executable)
+	// Get all sections (lines) for the app (only those defined)
+	lines = client.exportAppLines(name)
+
+	// The lookup contains the recipe file
+	if err := util.WriteFile(lines, lookup["apprecipe"]); err != nil {
+		logger.Exitf("%s", err)
+	}
+
+}
+
+// installScript is a general function used by installRunscript, installHelp, and
+// installEnvironment to write a script to a file from a config setting section
+// Returns true or false if the script was written
+func (client ScifClient) installScript(lines []string, filename string) bool {
+
+	// Only install the script if the section has content
+	if len(lines) > 0 {
+
+		// Write the lines to file, if they have length
+		if err := util.WriteFile(lines, filename); err != nil {
+			logger.Exitf("%s", err)
+		}
+		return true
+	}
+	return false
+}
+
+// install a runscript (and make executable)
+func (client ScifClient) installRunscript(name string, lookup map[string]string) {
+
+	// Install, and then make executable (only if file exists)
+	if client.installScript(Scif.config[name].runscript, lookup["apprun"]) {
+		logger.Debugf("+ apprun %s", name)
+		util.MakeExecutable(lookup["apprun"])
+	}
+}
+
+
+// install an environment
+func (client ScifClient) installEnvironment(name string, lookup map[string]string) {
+	if client.installScript(Scif.config[name].environ, lookup["appenv"]) {
+		logger.Debugf("+ appenv %s", name)
+	}
+}
+
+// install a helpfile
+func (client ScifClient) installHelp(name string, lookup map[string]string) {
+	if client.installScript(Scif.config[name].help, lookup["apphelp"]) {
+		logger.Debugf("+ apphelp %s", name)
+	}
+}
+
+// install a test script
+func (client ScifClient) installTest(name string, lookup map[string]string) {
+	if client.installScript(Scif.config[name].test, lookup["apptest"]) {
+		logger.Debugf("+ apptest %s", name)
+		util.MakeExecutable(lookup["apptest"])
+	}
+}

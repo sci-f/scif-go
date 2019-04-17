@@ -16,10 +16,62 @@
 package util
 
 import (
+	"bufio"
+	"encoding/json"
+	"io/ioutil"
+	"os"
+
+	"github.com/sci-f/scif-go/internal/pkg/logger"
 	"golang.org/x/sys/unix"
+
 )
 
-// hasWriteAccess checks if the user has write access to a path
+// HasWriteAccess checks if the user has write access to a path
 func HasWriteAccess(path string) bool {
 	return unix.Access(path, unix.W_OK) == nil
+}
+
+// WriteFile writes an array of lines to files (should include newlines)
+func WriteFile(lines []string, path string) error {
+	file, err := os.Create(path)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+	writer := bufio.NewWriter(file)
+	for _, line := range lines {
+
+		// Write each line (newlines already included)
+		writer.WriteString(line)
+		//writer.WrieByte('\n')
+	}
+	return writer.Flush()
+}
+
+
+// WriteJson marshalls a json and writes to a file path
+func WriteJson(dict map[string]string, path string) error {
+
+	// Marshal the map into a JSON string.
+	data, err := json.Marshal(dict)   
+	if err != nil {
+		logger.Exitf("%s", err)
+	}
+
+	file, _ := json.MarshalIndent(data, "", " ") 
+	err = ioutil.WriteFile(path, file, 0644)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// Make executable, akin to chmod u+x or chmod 0755
+func MakeExecutable(path string) {
+
+	err := os.Chmod(path, 0755)
+	if err != nil {
+     		logger.Exitf("%s", err)
+	}
 }

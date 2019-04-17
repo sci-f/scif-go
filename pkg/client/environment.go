@@ -16,6 +16,7 @@
 package client
 
 import (
+	"os"
 	"strings"
 	"path/filepath"
 
@@ -48,7 +49,12 @@ var envPrefix = "SCIF_"
 //      These paths and files are not created at this point, but just defined.
 //	A lookup for them is generated from getAppenvLookup
 //
-func (client ScifClient) initEnv() {
+func (client ScifClient) initEnv(apps []string) {
+
+	// if no apps provided, use those in the config
+	if len(apps) == 0 {
+		apps = client.apps()
+	}
 
 	// Hold all environment variables in a new map
 	envars := make(map[string]string)
@@ -59,7 +65,7 @@ func (client ScifClient) initEnv() {
 	envars["SCIF_DATA"] = Scif.Data
 
 	// Loop through apps to export
-	for _, app := range client.apps() {
+	for _, app := range apps {
 
 		settings := Scif.config[app]
 		logger.Infof("%s", settings)		
@@ -92,7 +98,7 @@ func (client ScifClient) setActiveAppEnv(name string) {
 // resetEnv will reset the environment back to an empty map before updating
 func (client ScifClient) resetEnv(apps []string) {
 	Scif.Environment = make(map[string]string)
-	client.initEnv()
+	client.initEnv(apps)
 }
 
 // updateEnv will update the environment, without resetting it first. It's
@@ -117,6 +123,51 @@ func (client ScifClient) updateEnv(apps []string) {
 			k = envPrefix + strings.ToUpper(k) + "_" + app
 			Scif.Environment[k] = v
 		}
+	}
+}
+
+// appendPaths will return a string with an appended path, if allowed,
+// and if the Pathname is defined in Scif.appendPaths
+func (client ScifClient) appendPathsFunc(key string, value string) string {
+
+	// If we don't allow appending, just return original value
+	if !Scif.allowAppend {
+		return value
+	}
+
+	// If the variable is defined on the host
+	if envar, ok := os.LookupEnv(key); ok {
+
+		// And also in the list of appendPaths
+		contained := false
+		for _, path := range Scif.appendPaths {
+			if path == key {
+				contained = true
+			}
+		}
+
+		if contained {
+			value = value + ":" + envar		
+		}
+	}
+	return value
+}
+
+// exportEnv will export all variables in Scif.Environment, and add the PS1 
+// variable by default.
+func (client ScifClient) exportEnv() {
+
+	runtime := Scif.Environment
+	runtime["PS1"] = "scif> "
+
+	// Do an update allowing extension for PATHs) and export
+	for k, v := range runtime {
+
+		// This will get any value from current env if append is allowed
+		runtime[k] = client.appendPathsFunc(k, v)
+
+		logger.Debugf("export %s=%s", k, v)
+		os.Setenv(k, runtime[k])
 	}
 }
 

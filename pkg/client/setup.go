@@ -26,7 +26,7 @@ import (
 )
 
 func (client ScifClient) Setup() {
-	logger.Debugf("Setup()")
+	logger.Debugf("Running additional setup.")
 }
 
 // Loading functions. This does not coincide with doing an install (creating
@@ -71,8 +71,8 @@ func (client ScifClient) Load(path string, writable bool) *ScifClient {
 	}
 
 	client.finishLoad()
-
 	//client.PrintConfig()
+
 	logger.Infof("Found apps %s", client.apps())
 
 	return &client

@@ -30,7 +30,7 @@ func (client ScifClient) PrintConfig() {
 		printDefined("%appenv", name, settings.environ)	
 		printDefined("%applabels", name, settings.labels)
 		printDefined("%appfiles", name, settings.files)
-		printDefined("%appfiles", name, settings.help)	
+		printDefined("%apphelp", name, settings.help)	
 		printDefined("%apptest", name, settings.test)	
 	}	
 
@@ -41,4 +41,39 @@ func printDefined(prefix string, name string, settings []string) {
 	if len(settings) > 0 {
 		fmt.Println(prefix, name, "\n", strings.Join(settings, "\n"))
 	}
+}
+
+// exportAppLines returns a list of lines for an app in a config
+func (client ScifClient) exportAppLines(name string) []string {
+
+	var lines []string
+	var settings AppSettings
+	var header string	
+	settings = Scif.config[name]
+
+	// First add the header
+	header = "%" + name + "\n"
+	lines = append(lines, header)
+
+	// Add each list of lines from the section
+	lines = exportAppSection("%apprun", name, settings.runscript, lines)
+	lines = exportAppSection("%appinstall", name, settings.install, lines)
+	lines = exportAppSection("%appenv", name, settings.environ, lines)
+	lines = exportAppSection("%applabels", name, settings.labels, lines)
+	lines = exportAppSection("%appfiles", name, settings.files, lines)
+	lines = exportAppSection("%apphelp", name, settings.help, lines)
+	lines = exportAppSection("%apptest", name, settings.test, lines)
+
+	return lines
+}
+
+// exportAppSection returns a list of lines for a secion
+func exportAppSection(prefix string, name string, settings []string, lines []string) []string {
+
+	var line string
+	if len(settings) > 0 {
+		line = prefix + " " + name + "\n"
+		lines = append(lines, line)
+	}
+	return lines
 }
