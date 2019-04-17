@@ -29,12 +29,16 @@ func (client ScifClient) Setup() {
 	logger.Debugf("Setup()")
 }
 
-// Loading functions
+// Loading functions. This does not coincide with doing an install (creating
+// folders, etc.) but just loads a recipe or a filesystem to the config. Not
+// all apps loaded in the recipe will necessarily be requested for use.
 // .............................................................................
 
-func (client ScifClient) Load(path string, apps []string, writable bool) *ScifClient {
+func (client ScifClient) Load(path string, writable bool) *ScifClient {
 
+	// Initialize config and Empty environment
 	Scif.config = make(map[string]AppSettings)
+	Scif.Environment = make(map[string]string)
 
 	// If the recipe is not provided (empty string) set it to be the base.
 	if path == "" {
@@ -63,13 +67,14 @@ func (client ScifClient) Load(path string, apps []string, writable bool) *ScifCl
 
 		// Otherwise, not a recipe or directory, development mode
 	} else {
-		logger.Warningf("No recipe or filesystem loaded, development mode.")
+		logger.Warningf("No recipe or filesystem loaded.")
 	}
 
-	client.PrintConfig()
+	client.finishLoad()
 
-	// TODO: after we Load, we need to update the environment
-	//self.update_env(app)
+	//client.PrintConfig()
+	logger.Infof("Found apps %s", client.apps())
+
 	return &client
 }
 
@@ -161,12 +166,7 @@ func (client ScifClient) loadRecipe(path string) error {
 		}
 	}
 
-	//        # Make sure app environments are sourced as first line of recipe
-	//        config = finish_recipe(config)
-	//
-
-	// TODO this should load the recipe as self.config
-	//             self._config = load_recipe(path)
+	// No error, woohoo!
 	return nil
 }
 
@@ -228,7 +228,6 @@ func readSection(lines []string, section string, name string) []string {
 	// Add the list to the config
 	if len(members) > 0 {
 		if section != "" && name != "" {
-
 			
 			// The section determines the kind of addition we do
 			switch section {
@@ -249,13 +248,7 @@ func readSection(lines []string, section string, name string) []string {
 			default:
 				logger.Warningf("%s is not a valid section, skipping", section)
 			}
-
-			//Scif.config["apps"][name] := map[string]interface{}
-
-			//Scif.config["apps"][name][section] = members
-		} // TODO: would there ever be a global section here?
-		//        else: # section is None, is just global
-		//            config[global_section] = members
+		}
 	}
 
 	// Update the settings for the particular app, return smaller list lines
@@ -268,73 +261,70 @@ func (client ScifClient) loadFilesystem(path string) error {
 	logger.Debugf("path %s", path)
 	// TODO this should load the filesystem as self.config
 	//             self._config = load_recipe(path)
+	//def load_filesystem(base, quiet=False):
+	//    '''load a filesystem based on a root path, which is usually /scif
+
+	//        Parameters
+	//        ==========
+	//        base: base to load.
+
+	//        Returns
+	//        =======
+	//        config: a parsed recipe configuration for SCIF
+	//    '''
+	//    from scif.defaults import SCIF_APPS
+
+	//    if os.path.exists(SCIF_APPS):
+	//        apps = os.listdir(SCIF_APPS)
+	//        config = {'apps': {}}
+	//        for app in apps:
+	//            path = '%s/%s/scif/%s.scif' %(SCIF_APPS, app, app)
+	//            if os.path.exists(path):
+	//                recipe = load_recipe(path)
+	//                config['apps'][app] = recipe['apps'][app]
+
+	//        if len(config['apps']) > 0:
+	//            if quiet is False:
+	//                bot.info('Found configurations for %s scif apps' %len(config['apps']))
+	//                bot.info('\n'.join(list(config['apps'].keys())))
+	//            return config
 	return nil
 }
 
-//def load_filesystem(base, quiet=False):
-//    '''load a filesystem based on a root path, which is usually /scif
 
-//        Parameters
-//        ==========
-//        base: base to load.
+// finish load includes final steps to add to the runtime for an app.
+// Currently, this just means adding a command to source an environment
+// before running, if appenv is defined. The client should handle putting
+// variables in the environment, however in some cases (if the variable
+// includes an environment variable: VARIABLE1=$VARIABLE2
+// It would not be properly sourced! So we add a source as the first
+// line of the runscript
+func (client ScifClient) finishLoad() {
 
-//        Returns
-//        =======
-//        config: a parsed recipe configuration for SCIF
-//    '''
-//    from scif.defaults import SCIF_APPS
+	var appenv, apptest, apprun []string
+	settings := AppSettings{}
 
-//    if os.path.exists(SCIF_APPS):
-//        apps = os.listdir(SCIF_APPS)
-//        config = {'apps': {}}
-//        for app in apps:
-//            path = '%s/%s/scif/%s.scif' %(SCIF_APPS, app, app)
-//            if os.path.exists(path):
-//                recipe = load_recipe(path)
-//                config['apps'][app] = recipe['apps'][app]
+	for _, app := range client.apps() {
 
-//        if len(config['apps']) > 0:
-//            if quiet is False:
-//                bot.info('Found configurations for %s scif apps' %len(config['apps']))
-//                bot.info('\n'.join(list(config['apps'].keys())))
-//            return config
+	        // If an appenv is present for the application
+		if len(Scif.config[app].environ) > 0 {
 
-//def finish_recipe(config, global_section='apps'):
-//    '''
-//       finish recipe includes final steps to add to the runtime for an app.
-//       Currently, this just means adding a command to source an environment
-//       before running, if appenv is defined. The Python should handle putting
-//       variables in the environment, however in some cases (if the variable
-//       includes an environment variable:
+			settings = Scif.config[app]
+			appenv = Scif.config[app].environ			
 
-//          VARIABLE1=$VARIABLE2
+			// If test is defined, add source to first line
+			if len(Scif.config[app].test) > 0 {
+				apptest = Scif.config[app].test
+				settings.test = append(apptest, appenv...)
+			}
 
-//       It would not be properly sourced! So we add a source as the first
-//       line of the runscript
+			// If runscript is defined, add source to first line
+			if len(Scif.config[app].runscript) > 0 {
+				apprun = Scif.config[app].runscript
+				settings.runscript = append(apprun, appenv...)
+			}
 
-//       Parameters
-//       ==========
-//       config: the configuation file produced by load_recipe. Assumed to have
-//               a highest key of "apps" and then lookup by individual apps,
-//               and then sections. Eg: config['apps']['myapp']['apprun']
-
-//    '''
-//    # The apps are the keys under global section "apps"
-//    apps = list(config[global_section].keys())
-
-//    for app in apps:
-
-//        # If an apprun is present and the system supports source, do it.
-//        if "appenv" in config[global_section][app]:
-//            appenv = config[global_section][app]['appenv']
-
-//            # If runscript or test is defined, add source to first line
-//            if "apptest" in config[global_section][app]:
-//                apptest = config[global_section][app]['apptest']
-//                config[global_section][app]['apptest'] =  appenv + apptest
-
-//            if "apprun" in config[global_section][app]:
-//                apprun = config[global_section][app]['apprun']
-//                config[global_section][app]['apprun'] =  appenv + apprun
-
-//    return config
+			Scif.config[app] = settings
+		}
+	}
+}

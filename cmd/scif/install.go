@@ -16,9 +16,6 @@
 package main
 
 import (
-	"fmt"
-	//"os"
-
 	"github.com/sci-f/scif-go/cmd/scif/docs"
 	"github.com/sci-f/scif-go/internal/pkg/logger"
 	"github.com/sci-f/scif-go/pkg/client" // client.Scif
@@ -36,8 +33,6 @@ var InstallCmd = &cobra.Command{
 	Args:                  cobra.ArbitraryArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 
-		fmt.Printf("Args: %v\n", args)
-
 		// If no args, exit with warning "You must supply an appname to run"
 		if len(args) == 0 {
 			logger.Exitf("You must supply a recipe to install")
@@ -47,7 +42,10 @@ var InstallCmd = &cobra.Command{
 		recipe := args[0]
 		args = args[1:]
 
-		// appname string, cmd []string, and writable (bool)
+		logger.Debugf("Recipe: %v\n", recipe)
+		logger.Debugf("Apps: %v\n", args)
+
+		// recipe string, apps []string, and writable (bool)
 		client.Install(recipe, args, !readonly)
 	},
 

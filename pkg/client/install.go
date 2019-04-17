@@ -46,8 +46,8 @@ func Install(recipe string, apps []string, writable bool) (err error) {
 		logger.Exitf("No write access to %s", Scif.Base)
 	}
 
-	// Create the client, load the recipe
-	cli := ScifClient{}.Load(recipe, apps, writable)
+	// Create the client, load the recipe/filesystem (all apps included)
+	cli := ScifClient{}.Load(recipe, writable)
 
 	// install Base folders
 	cli.installBase()
@@ -77,9 +77,12 @@ func (client ScifClient) installBase() {
 }
 
 // installApps installs one or more apps to the base, apps is a list of apps.
+// if Apps is an empty list (provided by the user) we by default use all those
+// found in the recipe.
 func (client ScifClient) installApps(apps []string) {
 
 	// If no apps defined, get those found at base
+	
 
 	// TODO: write code here
 	// Loop through apps to install
@@ -87,6 +90,7 @@ func (client ScifClient) installApps(apps []string) {
 
 		logger.Infof(app)
 	}
+
 }
 
 //def install_apps(self, apps=None):

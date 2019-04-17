@@ -39,6 +39,7 @@ type ScifClient struct {
 	ShellCmd    string   // default shell
 	EntryPoint  []string // default entrypoint to an app (parsed to list)
 	EntryFolder string   // default entryfolder TODO: what should this be?
+	Environment map[string]string // key value pairs of current environment
 	allowAppend bool     // allow appending to path
 	appendPaths [3]string
 	scifApps    []string
