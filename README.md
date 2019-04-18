@@ -29,6 +29,5 @@ $ make fmt
 
 ### Documentation
 
- - [development](docs/development.md)
- - [development story](docs/story.md)
- - [organization](docs/organization.md)
+ - [Documentation for Scif](docs) including development, history, and organization
+ - [Docker](docker) including instructions for building development (and tiny) Docker containers for scif
