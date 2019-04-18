@@ -18,6 +18,8 @@ package client
 import (
 	"fmt"
 	"strings"
+
+	"github.com/sci-f/scif-go/internal/pkg/logger"
 )
 
 // PrintConfig will print the configuration
@@ -42,6 +44,20 @@ func printDefined(prefix string, name string, settings []string) {
 		fmt.Println(prefix, name, "\n", strings.Join(settings, "\n"))
 	}
 }
+
+// printAppPreview shows the root, lib, bin, and data for a single app
+func (client ScifClient) printAppPreview(name string) {
+
+	logger.Infof("\n\n%s", name)
+	settings := client.getAppenvLookup(name)
+	keys := []string{"approot", "appdata", "appbin", "applib"}
+
+	for _, key := range keys {
+		val := settings[key]
+		logger.Infof("[%s] %s", key, val)
+	}
+}
+
 
 // exportAppLines returns a list of lines for an app in a config
 func (client ScifClient) exportAppLines(name string) []string {
@@ -74,6 +90,7 @@ func exportAppSection(prefix string, name string, settings []string, lines []str
 	if len(settings) > 0 {
 		line = prefix + " " + name + "\n"
 		lines = append(lines, line)
+		lines = append(lines, settings...)
 	}
 	return lines
 }

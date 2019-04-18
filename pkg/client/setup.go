@@ -25,16 +25,12 @@ import (
 	"github.com/sci-f/scif-go/pkg/util"
 )
 
-func (client ScifClient) Setup() {
-	logger.Debugf("Running additional setup.")
-}
-
 // Loading functions. This does not coincide with doing an install (creating
 // folders, etc.) but just loads a recipe or a filesystem to the config. Not
 // all apps loaded in the recipe will necessarily be requested for use.
 // .............................................................................
 
-func (client ScifClient) Load(path string, writable bool) *ScifClient {
+func (client ScifClient) Load(path string) *ScifClient {
 
 	// Initialize config and Empty environment
 	Scif.config = make(map[string]AppSettings)
@@ -73,7 +69,7 @@ func (client ScifClient) Load(path string, writable bool) *ScifClient {
 	client.finishLoad()
 	//client.PrintConfig()
 
-	logger.Infof("Found apps %s", client.apps())
+	logger.Debugf("Found apps %s", client.apps())
 
 	return &client
 }
@@ -83,7 +79,7 @@ func (client ScifClient) Load(path string, writable bool) *ScifClient {
 // .............................................................................
 
 func (client ScifClient) loadRecipe(path string) error {
-	logger.Infof("Calling loadRecipe, recipe %s", path)
+	logger.Debugf("recipe %s", path)
 
 	// Exit quickly if file doesn't exist
 	if _, err := os.Stat(path); err != nil {

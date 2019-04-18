@@ -49,7 +49,7 @@ func Install(recipe string, apps []string, writable bool) (err error) {
 	}
 
 	// Create the client, load the recipe/filesystem (all apps included)
-	cli := ScifClient{}.Load(recipe, writable)
+	cli := ScifClient{}.Load(recipe)
 
 	// install Base folders
 	cli.installBase()
@@ -108,12 +108,11 @@ func (client ScifClient) installApps(apps []string) {
 		client.installRunscript(app, lookup)
 		client.installEnvironment(app, lookup)
 		client.installHelp(app, lookup)
-		//TODO client.installFiles(app, lookup)
+		client.installFiles(app, lookup)
 		client.installCommands(app, lookup)
 		client.installRecipe(app, lookup)
 		client.installTest(app, lookup)
 
-//        self._install_test(app, settings, config)
 		// After we install, in case interactive, deactivate last app
 		//TODO client.deactivate(app)
 
@@ -145,58 +144,48 @@ func (client ScifClient) installApp(name string) map[string]string {
 }
 
 
-//def install_labels(self, app, settings, config):
-//    '''install labels will add labels to the app labelfile
+// installFiles will copy a list of files from a source to a destination.
+func (client ScifClient) installFiles(name string, lookup map[string]string) {
 
-//       Parameters
-//       ==========
-//       app should be the name of the app, for lookup in config['apps']
-//       settings: the output of _init_app(), a dictionary of environment vars
-//       config: should be the config for the app obtained with self.app(app)
+	if len(lookup["appfiles"]) > 0 {
 
-//    '''
-//    lookup = dict()
-//    if "applabels" in config:
-//        labels = config['applabels']
-//        bot.level
-//        bot.info('+ ' + 'applabels '.ljust(5) + app)
-//        for line in labels:
-//            label, value = get_parts(line, default='')
-//            lookup[label] = value
-//        write_json(lookup, settings['applabels'])
-//    return lookup
+		var pair []string
 
-//def install_files(self, app, settings, config):
-//    '''install files will add files (or directories) to a destination.
-//       If none specified, they are placed in the app base
+		logger.Debugf("+ appfiles %s", name)
+		for _, files := range lookup["appfiles"] {
 
-//       Parameters
-//       ==========
-//       app should be the name of the app, for lookup in config['apps']
-//       settings: the output of _init_app(), a dictionary of environment vars
-//       config: should be the config for the app obtained with self.app(app)
+			cmd := []string{}
 
-//    '''
-//    if "appfiles" in config:
-//        files = config['appfiles']
-//        bot.info('+ ' + 'appfiles '.ljust(5) + app)
+			// Split files into src and dest pairs
+			pair = strings.Split(string(files), " ")
 
-//        for pair in files:
-//
-//            # Step 1: determine source and destination
-//            src, dest = get_parts(pair, default=settings['approot'])
+			// Handle any files not existing
+			fi, err := os.Stat(pair[0])
+			if err != nil {
+				logger.Exitf("%s", err)
+			}
 
-//            # Step 2: copy source to destination
-//            cmd = ['cp']
+			// If it's a directory, add -R for recursive
+			switch mode := fi.Mode(); {
+				case mode.IsDir():
+					cmd = append(cmd, "-R", pair[0])
+				case mode.IsRegular(): 
+					cmd = append(cmd, pair[0])
+			}			
 
-//            if os.path.isdir(src):
-//                cmd.append('-R')
-//            elif os.path.exists(src):
-//                cmd = cmd + [src, dest]
-//                result = self._run_command(cmd)
-//            else:
-//                bot.warning('%s does not exist, skipping.' %src)
+			// Add the destination
+			cmd = append(cmd, pair[1])
+			 
+			// Copy the source to destination, exit on fail
+			_, err = exec.Command("cp", cmd...).Output()
+			if err != nil {
+				logger.Exitf("%s", err)
+			}
+			cmd = nil
 
+		}
+	}
+}
 
 // install labels to a labels.json
 func (client ScifClient) installLabels(name string, lookup map[string]string) {

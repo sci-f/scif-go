@@ -105,8 +105,7 @@ func NewScifClient() *ScifClient {
 		appendPaths: scifAppendPaths,
 		scifApps:    scifApps}
 
-	// Setup includes loading a scif, if found at base
-	client.Setup()
+	// Additional setup could be run here
 
 	return client
 }
