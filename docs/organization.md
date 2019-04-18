@@ -3,6 +3,12 @@
 This is how I decided to organize files and folders. I wanted everything to be located
 where it would intuitively be looked for.
 
+## Where is the version?
+
+The version is kept in [pkg/version/version.go](pkg/version/version.go) and then piped into the Makefile and 
+imported into the client to print. This isn't the only way to do it, but seemed reasonable.
+
+
 ## Where is the scif client (command) entrypoint?
 
 [cmd/scif](cmd/scif) is the entrypoint command for the application. The file [main.go](cmd/scif/main.go) has the main client, and the other *.go files in the folder correspond with subcommands (e.g., "run.go"). Flags that are global are in flags.go, and environment.go has environment parsing. Generally, you can find what you are looking for based on the naming, despite the fact that all these files are in shared "package main" and get compiled together.

@@ -29,5 +29,6 @@ $ make fmt
 
 ### Documentation
 
- - [development story](docs/development.md)
+ - [development](docs/development.md)
+ - [development story](docs/story.md)
  - [organization](docs/organization.md)

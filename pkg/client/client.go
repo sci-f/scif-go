@@ -113,31 +113,6 @@ func NewScifClient() *ScifClient {
 // provide client to user as "Scif"
 var Scif ScifClient = *NewScifClient()
 
-//    def load(self, path, app=None, quiet=False):
-//        '''load a scif recipe into the object
-
-//            Parameters
-//            ==========
-//            path: the complete path to the config (recipe file) to load, or
-//                  root path of filesystem (that from calling function defaults to
-//                  /scif)
-//            app:  if running with context of an active app, this will load the
-//                  active app environment for it as well.
-//        '''
-//        # 1. path is a recipe
-//        if os.path.isfile(path):
-//            self._config = load_recipe(path)
-
-//        # 2. path is a base
-//        elif os.path.isdir(path):
-//            self._config = load_filesystem(path, quiet=quiet)
-
-//        else:
-//            bot.warning('%s is not detected as a recipe or base.' %path)
-//            self._config = None
-
-//        self.update_env(app)
-
 // Commands
 
 // Execute will execute a command to a scientific filesystem
@@ -145,34 +120,6 @@ var Scif ScifClient = *NewScifClient()
 //    fmt.Println("Execute() here")
 //    //ScifRecipe._exec = _exec
 //}
-
-//# Environment
-//ScifRecipe.append_path = append_path
-//ScifRecipe._append_path = get_append_path
-//ScifRecipe._init_env = init_env
-//ScifRecipe.add_env = add_env
-//ScifRecipe.export_env = export_env
-//ScifRecipe.get_env = get_env
-//ScifRecipe.load_env = load_env
-//ScifRecipe.update_env = update_env
-
-// Preview
-//ScifRecipe.preview = preview
-//ScifRecipe._preview_base = preview_base
-//ScifRecipe._preview_apps = preview_apps
-//ScifRecipe._init_app_preview = init_app_preview
-//ScifRecipe._preview_runscript = preview_runscript
-//ScifRecipe._preview_labels = preview_labels
-//ScifRecipe._preview_environment = preview_environment
-//ScifRecipe._preview_commands = preview_commands
-//ScifRecipe._preview_files = preview_files
-//ScifRecipe._preview_recipe = preview_recipe
-//ScifRecipe._preview_test = preview_test
-
-// Setup
-//ScifRecipe._install_base = install_base
-//ScifRecipe.set_base = set_base
-//ScifRecipe.set_defaults = set_defaults
 
 // Apps
 //ScifRecipe.get_appenv_lookup = get_appenv_lookup
@@ -183,20 +130,6 @@ var Scif ScifClient = *NewScifClient()
 //ScifRecipe.deactivate = deactivate
 //ScifRecipe.inspect = inspect
 //ScifRecipe.reset = reset
-
-// Installation
-//ScifRecipe.install = install
-//ScifRecipe._init_app = init_app
-//ScifRecipe._install_apps = install_apps
-//ScifRecipe._install_commands = install_commands
-//ScifRecipe._install_environment = install_environment
-//ScifRecipe._install_files = install_files
-//ScifRecipe._install_help = install_help
-//ScifRecipe._install_labels = install_labels
-//ScifRecipe._install_recipe = install_recipe
-//ScifRecipe._install_runscript = install_runscript
-//ScifRecipe._install_script = install_script
-//ScifRecipe._install_test = install_test
 
 // Execute will execute a command to a scientific filesystem
 func (client ScifClient) Execute() {
@@ -219,55 +152,3 @@ func (cli ScifClient) Shell() {
 func (cli ScifClient) Test() {
 	fmt.Println("Test() here")
 }
-
-//# Environment
-//ScifRecipe.append_path = append_path
-//ScifRecipe._append_path = get_append_path
-//ScifRecipe._init_env = init_env
-//ScifRecipe.add_env = add_env
-//ScifRecipe.export_env = export_env
-//ScifRecipe.get_env = get_env
-//ScifRecipe.load_env = load_env
-//ScifRecipe.update_env = update_env
-
-// Preview
-//ScifRecipe.preview = preview
-//ScifRecipe._preview_base = preview_base
-//ScifRecipe._preview_apps = preview_apps
-//ScifRecipe._init_app_preview = init_app_preview
-//ScifRecipe._preview_runscript = preview_runscript
-//ScifRecipe._preview_labels = preview_labels
-//ScifRecipe._preview_environment = preview_environment
-//ScifRecipe._preview_commands = preview_commands
-//ScifRecipe._preview_files = preview_files
-//ScifRecipe._preview_recipe = preview_recipe
-//ScifRecipe._preview_test = preview_test
-
-// Setup
-//ScifRecipe._install_base = install_base
-//ScifRecipe.set_base = set_base
-//ScifRecipe.set_defaults = set_defaults
-
-// Apps
-//ScifRecipe.get_appenv_lookup = get_appenv_lookup
-//ScifRecipe.get_appenv = get_appenv
-//ScifRecipe.app = app
-//ScifRecipe.apps = apps
-//ScifRecipe.activate = activate
-//ScifRecipe.deactivate = deactivate
-//ScifRecipe.inspect = inspect
-//ScifRecipe.reset = reset
-
-// Installation
-//ScifRecipe.install = install
-//ScifRecipe._init_app = init_app
-//ScifRecipe._install_apps = install_apps
-//ScifRecipe._install_commands = install_commands
-//ScifRecipe._install_environment = install_environment
-//ScifRecipe._install_files = install_files
-//ScifRecipe._install_help = install_help
-//ScifRecipe._install_labels = install_labels
-//ScifRecipe._install_recipe = install_recipe
-//ScifRecipe._install_runscript = install_runscript
-//ScifRecipe._install_script = install_script
-//ScifRecipe._install_test = install_test

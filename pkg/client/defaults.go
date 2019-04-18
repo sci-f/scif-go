@@ -28,7 +28,7 @@ func getenv(key string, fallback string) string {
 	if len(value) == 0 {
 		return fallback
 	}
-	logger.Debugf(value)
+	logger.Debugf("Key %s found as %s", key, value)
 	return value
 }
 

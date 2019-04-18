@@ -23,6 +23,7 @@ build:
 	@GOPATH=$(GOPATH) GOBIN=$(GOBIN) go build $(LDFLAGS) -o bin/$(GONAME) ./cmd/scif
 
 deps:
+	@GOPATH=$(GOPATH) GOBIN=$(GOBIN) go get -u golang.org/x/sys/unix
 	@GOPATH=$(GOPATH) GOBIN=$(GOBIN) go get -u golang.org/x/lint/golint
 	@GOPATH=$(GOPATH) GOBIN=$(GOBIN) go get -u github.com/spf13/cobra
 	@GOPATH=$(GOPATH) GOBIN=$(GOBIN) go get -u github.com/google/shlex
