@@ -19,7 +19,9 @@ import (
 	"bufio"
 	"encoding/json"
 	"io/ioutil"
+	"io"
 	"os"
+	"strings"
 
 	"github.com/sci-f/scif-go/internal/pkg/logger"
 	"golang.org/x/sys/unix"
@@ -45,6 +47,43 @@ func WriteFile(lines []string, path string) error {
 		//writer.WrieByte('\n')
 	}
 	return writer.Flush()
+}
+
+// ReadLines returns an array of lines from a filepath.
+func ReadLines(path string) []string {
+
+	// Read the file
+	file, err := os.Open(path)
+	defer file.Close()
+	if err != nil {
+		logger.Exitf("%v", err)
+	}
+
+
+	// Read each line with a reader into list of lines
+	var line string
+	var lines []string
+
+	reader := bufio.NewReader(file)
+
+	for {
+		line, err = reader.ReadString('\n')
+
+		// Break when we are done
+		if err != nil {
+			break
+		}
+
+		// Trim the line, remove newline, add to list
+		line = strings.Trim(line, "\n")
+		lines = append(lines, line)
+	}
+
+	// End of file is a successful read
+	if err != io.EOF {
+		logger.Exitf("%v", err)
+	}
+	return lines
 }
 
 // WriteJson marshalls a json and writes to a file path

@@ -126,7 +126,6 @@ func setLoggerColor(cmd *cobra.Command, args []string) {
 func runSetup(cmd *cobra.Command, args []string) {
 	setLoggerLevel(cmd, args)
 	setLoggerColor(cmd, args)
-	updateFlagsFromEnv(cmd)
 }
 
 // ENTRYPOINT ..................................................................

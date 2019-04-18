@@ -2,6 +2,7 @@
 .DS_Store
 
 vendor/
+_extra
 
 # Binaries for programs and plugins
 *.exe

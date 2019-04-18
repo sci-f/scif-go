@@ -162,12 +162,17 @@ and have a main execution function to print something to the screen.
 But the moment when the thing first compiles, and you can run that thing? It's
 amazing. There is nothing that feels better. I kept the memory, for posterity.
 
-![first-compile.png](first-compile.png)
+![img/first-compile.png](img/first-compile.png)
 
 And for more posterity, I also documented the first time it ran and I successfully
 read (and somewhat parsed) a file:
 
-![milestone.png](milestone.png)
+![img/milestone.png](img/milestone.png)
+
+and then did the whole shabang to read a recipe, parse the sections, and create
+the scientific filesystem.
+
+![img/fs.png](img/fs.png)
 
 ### 6. Add Meat
 

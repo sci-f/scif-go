@@ -2,7 +2,7 @@ GOPATH := $(shell pwd)/vendor:$(shell pwd):$(shell echo $$GOPATH)
 PATH := $(PATH):$(shell echo $$GOPATH/bin)
 GOBIN := $(shell pwd)/bin
 GONAME := scif
-GOFILES?=$$(find . -name '*.go' | grep -v vendor)
+GOFILES?=$$(find . -name '*.go' | grep -v vendor | grep -v _extra )
 VERSION := $(shell cat pkg/version/version.go |grep "const Version ="|cut -d"\"" -f2)
 GIT_COMMIT := $(shell git rev-parse HEAD)
 TARGET := $(shell echo $${PWD\#\#*/})

@@ -37,8 +37,12 @@ type ScifClient struct {
 	Data        string            // <Base>/data is the data base
 	Apps        string            // <Base>/apps is the apps base
 	ShellCmd    string            // default shell
-	EntryPoint  []string          // default entrypoint to an app (parsed to list)
-	EntryFolder string            // default entryfolder TODO: what should this be?
+
+	EntryPoint  []string          // active entrypoint to an app (parsed to list)
+	EntryFolder string            // active entryfolder
+	defaultEntryPoint []string    // default entrypoint to an app (parsed to list)
+	defaultEntryFolder string     // default entryfolder
+
 	Environment map[string]string // key value pairs of current environment
 	allowAppend bool              // allow appending to path
 	appendPaths [3]string
@@ -101,6 +105,8 @@ func NewScifClient() *ScifClient {
 		ShellCmd:    shell,
 		EntryPoint:  entrylist,
 		EntryFolder: entryfolder,
+		defaultEntryPoint:  entrylist,
+		defaultEntryFolder: entryfolder,
 		allowAppend: allowAppend,
 		appendPaths: scifAppendPaths,
 		scifApps:    scifApps}

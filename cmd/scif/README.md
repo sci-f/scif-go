@@ -3,9 +3,23 @@
 ## How is this organized?
 
  - [scif.go](scif.go) is the main file that serves the init process for the client.
- - [flags.go](flags.go) is a general collection of flags that are used by subcommands
 
-Then each of the subcommands has its own file, within it we define the sub command
+Then each corresponding file is a subcommand (e.g., install.go). You can find
+the flags for each subcommand in their file - I've seen a lot of shared flags.go /
+environment.go files, and I find this organization just confusing. If I have to
+spend time explaining it, it's too much.
+
+## How does the environment come in?
+
+Largely, most clients will (first preference) use command line flags, and then
+fall back to the environment (if set). The actual parsing of the environment
+is usually done in the client package (e.g., for [cmd/scif/install.go](install.go), the
+client package would initialize the environment in [pkg/client/defaults.go](../../pkg/client/defaults.go)
+and then run logic to decide the final variable in [pkg/client/install.go](../../pkg/client/install.go)
+
+## What are the subcommands?
+
+Each of the subcommands has its own file, within it we define the sub command
 group and add any required flags from it. The commands, generally, are:
 
 ```
@@ -38,3 +52,5 @@ Dump: dump a recipe
 Execute: execute a command to the scientific filesystem
   cmd: app and command to execute (e.g., exec <appname> echo "HELLO"
 ```
+
+If you need any more documentation or notes, please ask.

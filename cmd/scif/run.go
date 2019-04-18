@@ -17,11 +17,10 @@ package main
 
 import (
 	"fmt"
-	//"os"
 
 	"github.com/sci-f/scif-go/cmd/scif/docs"
 	"github.com/sci-f/scif-go/internal/pkg/logger"
-	client "github.com/sci-f/scif-go/pkg/client"
+	"github.com/sci-f/scif-go/pkg/client"
 	"github.com/spf13/cobra"
 )
 
@@ -48,13 +47,9 @@ var RunCmd = &cobra.Command{
 		args = args[1:]
 
 		// appname string, cmd []string
-		client.Run(appname, args)
-		//    client = ScifRecipe(quiet=True, writable=args.writable)
-		//    client.run(app, args=cmd)
-		//err := client.Run(args[0], args[1], PushLibraryURI, authToken, "No Description")
-		//if err != nil {
-		//	logger.Fatalf("%v\n", err)
-		//}
+		err := client.Run(appname, args); if err != nil {
+			logger.Exitf("%v", err)
+		}
 	},
 
 	Use:     docs.RunUse,

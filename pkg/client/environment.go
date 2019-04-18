@@ -149,6 +149,15 @@ func (client ScifClient) appendPathsFunc(key string, value string) string {
 	return value
 }
 
+// updatePathsFunc will call appendPathsFunc to get a new value for a path
+// variable, and then set it (based on the key) into Scif.Environment
+func (client ScifClient) updatePathsFunc(key string, value string) {
+
+	value = client.appendPathsFunc(key, value)
+	Scif.Environment[key] = value
+}
+
+
 // exportEnv will export all variables in Scif.Environment, and add the PS1
 // variable by default.
 func (client ScifClient) exportEnv() {
@@ -164,6 +173,33 @@ func (client ScifClient) exportEnv() {
 
 		logger.Debugf("export %s=%s", k, v)
 		os.Setenv(k, runtime[k])
+	}
+}
+
+// loadAppEnv updates the Scif.Environment so that envars from the environment.sh
+// are loaded for export when the application is activated.
+func (client ScifClient) loadAppEnv(name string) {
+
+	lookup := client.getAppenvLookup(name)
+
+	// Determine if there is an environment.sh
+	if _, err := os.Stat(lookup["appenv"]); os.IsNotExist(err) {
+		return
+	}
+
+	lines := util.ReadLines(lookup["appenv"])
+	var parts []string
+ 	
+	// Parse through the lines, add them to Scif.Environment
+	for _, line := range lines {
+		line := strings.Trim(line, " ")
+		parts = strings.Split(line, "=")
+
+		// Skip export lines (with only one value)
+		if len(parts) > 1 {
+			logger.Debugf("Updating %s environment %s=%s", name, parts[0], parts[1])
+			Scif.Environment[parts[0]] = parts[1]
+		}
 	}
 }
 

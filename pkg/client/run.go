@@ -16,20 +16,30 @@
 package client
 
 import (
-	"fmt"
-
 	"github.com/sci-f/scif-go/internal/pkg/logger"
-	//util "github.com/sci-f/scif-go/pkg/util"
-	// jRes, err := util.ParseErrorBody(resp.Body)
+	"github.com/sci-f/scif-go/pkg/util"
 )
 
-// Run an app for a scientific filesystem
-func Run(appname string, cmd []string) (err error) {
-	logger.Debugf("Downloading container from Shub")
+// Run an app for a scientific filesystem. If a user chooses
+// This option, we know we are loading a Filesystem first.
+func Run(name string, cmd []string) (err error) {
 
-	cli := ScifClient{}
-	fmt.Println(cli)
-	// cli.Run(...)
+	// Running an app means we load from the filesystem first
+	cli := ScifClient{}.Load(Scif.Base)
 
+	// Ensure that the app exists on the filesystem
+	if ok := util.Contains(name, cli.apps()); !ok {
+		logger.Exitf("%s does not exist.", name)
+	}
+
+	// Activate the app, meaning we set the environment and Scif.activeApp
+	cli.activate(name)
+
+	// TODO: if args are provided, add on to Scif.EntryPoint
+
+	// Add additional args to the entrypoint
+	logger.Debugf("Running app %s", name)
+
+	//cli.Run()...
 	return err
 }

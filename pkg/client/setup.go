@@ -16,8 +16,6 @@
 package client
 
 import (
-	"bufio"
-	"io"
 	"os"
 	"strings"
 
@@ -86,41 +84,13 @@ func (client ScifClient) loadRecipe(path string) error {
 		return err
 	}
 
-	// Read the file
-	file, err := os.Open(path)
-	defer file.Close()
-	if err != nil {
-		return err
-	}
-
-	// Read each line with a reader into list of lines
-	var line string
-	var lines []string
-
-	reader := bufio.NewReader(file)
-
-	for {
-		line, err = reader.ReadString('\n')
-
-		// Break when we are done
-		if err != nil {
-			break
-		}
-
-		// Trim the line, remove newline, add to list
-		line = strings.Trim(line, "\n")
-		lines = append(lines, line)
-	}
-
-	// End of file is a successful read
-	if err != io.EOF {
-		return err
-	}
+	lines := util.ReadLines(path)
 
 	// We now need to populate lines into Scif.config
 	section := ""
 	name := ""
 	var parts []string
+	var line string
 
 	// Process each line
 	for len(lines) > 0 {
