@@ -33,14 +33,14 @@ import (
 // defaults.go: used below to load defaults for client
 
 type ScifClient struct {
-	Base        string   // /scif is the overall base
-	Data        string   // <Base>/data is the data base
-	Apps        string   // <Base>/apps is the apps base
-	ShellCmd    string   // default shell
-	EntryPoint  []string // default entrypoint to an app (parsed to list)
-	EntryFolder string   // default entryfolder TODO: what should this be?
+	Base        string            // /scif is the overall base
+	Data        string            // <Base>/data is the data base
+	Apps        string            // <Base>/apps is the apps base
+	ShellCmd    string            // default shell
+	EntryPoint  []string          // default entrypoint to an app (parsed to list)
+	EntryFolder string            // default entryfolder TODO: what should this be?
 	Environment map[string]string // key value pairs of current environment
-	allowAppend bool     // allow appending to path
+	allowAppend bool              // allow appending to path
 	appendPaths [3]string
 	scifApps    []string
 	activeApp   string                 // the active app (if one is defined)
@@ -58,7 +58,7 @@ type AppSettings struct {
 	runscript []string
 	test      []string
 	install   []string
-	files	  []string
+	files     []string
 }
 
 // Printing

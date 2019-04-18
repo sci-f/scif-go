@@ -23,7 +23,6 @@ import (
 
 	"github.com/sci-f/scif-go/internal/pkg/logger"
 	"golang.org/x/sys/unix"
-
 )
 
 // HasWriteAccess checks if the user has write access to a path
@@ -48,17 +47,16 @@ func WriteFile(lines []string, path string) error {
 	return writer.Flush()
 }
 
-
 // WriteJson marshalls a json and writes to a file path
 func WriteJson(dict map[string]string, path string) error {
 
 	// Marshal the map into a JSON string.
-	data, err := json.Marshal(dict)   
+	data, err := json.Marshal(dict)
 	if err != nil {
 		logger.Exitf("%s", err)
 	}
 
-	file, _ := json.MarshalIndent(data, "", " ") 
+	file, _ := json.MarshalIndent(data, "", " ")
 	err = ioutil.WriteFile(path, file, 0644)
 	if err != nil {
 		return err
@@ -72,6 +70,6 @@ func MakeExecutable(path string) {
 
 	err := os.Chmod(path, 0755)
 	if err != nil {
-     		logger.Exitf("%s", err)
+		logger.Exitf("%s", err)
 	}
 }

@@ -86,7 +86,7 @@ func (client ScifClient) installApps(apps []string) {
 	// If no apps defined, get those found at base
 	if len(apps) == 0 {
 		apps = client.apps()
-	}	
+	}
 
 	// Init environment for all apps
 	client.initEnv(apps)
@@ -103,7 +103,7 @@ func (client ScifClient) installApps(apps []string) {
 
 		// install the individual app (create folders)
 		lookup := client.installApp(app)
-		
+
 		// Handle environment, runscript, labels
 		client.installRunscript(app, lookup)
 		client.installEnvironment(app, lookup)
@@ -143,7 +143,6 @@ func (client ScifClient) installApp(name string) map[string]string {
 	return lookup
 }
 
-
 // installFiles will copy a list of files from a source to a destination.
 func (client ScifClient) installFiles(name string, lookup map[string]string) {
 
@@ -167,15 +166,15 @@ func (client ScifClient) installFiles(name string, lookup map[string]string) {
 
 			// If it's a directory, add -R for recursive
 			switch mode := fi.Mode(); {
-				case mode.IsDir():
-					cmd = append(cmd, "-R", pair[0])
-				case mode.IsRegular(): 
-					cmd = append(cmd, pair[0])
-			}			
+			case mode.IsDir():
+				cmd = append(cmd, "-R", pair[0])
+			case mode.IsRegular():
+				cmd = append(cmd, pair[0])
+			}
 
 			// Add the destination
 			cmd = append(cmd, pair[1])
-			 
+
 			// Copy the source to destination, exit on fail
 			_, err = exec.Command("cp", cmd...).Output()
 			if err != nil {
@@ -193,13 +192,12 @@ func (client ScifClient) installLabels(name string, lookup map[string]string) {
 	// Exit early if no labels
 	if len(lookup["applabels"]) > 0 {
 
-
 		labels := make(map[string]string)
 		logger.Debugf("+ applabels %s", name)
 
 		var updated, key string
 		var parts []string
-		for _, line := range(lookup["applabels"]) {
+		for _, line := range lookup["applabels"] {
 
 			// Split the pair by the =
 			updated = strings.Replace(string(line), `=`, " ", 1)
@@ -211,7 +209,7 @@ func (client ScifClient) installLabels(name string, lookup map[string]string) {
 				labels[key] = strings.Trim(parts[1], " ")
 			}
 		}
-	
+
 		// Write to json file
 		if err := util.WriteJson(labels, lookup["applabels"]); err != nil {
 			logger.Exitf("%s", err)
@@ -238,7 +236,7 @@ func (client ScifClient) installCommands(name string, lookup map[string]string) 
 		}
 
 		// Issue lines to the system (not yet tested)
-		_, err = exec.Command("sh","-c", lookup["appinstall"]).Output()
+		_, err = exec.Command("sh", "-c", lookup["appinstall"]).Output()
 		if err != nil {
 			logger.Exitf("%s", err)
 		}
@@ -294,7 +292,6 @@ func (client ScifClient) installRunscript(name string, lookup map[string]string)
 		util.MakeExecutable(lookup["apprun"])
 	}
 }
-
 
 // install an environment
 func (client ScifClient) installEnvironment(name string, lookup map[string]string) {

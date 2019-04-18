@@ -27,14 +27,14 @@ func (client ScifClient) PrintConfig() {
 
 	for name, settings := range Scif.config {
 
-		printDefined("%apprun", name, settings.runscript)	
-		printDefined("%appinstall", name, settings.install)	
-		printDefined("%appenv", name, settings.environ)	
+		printDefined("%apprun", name, settings.runscript)
+		printDefined("%appinstall", name, settings.install)
+		printDefined("%appenv", name, settings.environ)
 		printDefined("%applabels", name, settings.labels)
 		printDefined("%appfiles", name, settings.files)
-		printDefined("%apphelp", name, settings.help)	
-		printDefined("%apptest", name, settings.test)	
-	}	
+		printDefined("%apphelp", name, settings.help)
+		printDefined("%apptest", name, settings.test)
+	}
 
 }
 
@@ -58,13 +58,12 @@ func (client ScifClient) printAppPreview(name string) {
 	}
 }
 
-
 // exportAppLines returns a list of lines for an app in a config
 func (client ScifClient) exportAppLines(name string) []string {
 
 	var lines []string
 	var settings AppSettings
-	var header string	
+	var header string
 	settings = Scif.config[name]
 
 	// First add the header

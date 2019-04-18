@@ -173,7 +173,9 @@ read (and somewhat parsed) a file:
 
 Now it gets easier, because you have a method. You can add something,
 build it, and then try running it. For details on strategies for this,
-see the [development docs](development.md). I largely stuck to developing on
+see the [development docs](development.md). I had it easy, because I had already
+developed the (general) flow of the library [in Python](https://www.github.com/vsoch/scif), 
+and simply was figuring out how to reproduce it in GoLang (without proper classes!) I largely stuck to developing on
 my local machine until I was uncomfortable enough with making changes to the
 filesystem, and then I developed in a container.
 

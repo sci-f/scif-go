@@ -16,11 +16,11 @@
 package client
 
 // Return a list of apps installed
-func (client ScifClient) apps() []string{
+func (client ScifClient) apps() []string {
 
 	apps := make([]string, 0, len(Scif.config))
 	for app := range Scif.config {
-	        apps = append(apps, app)
-	    }
+		apps = append(apps, app)
+	}
 	return apps
 }

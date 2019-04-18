@@ -17,8 +17,8 @@ package client
 
 import (
 	"os"
-	"strings"
 	"path/filepath"
+	"strings"
 
 	"github.com/sci-f/scif-go/internal/pkg/logger"
 	"github.com/sci-f/scif-go/pkg/util"
@@ -68,7 +68,7 @@ func (client ScifClient) initEnv(apps []string) {
 	for _, app := range apps {
 
 		settings := Scif.config[app]
-		logger.Infof("%s", settings)		
+		logger.Infof("%s", settings)
 		appenv := client.getAppenvLookup(app)
 
 		// update the values in the envars
@@ -114,7 +114,7 @@ func (client ScifClient) updateEnv(apps []string) {
 	for _, app := range client.apps() {
 
 		settings := Scif.config[app]
-		logger.Infof("%s", settings)		
+		logger.Infof("%s", settings)
 		appenv := client.getAppenvLookup(app)
 
 		// update the values in the envars
@@ -147,13 +147,13 @@ func (client ScifClient) appendPathsFunc(key string, value string) string {
 		}
 
 		if contained {
-			value = value + ":" + envar		
+			value = value + ":" + envar
 		}
 	}
 	return value
 }
 
-// exportEnv will export all variables in Scif.Environment, and add the PS1 
+// exportEnv will export all variables in Scif.Environment, and add the PS1
 // variable by default.
 func (client ScifClient) exportEnv() {
 
@@ -185,10 +185,10 @@ func (client ScifClient) exportEnv() {
 //                      'apprecipe': '/scif/apps/registry/scif/registry.scif'
 //                      'approot': '/scif/apps/registry',
 //                      'apprun': '/scif/apps/registry/scif/runscript'
-//                    }            
+//                    }
 //       }
 //       This function is intended to be shared by env above and the environment
-//       generating functions in the main client, to have consistent behavior. 
+//       generating functions in the main client, to have consistent behavior.
 //       The above data structure gets parse into the (global) variables for
 //       the particular app (e.g., SCIF_APPBIN_<name>
 func (client ScifClient) getAppenvLookup(name string) map[string]string {
@@ -201,11 +201,11 @@ func (client ScifClient) getAppenvLookup(name string) map[string]string {
 	envars := make(map[string]string)
 
 	// keep the root, metadata folder, and data folder handy
-	approot := filepath.Join(Scif.Apps, name)	// /scif/apps/<name>
-	appdata := filepath.Join(Scif.Data, name)	// /scif/data/name
-	appmeta := filepath.Join(approot, "scif")	// /scif/apps/<name>/scif
+	approot := filepath.Join(Scif.Apps, name) // /scif/apps/<name>
+	appdata := filepath.Join(Scif.Data, name) // /scif/data/name
+	appmeta := filepath.Join(approot, "scif") // /scif/apps/<name>/scif
 
-        // Roots for app data and app files
+	// Roots for app data and app files
 	envars["appdata"] = appdata
 	envars["approot"] = approot
 	envars["appmeta"] = appmeta
@@ -216,8 +216,8 @@ func (client ScifClient) getAppenvLookup(name string) map[string]string {
 	envars["appenv"] = filepath.Join(appmeta, "environment.sh")
 	envars["apptest"] = filepath.Join(appmeta, "test.sh")
 	envars["applabels"] = filepath.Join(appmeta, "labels.json")
-	envars["apprecipe"] = filepath.Join(appmeta, name + ".scif")
+	envars["apprecipe"] = filepath.Join(appmeta, name+".scif")
 	envars["appname"] = name
-        return envars
+	return envars
 
 }

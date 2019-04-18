@@ -26,7 +26,7 @@ import (
 )
 
 // Preview an app for a scientific filesystem
-// preview the complete setup for a scientific filesytem. This is useful 
+// preview the complete setup for a scientific filesytem. This is useful
 // to print out actions for install (without doing them).
 
 func Preview(recipe string, apps []string) {
@@ -61,7 +61,7 @@ func (client ScifClient) previewApps(apps []string) {
 	// If no apps defined, get those found at base
 	if len(apps) == 0 {
 		apps = client.apps()
-	}	
+	}
 
 	// Loop through apps to install
 	for _, app := range apps {
@@ -77,7 +77,7 @@ func (client ScifClient) previewApps(apps []string) {
 
 		// Get a lookup for the folders (not created)
 		lookup := client.getAppenvLookup(app)
-		
+
 		// Handle environment, runscript, labels
 		client.previewRunscript(app, lookup)
 		client.previewEnvironment(app, lookup)
@@ -88,7 +88,6 @@ func (client ScifClient) previewApps(apps []string) {
 	}
 }
 
-
 // previewFiles will simply print commands that would be used for copying
 func (client ScifClient) previewFiles(name string, lookup map[string]string) {
 
@@ -96,7 +95,7 @@ func (client ScifClient) previewFiles(name string, lookup map[string]string) {
 
 		logger.Debugf("\n+ appfiles %s", name)
 		for _, files := range lookup["appfiles"] {
-			fmt.Printf("%s", files)	 
+			fmt.Printf("%s", files)
 
 		}
 	}
@@ -108,13 +107,12 @@ func (client ScifClient) previewLabels(name string, lookup map[string]string) {
 	// Exit early if no labels
 	if len(lookup["applabels"]) > 0 {
 
-
 		labels := make(map[string]string)
 		logger.Debugf("\n+ applabels %s", name)
 
 		var updated, key string
 		var parts []string
-		for _, line := range(lookup["applabels"]) {
+		for _, line := range lookup["applabels"] {
 
 			// Split the pair by the =
 			updated = strings.Replace(string(line), `=`, " ", 1)
@@ -126,12 +124,11 @@ func (client ScifClient) previewLabels(name string, lookup map[string]string) {
 				labels[key] = strings.Trim(parts[1], " ")
 			}
 		}
-	
+
 		// Print json structure (need to test this)
 		fmt.Printf("%s", labels)
 	}
 }
-
 
 // previewCommands will show commands to install the app
 func (client ScifClient) previewCommands(name string, lookup map[string]string) {

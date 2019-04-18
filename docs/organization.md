@@ -9,9 +9,15 @@ The version is kept in [pkg/version/version.go](pkg/version/version.go) and then
 imported into the client to print. This isn't the only way to do it, but seemed reasonable.
 
 
+## What is the calling pathway?
+
+ 1. The user first interacts with the scif client, defined in package "main" under [cmd/scif](../cmd/scif). The names of files there correspond with commands invoked.
+ 2. The main entrypoints instantiate a client in the client package, located under [client/pkg](../client/pkg). The files are named according to subcommand. It should be fairly easy to hop from "install.go" in the command folder to the functions it calls, also in "install.go" but in the pkg/client folder.
+ 3. The environment is sniffed during setup of the client instance (well, it's a struct with functions) and this is done and defaults set in [defaults.go](../pkg/client/defaults.go). If you export an environment variable to be found, you can run the client with --debug to see if it's found.
+
 ## Where is the scif client (command) entrypoint?
 
-[cmd/scif](cmd/scif) is the entrypoint command for the application. The file [main.go](cmd/scif/main.go) has the main client, and the other *.go files in the folder correspond with subcommands (e.g., "run.go"). Flags that are global are in flags.go, and environment.go has environment parsing. Generally, you can find what you are looking for based on the naming, despite the fact that all these files are in shared "package main" and get compiled together.
+[cmd/scif](../cmd/scif) is the entrypoint command for the application. The file [main.go](../cmd/scif/main.go) has the main client, and the other *.go files in the folder correspond with subcommands (e.g., "run.go"). Flags that are global are in flags.go, and environment.go has environment parsing. Generally, you can find what you are looking for based on the naming, despite the fact that all these files are in shared "package main" and get compiled together.
 
 ## Where are the client functions?
 
@@ -84,7 +90,7 @@ we create the client like this:
 
 ```go
 // Create the client, load the recipe
-cli := ScifClient{}.Load(recipe, apps, writable)
+cli := ScifClient{}.Load(recipe, apps)
 ```
 
 Otherwise we don't call load (and could call it later, if desired):

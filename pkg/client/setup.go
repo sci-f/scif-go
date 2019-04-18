@@ -52,7 +52,7 @@ func (client ScifClient) Load(path string) *ScifClient {
 				logger.Exitf("%s", err)
 			}
 
-		// Case 2: It's a path to a recipe
+			// Case 2: It's a path to a recipe
 		} else {
 
 			// Load the recipe and exit on error
@@ -185,8 +185,6 @@ func getSettings(name string) AppSettings {
 	return settings
 }
 
-
-
 // Read a section into Scif.config, stop when we hit the next section
 func readSection(lines []string, section string, name string) []string {
 
@@ -210,10 +208,10 @@ func readSection(lines []string, section string, name string) []string {
 		if strings.HasPrefix(nextLine, "%") {
 			break
 
-		} 	
+		}
 
 		// Otherwise, add the nextLine to members (now remove)
-                lines = lines[1:]
+		lines = lines[1:]
 
 		// If it's not a comment
 		if !strings.HasPrefix(nextLine, "#") {
@@ -224,7 +222,7 @@ func readSection(lines []string, section string, name string) []string {
 	// Add the list to the config
 	if len(members) > 0 {
 		if section != "" && name != "" {
-			
+
 			// The section determines the kind of addition we do
 			switch section {
 			case "appenv":
@@ -287,7 +285,6 @@ func (client ScifClient) loadFilesystem(path string) error {
 	return nil
 }
 
-
 // finish load includes final steps to add to the runtime for an app.
 // Currently, this just means adding a command to source an environment
 // before running, if appenv is defined. The client should handle putting
@@ -302,11 +299,11 @@ func (client ScifClient) finishLoad() {
 
 	for _, app := range client.apps() {
 
-	        // If an appenv is present for the application
+		// If an appenv is present for the application
 		if len(Scif.config[app].environ) > 0 {
 
 			settings = Scif.config[app]
-			appenv = Scif.config[app].environ			
+			appenv = Scif.config[app].environ
 
 			// If test is defined, add source to first line
 			if len(Scif.config[app].test) > 0 {
