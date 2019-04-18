@@ -76,8 +76,8 @@ func NewScifClient() *ScifClient {
 	data := fmt.Sprintf(path.Join(base, "data"))
 	apps := fmt.Sprintf(path.Join(base, "apps"))
 
-	data = getenv("SCIF_BASE", data)
-	apps = getenv("SCIF_BASE", apps)
+	data = getenv("SCIF_DATA", data)
+	apps = getenv("SCIF_APPS", apps)
 
 	// Permissions
 	allowAppend := getBoolEnv("SCIF_ALLOW_APPEND_PATHS", getBoolDefault("ALLOW_APPEND_PATHS"))
@@ -113,19 +113,10 @@ func NewScifClient() *ScifClient {
 // provide client to user as "Scif"
 var Scif ScifClient = *NewScifClient()
 
-// Commands
-
-// Execute will execute a command to a scientific filesystem
-//func (f Scif) Execute() {
-//    fmt.Println("Execute() here")
-//    //ScifRecipe._exec = _exec
-//}
-
 // Apps
 //ScifRecipe.get_appenv_lookup = get_appenv_lookup
 //ScifRecipe.get_appenv = get_appenv
 //ScifRecipe.app = app
-//ScifRecipe.apps = apps
 //ScifRecipe.activate = activate
 //ScifRecipe.deactivate = deactivate
 //ScifRecipe.inspect = inspect
@@ -143,7 +134,6 @@ func (cli ScifClient) Run() {
 }
 
 // Shell will shell into a scientific filesystem
-// TODO add SCIF_SHELL as envar
 func (cli ScifClient) Shell() {
 	fmt.Println("Shell() here")
 }

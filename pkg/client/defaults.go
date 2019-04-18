@@ -16,10 +16,9 @@
 package client
 
 import (
+	"fmt"
 	"os"
 	"strings"
-
-	"github.com/sci-f/scif-go/internal/pkg/logger"
 )
 
 // getenv will return an environment variable, or return a default
@@ -28,7 +27,7 @@ func getenv(key string, fallback string) string {
 	if len(value) == 0 {
 		return fallback
 	}
-	logger.Debugf("Key %s found as %s", key, value)
+	fmt.Printf("Key %s found as %s\n", key, value)
 	return value
 }
 

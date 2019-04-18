@@ -24,3 +24,25 @@ func (client ScifClient) apps() []string {
 	}
 	return apps
 }
+
+// activate will deactivate all apps, activate the one specified as name.
+func (client ScifClient) activate(name string) {
+
+	// Defines Scif.environment to include all vars, with name as active
+	client.setActiveAppEnv(name)
+
+	// export the changes
+	client.exportEnv()
+}
+
+// deactivate will deactivate all apps
+func (client ScifClient) deactivate() {
+
+	// Reset environments for all apps (no active)
+	client.initEnv(client.apps())
+
+	// export the changes
+	client.exportEnv()
+}
+
+

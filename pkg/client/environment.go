@@ -67,8 +67,6 @@ func (client ScifClient) initEnv(apps []string) {
 	// Loop through apps to export
 	for _, app := range apps {
 
-		settings := Scif.config[app]
-		logger.Infof("%s", settings)
 		appenv := client.getAppenvLookup(app)
 
 		// update the values in the envars
@@ -113,8 +111,6 @@ func (client ScifClient) updateEnv(apps []string) {
 	// Loop through apps to export
 	for _, app := range client.apps() {
 
-		settings := Scif.config[app]
-		logger.Infof("%s", settings)
 		appenv := client.getAppenvLookup(app)
 
 		// update the values in the envars

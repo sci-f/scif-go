@@ -18,11 +18,11 @@ package client
 import (
 	"os"
 	"os/exec"
+	"path/filepath"
 	"strings"
 
 	"github.com/sci-f/scif-go/internal/pkg/logger"
 	"github.com/sci-f/scif-go/pkg/util"
-	// jRes, err := util.ParseErrorBody(resp.Body)
 )
 
 // Install an app for a scientific filesystem
@@ -44,7 +44,7 @@ func Install(recipe string, apps []string, writable bool) (err error) {
 	}
 
 	// Ensure we have writable if asking for it
-	if writable && !util.HasWriteAccess(Scif.Base) {
+	if writable && !util.HasWriteAccess(filepath.Dir(Scif.Base)) {
 		logger.Exitf("No write access to %s", Scif.Base)
 	}
 
@@ -104,6 +104,9 @@ func (client ScifClient) installApps(apps []string) {
 		// install the individual app (create folders)
 		lookup := client.installApp(app)
 
+		// Activate the app Environment
+		client.activate(app)
+
 		// Handle environment, runscript, labels
 		client.installRunscript(app, lookup)
 		client.installEnvironment(app, lookup)
@@ -113,8 +116,8 @@ func (client ScifClient) installApps(apps []string) {
 		client.installRecipe(app, lookup)
 		client.installTest(app, lookup)
 
-		// After we install, in case interactive, deactivate last app
-		//TODO client.deactivate(app)
+		// After we install deactivate last app
+		client.deactivate()
 
 	}
 
@@ -220,7 +223,7 @@ func (client ScifClient) installLabels(name string, lookup map[string]string) {
 // install commands will finally issue commands to install the app
 func (client ScifClient) installCommands(name string, lookup map[string]string) {
 
-	if len(lookup["appinstall"]) > 0 {
+	if len(Scif.config[name].install) > 0 {
 
 		logger.Debugf("+ appinstall %s", name)
 
@@ -235,8 +238,10 @@ func (client ScifClient) installCommands(name string, lookup map[string]string) 
 			logger.Exitf("%s", err)
 		}
 
+		command := strings.Join(Scif.config[name].install, "\n")
+
 		// Issue lines to the system (not yet tested)
-		_, err = exec.Command("sh", "-c", lookup["appinstall"]).Output()
+		_, err = exec.Command("sh", "-c", command).Output()
 		if err != nil {
 			logger.Exitf("%s", err)
 		}
