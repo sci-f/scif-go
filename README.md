@@ -3,7 +3,7 @@
 This is the GoLang implementation of the Scientific Filesystem, and the first full GoLang package
 that I'm developing. 
 
-**under development**
+[![CircleCI](https://circleci.com/gh/sci-f/scif-go.svg?style=svg)](https://circleci.com/gh/sci-f/scif-go)
 
 ## Development
 
