@@ -54,7 +54,8 @@ var ExecuteCmd = &cobra.Command{
 		args = args[1:]
 
 		// appname string, cmd []string
-		err := client.Execute(appname, executable, args); if err != nil {
+		err := client.Execute(appname, executable, args)
+		if err != nil {
 			logger.Exitf("%v", err)
 		}
 	},

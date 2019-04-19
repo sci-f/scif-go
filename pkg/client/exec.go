@@ -32,6 +32,7 @@ func Execute(name string, executable string, cmd []string) (err error) {
 
 	// Ensure that the app exists on the filesystem
 	if ok := util.Contains(name, cli.apps()); !ok {
+		logger.Warningf("%s is not an installed app.", name)
 		return err
 	}
 
@@ -39,7 +40,7 @@ func Execute(name string, executable string, cmd []string) (err error) {
 	cli.activate(name)
 
 	// Full path and existence checked by client.execute
-	entrypoint := []string {executable}
+	entrypoint := []string{executable}
 	Scif.EntryPoint = entrypoint
 
 	// Add additional args to the entrypoint
@@ -85,6 +86,8 @@ func (client ScifClient) execute(name string, cmd []string) (err error) {
 
 	// Commands (and args) are the remaining of the EntryPoint
 	commands := Scif.EntryPoint[1:]
+	commands = util.ParseEntrypointList(commands)
+
 	logger.Infof("Executing %s:%s %v", name, executable, commands)
 
 	// Execute the command

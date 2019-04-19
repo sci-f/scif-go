@@ -16,22 +16,48 @@
 package client
 
 import (
+	"fmt"
 	"os"
+	"strings"
+
 	"github.com/sci-f/scif-go/internal/pkg/logger"
 )
+
+// Apps instantiates the client and prints the apps installed.
+func Apps(longlist bool) (err error) {
+
+	// Running an app means we load from the filesystem first
+	cli := ScifClient{}.Load(Scif.Base)
+	apps := cli.apps()
+
+	// Print the apps for the user
+	for _, app := range apps {
+
+		if longlist {
+			lookup := cli.getAppenvLookup(app)
+			fmt.Printf("%s: %s\n", app, lookup["approot"])
+		} else {
+			fmt.Printf("%s\n", app)
+		}
+	}
+	return err
+}
 
 // Return a list of apps installed
 func (client ScifClient) apps() []string {
 
-	apps := make([]string, 0, len(Scif.config))
+	var apps []string
 	for app := range Scif.config {
-		apps = append(apps, app)
+		app = strings.Trim(app, " ")
+		if app != "" {
+			apps = append(apps, app)
+		}
 	}
 	return apps
 }
 
 // activate will deactivate all apps, activate the one specified as name.
-// We update the Scif.Environment to be relevant to the app, if one is 
+// We update the Scif.Environment to be relevant to the app, if one is
 // defined.
 func (client ScifClient) activate(name string) {
 
@@ -54,14 +80,14 @@ func (client ScifClient) activate(name string) {
 
 	// Set the entrypoint, if the file exists. If the user provides arguments
 	// to run, these will be added by Run or Exec, etc.
-	
+
 	// If it doesn't exist, /bin/bash is the default
-	if _, err := os.Stat(lookup["apprun"]); os.IsNotExist(err) {		
+	if _, err := os.Stat(lookup["apprun"]); os.IsNotExist(err) {
 
 		logger.Debugf("No entrypoint runscript found, defaulting to %s", Scif.ShellCmd)
 		Scif.EntryPoint = append(Scif.EntryPoint, Scif.ShellCmd)
 
-	// Otherwise, set it to be the script
+		// Otherwise, set it to be the script
 	} else {
 		Scif.EntryPoint = append(Scif.EntryPoint, Scif.ShellCmd, lookup["apprun"])
 	}
@@ -69,7 +95,7 @@ func (client ScifClient) activate(name string) {
 	logger.Debugf("EntryPoint is %v", Scif.EntryPoint)
 
 	// Load environment variables from the app itself (environment.sh)
-        client.loadAppEnv(name)
+	client.loadAppEnv(name)
 
 	// Set the entryfolder to the app root if it's not defined by the user
 	if Scif.EntryFolder == "" {
@@ -97,5 +123,3 @@ func (client ScifClient) deactivate() {
 	// export the changes
 	client.exportEnv()
 }
-
-

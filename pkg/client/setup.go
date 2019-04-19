@@ -17,8 +17,8 @@ package client
 
 import (
 	"os"
-	"strings"
 	"path/filepath"
+	"strings"
 
 	"github.com/sci-f/scif-go/internal/pkg/logger"
 	"github.com/sci-f/scif-go/pkg/util"
@@ -239,20 +239,21 @@ func (client ScifClient) loadFilesystem(path string) error {
 
 	// Loop through the apps, and read in recipes
 	for _, app := range apps {
-		recipeFile := filepath.Join(Scif.Apps, app, "scif", app + ".scif")
+		recipeFile := filepath.Join(Scif.Apps, app, "scif", app+".scif")
 		if _, err := os.Stat(recipeFile); err != nil {
-			return err		
+			return err
 		}
 		logger.Debugf("Found recipe %v", recipeFile)
 
 		// Load the Recipe
-		err := client.loadRecipe(recipeFile); if err != nil {
+		err := client.loadRecipe(recipeFile)
+		if err != nil {
 			return err
 		}
 
 	}
 
-	logger.Infof("Found %d apps", len(client.apps()))
+	logger.Debugf("Found %d apps", len(client.apps()))
 	logger.Debugf("%v", client.apps())
 
 	return nil

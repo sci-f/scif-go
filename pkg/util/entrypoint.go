@@ -16,8 +16,10 @@
 package util
 
 import (
-	"github.com/google/shlex"
+	"os"
 	"strings"
+
+	"github.com/google/shlex"
 )
 
 // ParseEntrypoint will handle special characters in the entrypoint command
@@ -38,4 +40,21 @@ func ParseEntrypoint(entrypoint string) []string {
 
 	entrylist, _ := shlex.Split(entrypoint)
 	return entrylist
+}
+
+// ParseEntrypoint is a second version intended for a list
+func ParseEntrypointList(entrypoint []string) []string {
+
+	var newEntrypoint []string
+
+	for _, item := range entrypoint {
+		item = strings.Replace(item, "[e]", "$", -1)
+		item = strings.Replace(item, "[out]", ">", -1)
+		item = strings.Replace(item, "[in]", "<", -1)
+		item = strings.Replace(item, "[pipe]", "|", -1)
+		item = strings.Replace(item, "[append]", "|", -1)
+		item = os.ExpandEnv(item)
+		newEntrypoint = append(newEntrypoint, item)
+	}
+	return newEntrypoint
 }

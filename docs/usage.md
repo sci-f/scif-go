@@ -25,6 +25,12 @@ can interact with it like:
 $ bin/scif --help
 ```
 
+To move it to a system location, you can do that like:
+
+```bash
+$ sudo mv bin/scif /usr/local/bin
+```
+
 ## Install a Recipe
 
 Export the base to somewhere like /tmp/scif so you don't need to use sudo to write (the default is /scif).
@@ -111,6 +117,75 @@ be added to the path when the app is run, and anything in "lib" will be added to
 Apps that had an `apptest` section have a test.sh file, and apps with an entrypoint have a
 runscript. These files are in a metadata folder that is also called "scif." The data folder
 also has a folder for each app installed.
+
+## Discover Apps
+
+Typically, you won't know what apps exist in a scientific filesystem. Just ask it.
+
+```bash
+$ bin/scif apps
+hello-world-env
+hello-world-script
+hello-custom
+hello-world-echo
+```
+
+## Run an App
+
+To run an application, for example "hello-world-echo" just do this:
+
+```bash
+$ bin/scif run hello-world-echo
+Key SCIF_BASE found as /tmp/scif
+INFO:    Executing hello-world-echo:/bin/bash [/tmp/scif/apps/hello-world-echo/scif/runscript]
+The best app is hello-world-echo
+```
+
+## Exec a Command
+
+You can also execute a command, and it will be run in the context of an
+activated app. For example, in the app 'hello-world-env' we have
+an environment variable, "OMG" exported as "TACOS." So let's try echoing that.
+The Scientific Filesystem uses `[e]` to represent an environment variable, since
+`$` would not be passed from the host shell.
+
+```bash
+$ bin/scif exec hello-world-env echo [e]OMG
+INFO:    Executing hello-world-env:/bin/echo [TACOS]
+TACOS
+```
+
+## Shell
+
+When you use shell, if you have no app defined, you can shell into 
+your scientific filesystem (with the SCIF_ namespace activated, but no
+particular app active):
+
+```bash
+$ bin/scif shell
+```
+Notice how the shell changes, and we have a SCIF_ namespace:
+
+```bash
+/tmp/scif$ env | grep SCIF_APPRUN
+SCIF_APPRUN_hello-world-echo=/tmp/scif/apps/hello-world-echo/scif/runscript
+SCIF_APPRUN_hello-world-script=/tmp/scif/apps/hello-world-script/scif/runscript
+SCIF_APPRUN_hello-custom=/tmp/scif/apps/hello-custom/scif/runscript
+SCIF_APPRUN_hello-world-env=/tmp/scif/apps/hello-world-env/scif/runscript
+```
+
+Alternatively, you can choose to shell in under the context of a particular
+application. Here is `hello-world-env`, and we can test by looking for the
+environment variable $OMG:
+
+```bash
+$ bin/scif shell hello-world-env
+/tmp/scif/apps/hello-world-env$ echo $OMG
+TACOS
+```
+```
+exit
+```
 
 For details on writing recipes, the environment, and other information about the
 Scientific Fileystem see [sci-f.github.io](https://sci-f.github.io).

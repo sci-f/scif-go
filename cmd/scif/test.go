@@ -23,21 +23,21 @@ import (
 )
 
 func init() {
-	RunCmd.Flags().SetInterspersed(false)
-	ScifCmd.AddCommand(RunCmd)
+	TestCmd.Flags().SetInterspersed(false)
+	ScifCmd.AddCommand(TestCmd)
 }
 
 // RunCmd: scif run <appname>
-var RunCmd = &cobra.Command{
+var TestCmd = &cobra.Command{
 	DisableFlagsInUseLine: true,
 	Args:                  cobra.ArbitraryArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 
-		logger.Debugf("Run called with args %v", args)
+		logger.Debugf("Test called with args %v", args)
 
-		// If no args, exit with warning "You must supply an appname to run"
+		// If no args, exit with warning "You must supply an appname to test"
 		if len(args) == 0 {
-			logger.Exitf("You must supply an appname to run")
+			logger.Exitf("You must supply an appname to test")
 		}
 
 		// Remove the first appname from args (pop)
@@ -45,14 +45,14 @@ var RunCmd = &cobra.Command{
 		args = args[1:]
 
 		// appname string, cmd []string
-		err := client.Run(appname, args)
+		err := client.Test(appname, args)
 		if err != nil {
 			logger.Exitf("%v", err)
 		}
 	},
 
-	Use:     docs.RunUse,
-	Short:   docs.RunShort,
-	Long:    docs.RunLong,
-	Example: docs.RunExample,
+	Use:     docs.TestUse,
+	Short:   docs.TestShort,
+	Long:    docs.TestLong,
+	Example: docs.TestExample,
 }

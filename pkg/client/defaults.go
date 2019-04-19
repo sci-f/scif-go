@@ -16,7 +16,6 @@
 package client
 
 import (
-	"fmt"
 	"os"
 	"strings"
 )
@@ -27,7 +26,6 @@ func getenv(key string, fallback string) string {
 	if len(value) == 0 {
 		return fallback
 	}
-	fmt.Printf("Key %s found as %s\n", key, value)
 	return value
 }
 
@@ -53,11 +51,6 @@ func getBoolEnv(key string, fallback bool) bool {
 	return false
 }
 
-//scifAllowAppend :=
-// TODO: need to add SCIF_APPS getenv_namespace(namespace="SCIF_APP")
-// TODO: getStringDefault will return empty string (not nil) if not found
-// scifDefaults are grabbed from the environment, e.g., SCIF_BASE
-
 // getStringDefault returns the default for a string, or empty string
 // if you need to add a new default from the environment, define it here
 // and add it to client.go under ScifRecipe and NewScifRecipe (the init)
@@ -78,7 +71,6 @@ func getStringDefault(key string) string {
 	return ""
 }
 
-// TODO: need to lookup how to correctly pass error if not there.
 // getBoolDefault returns the default for a bool, or false
 func getBoolDefault(key string) bool {
 

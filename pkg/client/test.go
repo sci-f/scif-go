@@ -18,11 +18,12 @@ package client
 import (
 	"github.com/sci-f/scif-go/internal/pkg/logger"
 	"github.com/sci-f/scif-go/pkg/util"
+	"os"
 )
 
 // Run an app for a scientific filesystem. If a user chooses
 // This option, we know we are loading a Filesystem first.
-func Run(name string, cmd []string) (err error) {
+func Test(name string, cmd []string) (err error) {
 
 	// Running an app means we load from the filesystem first
 	cli := ScifClient{}.Load(Scif.Base)
@@ -36,9 +37,22 @@ func Run(name string, cmd []string) (err error) {
 	// Activate the app, meaning we set the environment and Scif.activeApp
 	cli.activate(name)
 
+	// Get a lookup for the folders (not created)
+	lookup := cli.getAppenvLookup(name)
+
+	// Set the entrypoint to be the test script, if it exists
+	if _, err := os.Stat(lookup["apptest"]); os.IsNotExist(err) {
+		logger.Warningf("No tests defined for %s", name)
+		os.Exit(0)
+
+		// Otherwise, the apptest is our entrypoint
+	} else {
+		Scif.EntryPoint = nil
+		Scif.EntryPoint = append(Scif.EntryPoint, Scif.ShellCmd, lookup["apptest"])
+	}
+
 	// Add additional args to the entrypoint
-	logger.Debugf("Running app %s", name)
+	logger.Debugf("Testing app %s", name)
 
 	return cli.execute(name, cmd)
-
 }

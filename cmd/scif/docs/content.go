@@ -89,9 +89,9 @@ const (
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// inspect
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	InspecttUse  string = `inspect [-h] [attributes [attributes ...]]`
+	InspectUse   string = `inspect [-h] [attributes [attributes ...]]`
 	InspectShort string = `inspect attributes for a scif application`
-	InpectLong   string = `
+	InspectLong  string = `
         positional arguments:
           attributes  attribute to inspect (runscript|r), (environment|e), (labels|l),
                       or (all|a) (default)
@@ -133,6 +133,18 @@ const (
 
         $ scif test
         $ scif test <app>`
+
+	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	// help
+	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	HelpUse   string = `help [-h] [cmd [cmd ...]]`
+	HelpShort string = `Print help for a Scientific Filesystem application, if defined.`
+	HelpLong  string = `
+        optional arguments:
+          -h, --help  show this help message and exit`
+	HelpExample string = `
+
+        $ scif help <app>`
 
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// apps

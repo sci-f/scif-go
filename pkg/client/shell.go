@@ -36,13 +36,14 @@ func Shell(args []string) (err error) {
 
 		// Ensure that the app exists on the filesystem
 		if ok := util.Contains(name, cli.apps()); !ok {
+			logger.Warningf("%s is not an installed application.", name)
 			return err
 		}
 
 		// Activate it's environment
 		cli.activate(name)
 
-	// Otherwise, reset
+		// Otherwise, reset
 	} else {
 		cli.deactivate()
 	}
@@ -53,7 +54,6 @@ func Shell(args []string) (err error) {
 // shell is the helper function to Shell, finishing up and executing the command
 // to start the shell.
 func (client ScifClient) shell() (err error) {
-
 
 	// If EntryFolder still not set, just enter to base
 	if Scif.EntryFolder == "" {
@@ -71,7 +71,7 @@ func (client ScifClient) shell() (err error) {
 		return err
 	}
 
-
+	// Start the Shell
 	process := exec.Command(executable, []string{}...)
 	process.Stdin = os.Stdin
 	process.Stdout = os.Stdout

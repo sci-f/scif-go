@@ -13,32 +13,38 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-package client
+package main
 
 import (
+	"github.com/sci-f/scif-go/cmd/scif/docs"
 	"github.com/sci-f/scif-go/internal/pkg/logger"
-	"github.com/sci-f/scif-go/pkg/util"
+	"github.com/sci-f/scif-go/pkg/client"
+	"github.com/spf13/cobra"
 )
 
-// Run an app for a scientific filesystem. If a user chooses
-// This option, we know we are loading a Filesystem first.
-func Run(name string, cmd []string) (err error) {
+var longlist bool
 
-	// Running an app means we load from the filesystem first
-	cli := ScifClient{}.Load(Scif.Base)
+func init() {
+	AppsCmd.Flags().SetInterspersed(false)
+	AppsCmd.Flags().BoolVarP(&longlist, "longlist", "l", false, "print app bases (longlist)")
+	ScifCmd.AddCommand(AppsCmd)
+}
 
-	// Ensure that the app exists on the filesystem
-	if ok := util.Contains(name, cli.apps()); !ok {
-		logger.Warningf("%s is not an installed app.", name)
-		return err
-	}
+// HelpCmd: scif help <appname>
+var AppsCmd = &cobra.Command{
+	DisableFlagsInUseLine: true,
+	Args:                  cobra.ArbitraryArgs,
+	Run: func(cmd *cobra.Command, args []string) {
 
-	// Activate the app, meaning we set the environment and Scif.activeApp
-	cli.activate(name)
+		// appname is optional, so likely args could be empty
+		err := client.Apps(longlist)
+		if err != nil {
+			logger.Exitf("%v", err)
+		}
+	},
 
-	// Add additional args to the entrypoint
-	logger.Debugf("Running app %s", name)
-
-	return cli.execute(name, cmd)
-
+	Use:     docs.AppsUse,
+	Short:   docs.AppsShort,
+	Long:    docs.AppsLong,
+	Example: docs.AppsExample,
 }

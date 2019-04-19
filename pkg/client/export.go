@@ -26,16 +26,21 @@ import (
 func (client ScifClient) PrintConfig() {
 
 	for name, settings := range Scif.config {
-
-		printDefined("%apprun", name, settings.runscript)
-		printDefined("%appinstall", name, settings.install)
-		printDefined("%appenv", name, settings.environ)
-		printDefined("%applabels", name, settings.labels)
-		printDefined("%appfiles", name, settings.files)
-		printDefined("%apphelp", name, settings.help)
-		printDefined("%apptest", name, settings.test)
+		client.printAppConfig(name, settings)
 	}
 
+}
+
+// PrintAppConfig will print the configuration for a single app
+func (client ScifClient) printAppConfig(name string, settings AppSettings) {
+
+	printDefined("%apprun", name, settings.runscript)
+	printDefined("%appinstall", name, settings.install)
+	printDefined("%appenv", name, settings.environ)
+	printDefined("%applabels", name, settings.labels)
+	printDefined("%appfiles", name, settings.files)
+	printDefined("%apphelp", name, settings.help)
+	printDefined("%apptest", name, settings.test)
 }
 
 // printIfDefined will print a section if it is non empty

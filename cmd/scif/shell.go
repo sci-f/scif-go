@@ -36,7 +36,8 @@ var ShellCmd = &cobra.Command{
 		logger.Debugf("Shell called with args %v", args)
 
 		// appname is optional, so likely args could be empty
-		err := client.Shell(args); if err != nil {
+		err := client.Shell(args)
+		if err != nil {
 			logger.Exitf("%v", err)
 		}
 	},

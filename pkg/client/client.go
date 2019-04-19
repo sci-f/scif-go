@@ -32,15 +32,15 @@ import (
 // defaults.go: used below to load defaults for client
 
 type ScifClient struct {
-	Base        string            // /scif is the overall base
-	Data        string            // <Base>/data is the data base
-	Apps        string            // <Base>/apps is the apps base
-	ShellCmd    string            // default shell
+	Base     string // /scif is the overall base
+	Data     string // <Base>/data is the data base
+	Apps     string // <Base>/apps is the apps base
+	ShellCmd string // default shell
 
-	EntryPoint  []string          // active entrypoint to an app (parsed to list)
-	EntryFolder string            // active entryfolder
-	defaultEntryPoint []string    // default entrypoint to an app (parsed to list)
-	defaultEntryFolder string     // default entryfolder
+	EntryPoint         []string // active entrypoint to an app (parsed to list)
+	EntryFolder        string   // active entryfolder
+	defaultEntryPoint  []string // default entrypoint to an app (parsed to list)
+	defaultEntryFolder string   // default entryfolder
 
 	Environment map[string]string // key value pairs of current environment
 	allowAppend bool              // allow appending to path
@@ -99,41 +99,20 @@ func NewScifClient() *ScifClient {
 
 	// Instantiate the client
 	client := &ScifClient{Base: base,
-		Data:        data,
-		Apps:        apps,
-		ShellCmd:    shell,
-		EntryPoint:  entrylist,
-		EntryFolder: entryfolder,
+		Data:               data,
+		Apps:               apps,
+		ShellCmd:           shell,
+		EntryPoint:         entrylist,
+		EntryFolder:        entryfolder,
 		defaultEntryPoint:  entrylist,
 		defaultEntryFolder: entryfolder,
-		allowAppend: allowAppend,
-		appendPaths: scifAppendPaths,
-		scifApps:    scifApps}
+		allowAppend:        allowAppend,
+		appendPaths:        scifAppendPaths,
+		scifApps:           scifApps}
 
 	// Additional setup could be run here
-
 	return client
 }
 
 // provide client to user as "Scif"
 var Scif ScifClient = *NewScifClient()
-
-// Apps
-//ScifRecipe.get_appenv_lookup = get_appenv_lookup
-//ScifRecipe.get_appenv = get_appenv
-//ScifRecipe.app = app
-//ScifRecipe.activate = activate
-//ScifRecipe.deactivate = deactivate
-//ScifRecipe.inspect = inspect
-//ScifRecipe.reset = reset
-
-
-// Shell will shell into a scientific filesystem
-func (cli ScifClient) Shell() {
-	fmt.Println("Shell() here")
-}
-
-// Test a scientific filesystem
-func (cli ScifClient) Test() {
-	fmt.Println("Test() here")
-}

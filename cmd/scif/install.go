@@ -46,7 +46,8 @@ var InstallCmd = &cobra.Command{
 		logger.Debugf("Apps: %v\n", args)
 
 		// recipe string, apps []string, and writable (bool)
-		err := client.Install(recipe, args, !readonly); if err != nil {
+		err := client.Install(recipe, args, !readonly)
+		if err != nil {
 			logger.Exitf("%v", err)
 		}
 	},

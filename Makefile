@@ -43,8 +43,8 @@ get:
   @GOPATH=$(GOPATH) GOBIN=$(GOBIN) go get .
 
 install:
-  #@GOPATH=$(GOPATH) GOBIN=$(GOBIN) go install $(GOFILES)
-	@GOPATH=$(GOPATH) GOBIN=$(GOBIN) @go install $(LDFLAGS)
+	@echo "Installing to: $(GOBIN)"
+	@GOPATH=$(GOPATH) GOBIN=$(GOBIN) go install $(LDFLAGS) ./cmd/scif
 
 uninstall: clean
 	@rm -f $$(which ${TARGET})

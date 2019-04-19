@@ -23,9 +23,9 @@ import (
 	"text/template"
 
 	"github.com/sci-f/scif-go/cmd/scif/docs"
+	"github.com/sci-f/scif-go/internal/pkg/logger"
 	"github.com/sci-f/scif-go/pkg/version" // version
 	"github.com/spf13/cobra"
-	"github.com/sci-f/scif-go/internal/pkg/logger"
 )
 
 // Global variables

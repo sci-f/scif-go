@@ -157,7 +157,6 @@ func (client ScifClient) updatePathsFunc(key string, value string) {
 	Scif.Environment[key] = value
 }
 
-
 // exportEnv will export all variables in Scif.Environment, and add the PS1
 // variable by default.
 func (client ScifClient) exportEnv() {
@@ -189,7 +188,7 @@ func (client ScifClient) loadAppEnv(name string) {
 
 	lines := util.ReadLines(lookup["appenv"])
 	var parts []string
- 	
+
 	// Parse through the lines, add them to Scif.Environment
 	for _, line := range lines {
 		line := strings.Trim(line, " ")

@@ -18,8 +18,8 @@ package util
 import (
 	"bufio"
 	"encoding/json"
-	"io/ioutil"
 	"io"
+	"io/ioutil"
 	"os"
 	"strings"
 
@@ -38,7 +38,7 @@ func ListDirFolders(path string) []string {
 	var dirs []string
 
 	// Add the name to the list if it's a directory
-    	for _, f := range files {
+	for _, f := range files {
 		if f.IsDir() {
 			dirs = append(dirs, f.Name())
 		}
@@ -76,7 +76,6 @@ func ReadLines(path string) []string {
 	if err != nil {
 		logger.Exitf("%v", err)
 	}
-
 
 	// Read each line with a reader into list of lines
 	var line string

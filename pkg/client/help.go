@@ -16,29 +16,37 @@
 package client
 
 import (
+	"os"
+
 	"github.com/sci-f/scif-go/internal/pkg/logger"
 	"github.com/sci-f/scif-go/pkg/util"
 )
 
-// Run an app for a scientific filesystem. If a user chooses
-// This option, we know we are loading a Filesystem first.
-func Run(name string, cmd []string) (err error) {
+// Help will print the help for an application, if it exists
+func Help(args []string) (err error) {
 
 	// Running an app means we load from the filesystem first
 	cli := ScifClient{}.Load(Scif.Base)
 
-	// Ensure that the app exists on the filesystem
-	if ok := util.Contains(name, cli.apps()); !ok {
-		logger.Warningf("%s is not an installed app.", name)
-		return err
+	if len(args) == 0 {
+		logger.Exitf("Please specify an application to see help for.")
 	}
 
-	// Activate the app, meaning we set the environment and Scif.activeApp
-	cli.activate(name)
+	name := args[0]
 
-	// Add additional args to the entrypoint
-	logger.Debugf("Running app %s", name)
+	// Ensure that the app exists on the filesystem
+	if ok := util.Contains(name, cli.apps()); !ok {
+		logger.Exitf("%v is not an installed application.", name)
+	} else {
 
-	return cli.execute(name, cmd)
+		// Get settings, look for help script
+		lookup := cli.getAppenvLookup(name)
 
+		if _, err := os.Stat(lookup["apphelp"]); os.IsNotExist(err) {
+			logger.Infof("No help exists for %s", name)
+		} else {
+			printDefined("%apphelp", name, Scif.config[name].help)
+		}
+	}
+	return err
 }
