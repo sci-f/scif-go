@@ -281,13 +281,13 @@ func (client ScifClient) finishLoad() {
 			// If test is defined, add source to first line
 			if len(Scif.config[app].test) > 0 {
 				apptest = Scif.config[app].test
-				settings.test = append(apptest, appenv...)
+				settings.test = append(appenv, apptest...)
 			}
 
 			// If runscript is defined, add source to first line
 			if len(Scif.config[app].runscript) > 0 {
 				apprun = Scif.config[app].runscript
-				settings.runscript = append(apprun, appenv...)
+				settings.runscript = append(appenv, apprun...)
 			}
 
 			Scif.config[app] = settings

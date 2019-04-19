@@ -62,8 +62,7 @@ func WriteFile(lines []string, path string) error {
 	for _, line := range lines {
 
 		// Write each line (newlines already included)
-		writer.WriteString(line)
-		//writer.WrieByte('\n')
+		writer.WriteString(line + "\n")
 	}
 	return writer.Flush()
 }
