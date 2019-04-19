@@ -10,7 +10,7 @@ workflows:
     jobs:
       - docker-publish/publish:
           image: vanessa/scif-go
-	  dockerfile: docker/Dockerfile
+          dockerfile: docker/Dockerfile
           deploy: false
           tag: latest
           filters:
@@ -27,7 +27,7 @@ workflows:
 
       - docker-publish/publish:
           image: vanessa/scif-go
-	  dockerfile: docker/Dockerfile.hello-world
+          dockerfile: docker/Dockerfile.hello-world
           deploy: false
           tag: hello-world
           filters:
@@ -47,7 +47,7 @@ workflows:
     jobs:
       - docker-publish/publish:
           image: vanessa/scif-go
-	  dockerfile: docker/Dockerfile
+          dockerfile: docker/Dockerfile
           tag: latest
           filters:
             branches:
@@ -62,7 +62,7 @@ workflows:
 
       - docker-publish/publish:
           image: vanessa/scif-go
-	  dockerfile: docker/Dockerfile.hello-world
+          dockerfile: docker/Dockerfile.hello-world
           tag: hello-world
           filters:
             branches:
