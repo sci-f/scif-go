@@ -44,8 +44,6 @@ func Run(name string, cmd []string) (err error) {
 	// Add additional args to the entrypoint
 	logger.Debugf("Running app %s", name)
 
-	err = cli.execute(name)
-	logger.Infof("AFTER execute")
-	return err
+	return cli.execute(name)
 
 }

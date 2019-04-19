@@ -48,8 +48,6 @@ var RunCmd = &cobra.Command{
 		err := client.Run(appname, args); if err != nil {
 			logger.Exitf("%v", err)
 		}
-
-		logger.Exitf("We should never get here! %v", err)
 	},
 
 	Use:     docs.RunUse,

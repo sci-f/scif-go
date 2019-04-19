@@ -18,7 +18,6 @@ package client
 import (
 	"os"
 	"os/exec"
-	"syscall"
 
 	"github.com/sci-f/scif-go/internal/pkg/logger"
 	"github.com/sci-f/scif-go/pkg/util"
@@ -27,7 +26,8 @@ import (
 func Execute(name string, cmd []string) (err error) {
 
 	// Running an app means we load from the filesystem first
-	//cli := ScifClient{}.Load(Scif.Base)
+	cli := ScifClient{}.Load(Scif.Base)
+	cli.execute(name)
 	return nil
 }
 
@@ -65,6 +65,11 @@ func (client ScifClient) execute(name string) (err error) {
 	logger.Infof("Executing %s:%s %v", name, executable, commands)
 
 	// Execute the command
-	return syscall.Exec(executable, commands, os.Environ())
+	process := exec.Command(executable, commands...)
+	process.Stdin = os.Stdin
+	process.Stdout = os.Stdout
+	process.Stderr = os.Stderr
+	err = process.Run()
+	return err
 
 }
