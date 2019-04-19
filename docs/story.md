@@ -174,6 +174,11 @@ the scientific filesystem.
 
 ![img/fs.png](img/fs.png)
 
+And the first time the thing ran:
+
+![img/first-run.png](img/first-run.png)
+
+
 ### 6. Add Meat
 
 Now it gets easier, because you have a method. You can add something,

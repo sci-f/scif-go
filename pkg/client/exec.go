@@ -23,22 +23,45 @@ import (
 	"github.com/sci-f/scif-go/pkg/util"
 )
 
-func Execute(name string, cmd []string) (err error) {
+// Execute some commands to an executable. We first set the EntryPoint to be
+// the executable, and the additional arguments are added by client.execute
+func Execute(name string, executable string, cmd []string) (err error) {
 
 	// Running an app means we load from the filesystem first
 	cli := ScifClient{}.Load(Scif.Base)
-	cli.execute(name)
-	return nil
+
+	// Ensure that the app exists on the filesystem
+	if ok := util.Contains(name, cli.apps()); !ok {
+		return err
+	}
+
+	// Activate the app, meaning we set the environment and Scif.activeApp
+	cli.activate(name)
+
+	// Full path and existence checked by client.execute
+	entrypoint := []string {executable}
+	Scif.EntryPoint = entrypoint
+
+	// Add additional args to the entrypoint
+	logger.Debugf("Running app %s", name)
+
+	return cli.execute(name, cmd)
 }
 
 // setup execute is the (private) function called by run, and client.Execute to
-// execute the current EntryPoint for a particular app. The command is already
-// set in Scif.EntryPoint and the environment ready to go.
-func (client ScifClient) execute(name string) (err error) {
+// execute the current EntryPoint for a particular app. If extra commands
+// are provided, they are added. The environment is ready to go.
+func (client ScifClient) execute(name string, cmd []string) (err error) {
 
 	// Ensure that the app exists on the filesystem
 	if ok := util.Contains(name, client.apps()); !ok {
 		logger.Exitf("%s does not exist.", name)
+	}
+
+	// if args are provided, add on to Scif.EntryPoint
+	if len(cmd) > 0 {
+		Scif.EntryPoint = append(Scif.EntryPoint, cmd...)
+		logger.Debugf("Args added to EntryPoint, %v", Scif.EntryPoint)
 	}
 
 	// Add additional args to the entrypoint

@@ -35,15 +35,9 @@ func Run(name string, cmd []string) (err error) {
 	// Activate the app, meaning we set the environment and Scif.activeApp
 	cli.activate(name)
 
-	// if args are provided, add on to Scif.EntryPoint
-	if len(cmd) > 0 {
-		Scif.EntryPoint = append(Scif.EntryPoint, cmd...)
-		logger.Debugf("Args added to EntryPoint, %v", Scif.EntryPoint)
-	}
-
 	// Add additional args to the entrypoint
 	logger.Debugf("Running app %s", name)
 
-	return cli.execute(name)
+	return cli.execute(name, cmd)
 
 }

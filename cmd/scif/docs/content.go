@@ -163,7 +163,7 @@ const (
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// exec
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	ExecUse   string = `scif exec [-h] [cmd [cmd ...]]`
+	ExecUse   string = `exec [-h] [cmd [cmd ...]]`
 	ExecShort string = `execute a command to a Scientific Filesystem`
 	ExecLong  string = `
         positional arguments:

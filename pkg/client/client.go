@@ -20,7 +20,6 @@ import (
 	"os"
 	"path"
 
-	"github.com/sci-f/scif-go/internal/pkg/logger"
 	"github.com/sci-f/scif-go/pkg/util"
 )
 
@@ -128,16 +127,6 @@ var Scif ScifClient = *NewScifClient()
 //ScifRecipe.inspect = inspect
 //ScifRecipe.reset = reset
 
-// Execute will execute a command to a scientific filesystem
-func (client ScifClient) Execute() {
-	logger.Debugf("Execute() here")
-	//ScifRecipe._exec = _exec
-}
-
-// Run will run a scientific application runscript
-func (cli ScifClient) Run() {
-	fmt.Println("Run() here")
-}
 
 // Shell will shell into a scientific filesystem
 func (cli ScifClient) Shell() {

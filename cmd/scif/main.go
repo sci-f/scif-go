@@ -19,16 +19,12 @@ import (
 	"errors"
 	"fmt"
 	"os"
-	//"os/user"
-	//"path"
 	"strings"
 	"text/template"
 
 	"github.com/sci-f/scif-go/cmd/scif/docs"
 	"github.com/sci-f/scif-go/pkg/version" // version
 	"github.com/spf13/cobra"
-	//"github.com/spf13/pflag"
-	// each import here should be from /internal/pkg/<folder>
 	"github.com/sci-f/scif-go/internal/pkg/logger"
 )
 
