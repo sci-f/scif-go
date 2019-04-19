@@ -18,6 +18,7 @@ package client
 import (
 	"os"
 	"strings"
+	"path/filepath"
 
 	"github.com/sci-f/scif-go/internal/pkg/logger"
 	"github.com/sci-f/scif-go/pkg/util"
@@ -222,36 +223,38 @@ func readSection(lines []string, section string, name string) []string {
 
 // loadFilesystem is called if the path provided is a Scif base (directory)
 func (client ScifClient) loadFilesystem(path string) error {
-	logger.Debugf("path %s", path)
-	// TODO this should load the filesystem as self.config
-	//             self._config = load_recipe(path)
-	//def load_filesystem(base, quiet=False):
-	//    '''load a filesystem based on a root path, which is usually /scif
 
-	//        Parameters
-	//        ==========
-	//        base: base to load.
+	logger.Debugf("scientific filesystem base %s", path)
+	logger.Debugf("scientific filesystem apps %s", Scif.Apps)
 
-	//        Returns
-	//        =======
-	//        config: a parsed recipe configuration for SCIF
-	//    '''
-	//    from scif.defaults import SCIF_APPS
+	// We've already checked that the base exists, now check for apps
+	if _, err := os.Stat(Scif.Apps); err != nil {
+		return err
+	}
 
-	//    if os.path.exists(SCIF_APPS):
-	//        apps = os.listdir(SCIF_APPS)
-	//        config = {'apps': {}}
-	//        for app in apps:
-	//            path = '%s/%s/scif/%s.scif' %(SCIF_APPS, app, app)
-	//            if os.path.exists(path):
-	//                recipe = load_recipe(path)
-	//                config['apps'][app] = recipe['apps'][app]
+	// The apps installed are listed under apps
+	apps := util.ListDirFolders(Scif.Apps)
 
-	//        if len(config['apps']) > 0:
-	//            if quiet is False:
-	//                bot.info('Found configurations for %s scif apps' %len(config['apps']))
-	//                bot.info('\n'.join(list(config['apps'].keys())))
-	//            return config
+	logger.Debugf("Found apps: %v", apps)
+
+	// Loop through the apps, and read in recipes
+	for _, app := range apps {
+		recipeFile := filepath.Join(Scif.Apps, app, "scif", app + ".scif")
+		if _, err := os.Stat(recipeFile); err != nil {
+			return err		
+		}
+		logger.Debugf("Found recipe %v", recipeFile)
+
+		// Load the Recipe
+		err := client.loadRecipe(recipeFile); if err != nil {
+			return err
+		}
+
+	}
+
+	logger.Infof("Found %d apps", len(client.apps()))
+	logger.Debugf("%v", client.apps())
+
 	return nil
 }
 

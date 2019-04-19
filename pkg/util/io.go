@@ -27,6 +27,25 @@ import (
 	"golang.org/x/sys/unix"
 )
 
+// ListDirFolders returns a list of directories (one level) in a folder
+func ListDirFolders(path string) []string {
+
+	files, err := ioutil.ReadDir(path)
+	if err != nil {
+		logger.Exitf("%v", err)
+	}
+
+	var dirs []string
+
+	// Add the name to the list if it's a directory
+    	for _, f := range files {
+		if f.IsDir() {
+			dirs = append(dirs, f.Name())
+		}
+	}
+	return dirs
+}
+
 // HasWriteAccess checks if the user has write access to a path
 func HasWriteAccess(path string) bool {
 	return unix.Access(path, unix.W_OK) == nil

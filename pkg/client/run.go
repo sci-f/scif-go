@@ -37,7 +37,7 @@ func Run(name string, cmd []string) (err error) {
 
 	// if args are provided, add on to Scif.EntryPoint
 	if len(cmd) > 0 {
-		cmd = append(Scif.EntryPoint, cmd...)
+		Scif.EntryPoint = append(Scif.EntryPoint, cmd...)
 		logger.Debugf("Args added to EntryPoint, %v", Scif.EntryPoint)
 	}
 
@@ -45,5 +45,7 @@ func Run(name string, cmd []string) (err error) {
 	logger.Debugf("Running app %s", name)
 
 	err = cli.execute(name)
+	logger.Infof("AFTER execute")
 	return err
+
 }

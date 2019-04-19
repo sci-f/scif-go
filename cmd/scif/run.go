@@ -16,8 +16,6 @@
 package main
 
 import (
-	"fmt"
-
 	"github.com/sci-f/scif-go/cmd/scif/docs"
 	"github.com/sci-f/scif-go/internal/pkg/logger"
 	"github.com/sci-f/scif-go/pkg/client"
@@ -35,7 +33,7 @@ var RunCmd = &cobra.Command{
 	Args:                  cobra.ArbitraryArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 
-		fmt.Printf("%v", args)
+		logger.Debugf("Run called with args %v", args)
 
 		// If no args, exit with warning "You must supply an appname to run"
 		if len(args) == 0 {
@@ -50,6 +48,8 @@ var RunCmd = &cobra.Command{
 		err := client.Run(appname, args); if err != nil {
 			logger.Exitf("%v", err)
 		}
+
+		logger.Exitf("We should never get here! %v", err)
 	},
 
 	Use:     docs.RunUse,

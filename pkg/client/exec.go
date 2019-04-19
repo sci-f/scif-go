@@ -18,6 +18,7 @@ package client
 import (
 	"os"
 	"os/exec"
+	"syscall"
 
 	"github.com/sci-f/scif-go/internal/pkg/logger"
 	"github.com/sci-f/scif-go/pkg/util"
@@ -30,7 +31,7 @@ func Execute(name string, cmd []string) (err error) {
 	return nil
 }
 
-// execute is the (private) function called by run, and client.Execute to
+// setup execute is the (private) function called by run, and client.Execute to
 // execute the current EntryPoint for a particular app. The command is already
 // set in Scif.EntryPoint and the environment ready to go.
 func (client ScifClient) execute(name string) (err error) {
@@ -42,7 +43,6 @@ func (client ScifClient) execute(name string) (err error) {
 
 	// Add additional args to the entrypoint
 	logger.Debugf("Executing command %v for app %s", Scif.EntryPoint, name)
-	return err
 
 	// If EntryFolder still not set, just enter to base
 	if Scif.EntryFolder == "" {
@@ -59,12 +59,12 @@ func (client ScifClient) execute(name string) (err error) {
 	if err != nil {
 		return err
 	}
-	logger.Infof("Executing %s:%v", name, Scif.EntryPoint)
 
 	// Commands (and args) are the remaining of the EntryPoint
 	commands := Scif.EntryPoint[1:]
+	logger.Infof("Executing %s:%s %v", name, executable, commands)
 
 	// Execute the command
-	_, err = exec.Command(executable, commands...).Output()
-	return err
+	return syscall.Exec(executable, commands, os.Environ())
+
 }

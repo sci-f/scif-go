@@ -49,11 +49,16 @@ func (client ScifClient) activate(name string) {
 	client.updatePathsFunc("PATH", lookup["appbin"])
 	client.updatePathsFunc("LD_LIBRARY_PATH", lookup["applib"])
 
+	// Reset the Entrypoint
+	Scif.EntryPoint = nil
+
 	// Set the entrypoint, if the file exists. If the user provides arguments
 	// to run, these will be added by Run or Exec, etc.
 	
-	// If it doesn't exist, entrypoint is the default
-	if _, err := os.Stat(lookup["apprun"]); os.IsNotExist(err) {
+	// If it doesn't exist, /bin/bash is the default
+	if _, err := os.Stat(lookup["apprun"]); os.IsNotExist(err) {		
+
+		logger.Debugf("No entrypoint runscript found, defaulting to %s", Scif.ShellCmd)
 		Scif.EntryPoint = append(Scif.EntryPoint, Scif.ShellCmd)
 
 	// Otherwise, set it to be the script
