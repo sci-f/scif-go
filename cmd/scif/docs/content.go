@@ -137,7 +137,7 @@ const (
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// apps
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	AppsUse   string = `scif apps [-h] [-l]`
+	AppsUse   string = `apps [-h] [-l]`
 	AppsShort string = `list Scientific Filesystem Applications installed`
 	AppsLong  string = `
         optional arguments:
