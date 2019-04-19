@@ -29,17 +29,21 @@ func Run(name string, cmd []string) (err error) {
 
 	// Ensure that the app exists on the filesystem
 	if ok := util.Contains(name, cli.apps()); !ok {
-		logger.Exitf("%s does not exist.", name)
+		return err
 	}
 
 	// Activate the app, meaning we set the environment and Scif.activeApp
 	cli.activate(name)
 
-	// TODO: if args are provided, add on to Scif.EntryPoint
+	// if args are provided, add on to Scif.EntryPoint
+	if len(cmd) > 0 {
+		cmd = append(Scif.EntryPoint, cmd...)
+		logger.Debugf("Args added to EntryPoint, %v", Scif.EntryPoint)
+	}
 
 	// Add additional args to the entrypoint
 	logger.Debugf("Running app %s", name)
 
-	//cli.Run()...
+	err = cli.execute(name)
 	return err
 }

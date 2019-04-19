@@ -184,7 +184,6 @@ func (client ScifClient) installFiles(name string, lookup map[string]string) {
 				logger.Exitf("%s", err)
 			}
 			cmd = nil
-
 		}
 	}
 }
