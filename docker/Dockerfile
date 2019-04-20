@@ -14,6 +14,7 @@ RUN make deps && \
     cp bin/scif /usr/local/bin
 
 FROM alpine:3.7
+ENV SCIF_SHELL /bin/sh
 LABEL Maintainer vsochat@stanford.edu
 COPY --from=builder /usr/local/bin/scif /usr/local/bin/scif
 

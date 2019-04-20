@@ -15,6 +15,7 @@ RUN make deps && \
 
 FROM alpine:3.7
 LABEL Maintainer vsochat@stanford.edu
+ENV SCIF_SHELL /bin/sh
 COPY --from=builder /usr/local/bin/scif /usr/local/bin/scif
 COPY --from=builder /go/src/github.com/sci-f/scif-go/hello-world.scif /hello-world.scif
 RUN /usr/local/bin/scif install /hello-world.scif
