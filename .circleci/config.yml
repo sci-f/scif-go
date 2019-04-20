@@ -95,6 +95,7 @@ jobs:
             make deps
             echo "Installing additional Windows dependency for testing windows release"
             go get -u github.com/inconshreveable/mousetrap
+            go get -u github.com/mitchellh/gox
       - run:
           name: Build Package
           command: |
