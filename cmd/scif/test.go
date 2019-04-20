@@ -27,7 +27,7 @@ func init() {
 	ScifCmd.AddCommand(TestCmd)
 }
 
-// TestCmd: scif run <appname>
+// TestCmd is the command group for scif test <appname>
 var TestCmd = &cobra.Command{
 	DisableFlagsInUseLine: true,
 	Args:                  cobra.ArbitraryArgs,

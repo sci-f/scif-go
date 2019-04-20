@@ -27,7 +27,7 @@ func init() {
 	ScifCmd.AddCommand(ExecuteCmd)
 }
 
-// ExecCmd is the command group to run scif exec <appname> <commands>
+// ExecuteCmd is the command group to run scif exec <appname> <commands>
 var ExecuteCmd = &cobra.Command{
 	DisableFlagsInUseLine: true,
 	Args:                  cobra.ArbitraryArgs,

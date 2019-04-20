@@ -37,7 +37,7 @@ const (
 	debug                         // debug    : 5
 )
 
-// Labels to describe the levels above
+// messageLabels describe the levels above
 var messageLabels = map[messageLevel]string{
 	fatal: "FATAL",
 	error: "ERROR",
@@ -47,14 +47,16 @@ var messageLabels = map[messageLevel]string{
 	debug: "DEBUG",
 }
 
-// Colors to describe the levels above
+// messageColors describe the levels above (and make them pretty!)
 var messageColors = map[messageLevel]string{
 	fatal: "\x1b[31m",
 	error: "\x1b[31m",
 	warn:  "\x1b[33m",
 	info:  "\x1b[34m",
+	debug: "\x1b[32m",
 }
 
+// String ensures that we can print a messageLevel
 func (l messageLevel) String() string {
 	str, ok := messageLabels[l]
 	if !ok {
@@ -80,7 +82,10 @@ func init() {
 	}
 }
 
+// prefix will add the prefix (color, name) to message
 func prefix(level messageLevel) string {
+
+	// Default to no color
 	messageColor, ok := messageColors[level]
 	if !ok {
 		messageColor = "\x1b[0m"
@@ -106,6 +111,7 @@ func prefix(level messageLevel) string {
 	return fmt.Sprintf("%s%-8s%-19s%-30s", messageColor, level, colorReset, funcName)
 }
 
+// writef is the shared function to handle printing the error
 func writef(level messageLevel, format string, a ...interface{}) {
 	if loggerLevel < level {
 		return
@@ -117,28 +123,28 @@ func writef(level messageLevel, format string, a ...interface{}) {
 	fmt.Fprintf(os.Stderr, "%s%s\n", prefix(level), message)
 }
 
-// Debugf: DEBUG level message to the log.
+// Debugf means that DEBUG level message is sent to the log.
 func Debugf(format string, a ...interface{}) {
 	writef(debug, format, a...)
 }
 
-// Errorf: ERROR level message to the log and returns the error
+// Errorf means that ERROR level message is sent to the log and the error returned
 func Errorf(format string, a ...interface{}) {
 	writef(error, format, a...)
 }
 
-// ExitF throws a Fatal error and exits
+// ExitF throws a Fatal error and exits!
 func Exitf(format string, a ...interface{}) {
 	writef(fatal, format, a...)
 	os.Exit(255)
 }
 
-// Infof: INFO level message to the log.
+// Infof sends an INFO level message to the log.
 func Infof(format string, a ...interface{}) {
 	writef(info, format, a...)
 }
 
-// Warningf: WARNING level message to the log.
+// Warningf sends a WARNING level message to the log.
 func Warningf(format string, a ...interface{}) {
 	writef(warn, format, a...)
 }
@@ -148,13 +154,14 @@ func SetLevel(l int) {
 	loggerLevel = messageLevel(l)
 }
 
-// DisableColor for the logger
+// DisableColor for the logger (is used by the command line client)
 func DisableColor() {
 	messageColors = map[messageLevel]string{
 		fatal: "",
 		error: "",
 		warn:  "",
 		info:  "",
+		debug: "",
 	}
 	colorReset = ""
 }
@@ -164,15 +171,15 @@ func GetLevel() int {
 	return int(loggerLevel)
 }
 
-// GetMessageLevel: shows environment setting for logger level.
+// GetMessageLevel shows environment setting for logger level.
 func GetMessageLevel() string {
 	return fmt.Sprintf("SCIF_MESSAGELEVEL=%d", loggerLevel)
 }
 
-// Writer: returns an object to pass to external logging utilities. if level <= -1.
-// returns ioutil.Discard object to ignore output.
+// Writer returns an object to pass to external logging utilities. if level <= -1.
 func Writer() io.Writer {
 	if loggerLevel <= -1 {
+		// returning this ignores output.
 		return ioutil.Discard
 	}
 	return os.Stderr

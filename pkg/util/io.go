@@ -121,7 +121,7 @@ func WriteJson(dict map[string]string, path string) error {
 	return nil
 }
 
-// MakeExecutable, akin to chmod u+x or chmod 0755
+// MakeExecutable is akin to chmod u+x or chmod 0755
 func MakeExecutable(path string) {
 
 	err := os.Chmod(path, 0755)

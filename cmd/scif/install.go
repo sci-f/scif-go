@@ -27,7 +27,7 @@ func init() {
 	ScifCmd.AddCommand(InstallCmd)
 }
 
-// InstallCmd: scif run <appname>
+// InstallCmd is the command subgroup for scif install <recipe>
 var InstallCmd = &cobra.Command{
 	DisableFlagsInUseLine: true,
 	Args:                  cobra.ArbitraryArgs,
