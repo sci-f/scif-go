@@ -4,22 +4,22 @@ Here is a quick tutorial for using the scif-go library, provided in a container
 with a filesystem ready to go! If you want to see the equivalent tutorial with the
 Python client base, see [this quickstart](https://sci-f.github.io/tutorial-really-quick-start).
 
-## 1. Get container with a same scientific filesystem
+## 1. Get container with a scientific filesystem
 
 ```bash
-docker pull vanessa/scif-go:hello-world
+$ docker pull vanessa/scif-go:hello-world
 ```
 
 ## 2. View the scientific filesystem entrypoint
 
 ```bash
-docker run vanessa/scif-go:hello-world
+$ docker run vanessa/scif-go:hello-world
 ```
 
 ## 3. Discover Installed Apps
 
 ```bash
-docker run vanessa/scif-go:hello-world apps
+$ docker run vanessa/scif-go:hello-world apps
 ```
 
 ## 4. Commands
