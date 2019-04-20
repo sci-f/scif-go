@@ -73,9 +73,7 @@ workflows:
           tag: hello-world
           filters:
             branches:
-              ignore: 
-                - master
-                - docs*
+             only: master
           after_build:
             - run:
                 name: Publish Docker Tag with SCIF Version
@@ -104,6 +102,7 @@ jobs:
       - run:
           name: Linting and Format Checks
           command: |
+            make fmt
             make fmtcheck
       - run:
           name: Testing Release Build
