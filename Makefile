@@ -27,6 +27,7 @@ deps:
 	@GOPATH=$(GOPATH) GOBIN=$(GOBIN) go get -u golang.org/x/lint/golint
 	@GOPATH=$(GOPATH) GOBIN=$(GOBIN) go get -u github.com/spf13/cobra
 	@GOPATH=$(GOPATH) GOBIN=$(GOBIN) go get -u github.com/google/shlex
+	@GOPATH=$(GOPATH) GOBIN=$(GOBIN) go get -u github.com/mitchellh/gox
 
 # dev creates binaries for testing scif locally. These are put
 # into ./bin/ as well as $GOPATH/bin
@@ -38,6 +39,9 @@ docs: fmt
 
 fmt:
 	gofmt -w $(GOFILES)
+
+vet:
+	go vet ./cmd/scif
 
 fmtcheck:
 	@sh -c "'$(CURDIR)/scripts/gofmtcheck.sh'"
@@ -55,7 +59,13 @@ uninstall: clean
 clean:
 	@rm -f $(TARGET)
 
+release:
+	@mkdir -p dist
+	# for windows, need to install mousetrap and add windows back here
+	gox -os="linux darwin" -arch="amd64" -output="dist/scif_{{.OS}}_{{.Arch}}" ./cmd/scif
+	@cd dist/ && gzip *
+
 simplify:
 	@gofmt -s -l -w $(SRC)
 
-.PHONY: all build clean deps dev fmt fmtcheck get install uninstall simplify quickdev run
+.PHONY: all build clean deps docs dev fmt fmtcheck get install uninstall vet simplify quickdev release

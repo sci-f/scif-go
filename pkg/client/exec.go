@@ -49,7 +49,7 @@ func Execute(name string, executable string, cmd []string) (err error) {
 	return cli.execute(name, cmd)
 }
 
-// setup execute is the (private) function called by run, and client.Execute to
+// execute is the (private) function called by run, and client.Execute to
 // execute the current EntryPoint for a particular app. If extra commands
 // are provided, they are added. The environment is ready to go.
 func (client ScifClient) execute(name string, cmd []string) (err error) {
@@ -97,5 +97,4 @@ func (client ScifClient) execute(name string, cmd []string) (err error) {
 	process.Stderr = os.Stderr
 	err = process.Run()
 	return err
-
 }

@@ -33,7 +33,6 @@ import (
 //
 // 1. Install base folders to base, creating a folder for each app
 // 2. Install one or more apps to it, the config is already loaded
-
 func Install(recipe string, apps []string, writable bool) (err error) {
 
 	logger.Debugf("Installing recipe %s", recipe)
@@ -183,12 +182,11 @@ func (client ScifClient) installFiles(name string, lookup map[string]string) {
 			if err != nil {
 				logger.Exitf("%s", err)
 			}
-			cmd = nil
 		}
 	}
 }
 
-// install labels to a labels.json
+// installLabels to a labels.json
 func (client ScifClient) installLabels(name string, lookup map[string]string) {
 
 	// Exit early if no labels

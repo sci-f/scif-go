@@ -27,7 +27,7 @@ func init() {
 	ScifCmd.AddCommand(TestCmd)
 }
 
-// RunCmd: scif run <appname>
+// TestCmd: scif run <appname>
 var TestCmd = &cobra.Command{
 	DisableFlagsInUseLine: true,
 	Args:                  cobra.ArbitraryArgs,

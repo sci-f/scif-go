@@ -20,6 +20,7 @@ func Prepend(element string, array []string) []string {
 	return append([]string{element}, array...)
 }
 
+// Contains will determine if a string is found in an array
 func Contains(a string, list []string) bool {
 	for _, b := range list {
 		if b == a {

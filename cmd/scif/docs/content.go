@@ -74,6 +74,7 @@ const (
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// install
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 	InstallUse   string = `install [-h] [recipe [recipe ...]]`
 	InstallShort string = `Install a recipe for a Scientific Filesystem`
 	InstallLong  string = `
@@ -89,6 +90,7 @@ const (
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// inspect
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 	InspectUse   string = `inspect [-h] [attributes [attributes ...]]`
 	InspectShort string = `inspect attributes for a scif application`
 	InspectLong  string = `
@@ -105,6 +107,7 @@ const (
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// run
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 	RunUse   string = `run [-h] [cmd [cmd ...]]`
 	RunShort string = `Run a Scientific Filesystem application.`
 	RunLong  string = `
@@ -121,6 +124,7 @@ const (
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// test
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 	TestUse   string = `test [-h] [cmd [cmd ...]]`
 	TestShort string = `Test a Scientific Filesystem application.`
 	TestLong  string = `
@@ -137,6 +141,7 @@ const (
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// help
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 	HelpUse   string = `help [-h] [cmd [cmd ...]]`
 	HelpShort string = `Print help for a Scientific Filesystem application, if defined.`
 	HelpLong  string = `
@@ -149,6 +154,7 @@ const (
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// apps
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 	AppsUse   string = `apps [-h] [-l]`
 	AppsShort string = `list Scientific Filesystem Applications installed`
 	AppsLong  string = `
@@ -163,6 +169,7 @@ const (
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// dump
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 	DumpUse   string = `dump [-h]`
 	DumpShort string = `export the configuration for a Scientific Filesystem.`
 	DumpLong  string = `
@@ -175,6 +182,7 @@ const (
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// exec
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 	ExecUse   string = `exec [-h] [cmd [cmd ...]]`
 	ExecShort string = `execute a command to a Scientific Filesystem`
 	ExecLong  string = `

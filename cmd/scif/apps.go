@@ -30,7 +30,7 @@ func init() {
 	ScifCmd.AddCommand(AppsCmd)
 }
 
-// HelpCmd: scif help <appname>
+// AppsCmd will list scif apps
 var AppsCmd = &cobra.Command{
 	DisableFlagsInUseLine: true,
 	Args:                  cobra.ArbitraryArgs,

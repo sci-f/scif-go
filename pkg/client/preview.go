@@ -28,15 +28,12 @@ import (
 // Preview an app for a scientific filesystem
 // preview the complete setup for a scientific filesytem. This is useful
 // to print out actions for install (without doing them).
-
 func Preview(recipe string, apps []string) {
 
 	logger.Debugf("Previewing recipe %s", recipe)
 
 	// Create the client, load the recipe/filesystem (all apps included)
 	cli := ScifClient{}.Load(recipe)
-
-	// install Base folders
 	cli.previewBase()
 	cli.previewApps(apps)
 }
@@ -46,16 +43,16 @@ func Preview(recipe string, apps []string) {
 // to other variables via the (initialized) Scif.<varname>)
 // .............................................................................
 
-// installBase is a private function to install the base, apps, and data folder
+// previewBase is a private function to install the base, apps, and data folder
 func (client ScifClient) previewBase() {
 	logger.Infof("[base] %s", Scif.Base)
 	logger.Infof("[apps] %s", Scif.Apps)
 	logger.Infof("[data] %s", Scif.Data)
 }
 
-// installApps installs one or more apps to the base, apps is a list of apps.
-// if Apps is an empty list (provided by the user) we by default use all those
-// found in the recipe.
+// previewApps previews one or more apps that would be installed to the base.
+// Apps is a list of apps, and if it's empty, we use all those found in the
+// recipe that is loaded.
 func (client ScifClient) previewApps(apps []string) {
 
 	// If no apps defined, get those found at base
@@ -95,13 +92,13 @@ func (client ScifClient) previewFiles(name string, lookup map[string]string) {
 
 		logger.Debugf("\n+ appfiles %s", name)
 		for _, files := range lookup["appfiles"] {
-			fmt.Printf("%s", files)
+			fmt.Printf("%s", string(files))
 
 		}
 	}
 }
 
-// preview labels for a labels
+// previewLabels for a scientific application
 func (client ScifClient) previewLabels(name string, lookup map[string]string) {
 
 	// Exit early if no labels

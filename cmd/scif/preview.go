@@ -27,7 +27,7 @@ func init() {
 	ScifCmd.AddCommand(PreviewCmd)
 }
 
-// RunCmd: scif run <appname>
+// PreviewCmd is the command group for scif preview <recipe>
 var PreviewCmd = &cobra.Command{
 	DisableFlagsInUseLine: true,
 	Args:                  cobra.ArbitraryArgs,

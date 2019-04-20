@@ -43,7 +43,7 @@ func Apps(longlist bool) (err error) {
 	return err
 }
 
-// Return a list of apps installed
+// apps eeturn a list of apps installed
 func (client ScifClient) apps() []string {
 
 	var apps []string

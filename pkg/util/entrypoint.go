@@ -29,7 +29,6 @@ import (
 //            [out] in the command or entrypoint: environment vars --> >
 //            [in] in the command or entrypoint: environment vars --> <
 //            [pipe] in the command or entrypoint: environment vars --> |
-
 func ParseEntrypoint(entrypoint string) []string {
 
 	entrypoint = strings.Replace(entrypoint, "[e]", "$", -1)
@@ -42,7 +41,7 @@ func ParseEntrypoint(entrypoint string) []string {
 	return entrylist
 }
 
-// ParseEntrypoint is a second version intended for a list
+// ParseEntrypointList is a second version intended for a list
 func ParseEntrypointList(entrypoint []string) []string {
 
 	var newEntrypoint []string
