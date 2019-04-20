@@ -1,6 +1,9 @@
 %appenv hello-world-echo
     THEBESTAPP=hello-world-echo
     export THEBESTAPP
+%applabels hello-world-echo
+    MAINTAINER dinosaur
+    WHOAMI dinosaur
 %apprun hello-world-echo
     echo "The best app is $THEBESTAPP"
 %appinstall hello-world-script
@@ -15,6 +18,8 @@
     /bin/bash hello-world.sh
 %appenv hello-world-env
     OMG=TACOS
+%applabels hello-world-env
+    MAINTAINER TACOSAURUS
 %apphelp hello-world-env
    This is the help section for hello-world-env! This app
    does not have anything other than an environment installed. 
@@ -28,6 +33,8 @@
         docker run vanessa/scif exec hello-world-env echo [e]OMG
         [hello-world-env] executing /bin/echo $OMG
         TACOS
+%applabels hello-world-env
+    MAINTAINER TESTAPOD
 %apptest hello-world-script
     echo "Running tests!"
     if [ $# -eq 0 ]

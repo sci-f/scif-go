@@ -187,9 +187,11 @@ func readSection(lines []string, section string, name string) []string {
 		// Otherwise, add the nextLine to members (now remove)
 		lines = lines[1:]
 
-		// If it's not a comment
+		// If it's not a comment, and isn't an empty line
 		if !strings.HasPrefix(nextLine, "#") {
-			members = append(members, nextLine)
+			if nextLine != "" {
+				members = append(members, nextLine)
+			}
 		}
 	}
 

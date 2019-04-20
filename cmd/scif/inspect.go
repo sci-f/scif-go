@@ -30,15 +30,17 @@ var (
 	inspectInstall   bool
 	inspectFiles     bool
 	inspectTest      bool
+	inspectJson      bool
 )
 
 func init() {
 	InspectCmd.Flags().SetInterspersed(false)
 	InspectCmd.Flags().BoolVarP(&inspectRunscript, "runscript", "r", false, "inspect the runscript for one or more scientific filesystem applications.")
-	InspectCmd.Flags().BoolVarP(&inspectEnv, "environment", "e", false, "inspect the environment for one or more scientific filesystem applications")
+	InspectCmd.Flags().BoolVarP(&inspectEnv, "environment", "e", false, "inspect the environment for one or more scientific filesystem applications.")
 	InspectCmd.Flags().BoolVarP(&inspectLabels, "labels", "l", false, "inspect the labels for one or more scientific filesystem applications.")
 	InspectCmd.Flags().BoolVarP(&inspectAll, "all", "a", false, "inspect all attributes for one or more scientific filesystem applications.")
 	InspectCmd.Flags().BoolVarP(&inspectInstall, "install", "i", false, "inspect install commands for one or more scientific filesystem applications.")
+	InspectCmd.Flags().BoolVarP(&inspectJson, "json", "j", false, "Print json instead of raw output.")
 	ScifCmd.AddCommand(InspectCmd)
 }
 
@@ -55,8 +57,13 @@ var InspectCmd = &cobra.Command{
 			inspectLabels = true
 		}
 
-		// appname is optional, so likely args could be empty
-		err := client.Inspect(inspectRunscript, inspectEnv, inspectLabels, inspectInstall, inspectFiles, inspectTest, inspectAll, args)
+		// User must select an app to inspect
+		if len(args) == 0 {
+			logger.Exitf("Please specify an app to inspect (scif apps to view installed).")
+		}
+
+		// Inspect the desired application
+		err := client.Inspect(args[0], inspectRunscript, inspectEnv, inspectLabels, inspectInstall, inspectFiles, inspectTest, inspectAll, inspectJson)
 		if err != nil {
 			logger.Exitf("%v", err)
 		}
