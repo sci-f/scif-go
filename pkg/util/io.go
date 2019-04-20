@@ -18,6 +18,7 @@ package util
 import (
 	"bufio"
 	"encoding/json"
+	"fmt"
 	"io"
 	"io/ioutil"
 	"os"
@@ -106,18 +107,25 @@ func ReadLines(path string) []string {
 // WriteJson marshalls a json and writes to a file path
 func WriteJson(dict map[string]string, path string) error {
 
-	// Marshal the map into a JSON string.
-	data, err := json.Marshal(dict)
-	if err != nil {
-		logger.Exitf("%s", err)
-	}
+	// Check that we have values to begin with
+	if len(dict) > 0 {
 
-	file, _ := json.MarshalIndent(data, "", " ")
-	err = ioutil.WriteFile(path, file, 0644)
-	if err != nil {
-		return err
-	}
+		// Marshal the map into a JSON string.
+		result, err := json.MarshalIndent(dict, " ", "\t")
+		if err != nil {
+			logger.Exitf("%s", err)
+		}
 
+		// Convert result (bytes) to json string
+		jsonStr := fmt.Sprintf("%s", result)
+
+		// Split into lines to write to file
+		lines := strings.Split(jsonStr, "\n")
+		err = WriteFile(lines, path)
+		if err != nil {
+			return err
+		}
+	}
 	return nil
 }
 

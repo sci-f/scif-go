@@ -53,13 +53,13 @@ type ScifClient struct {
 // Env, Labels, Help, Runscript, Test, and Install.
 // Each has it's own Data structure under the config["apps"]
 type AppSettings struct {
-	labels    []string
-	environ   []string
-	help      []string
-	runscript []string
-	test      []string
-	install   []string
-	files     []string
+	labels    []string `json:"labels"`
+	environ   []string `json:"environment"`
+	help      []string `json:"test"`
+	runscript []string `json:"runscript"`
+	test      []string `json:"test"`
+	install   []string `json:"install"`
+	files     []string `json:"files"`
 }
 
 // String handles printing

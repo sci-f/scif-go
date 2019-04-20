@@ -110,6 +110,7 @@ func (client ScifClient) installApps(apps []string) {
 		client.installRunscript(app, lookup)
 		client.installEnvironment(app, lookup)
 		client.installHelp(app, lookup)
+		client.installLabels(app, lookup)
 		client.installFiles(app, lookup)
 		client.installCommands(app, lookup)
 		client.installRecipe(app, lookup)
@@ -190,17 +191,18 @@ func (client ScifClient) installFiles(name string, lookup map[string]string) {
 func (client ScifClient) installLabels(name string, lookup map[string]string) {
 
 	// Exit early if no labels
-	if len(lookup["applabels"]) > 0 {
+	if len(Scif.config[name].labels) > 0 {
 
 		labels := make(map[string]string)
 		logger.Debugf("+ applabels %s", name)
 
 		var updated, key string
 		var parts []string
-		for _, line := range lookup["applabels"] {
+		for _, line := range Scif.config[name].labels {
 
 			// Split the pair by the =
-			updated = strings.Replace(string(line), `=`, " ", 1)
+			updated = strings.Trim(line, " ")
+			updated = strings.Replace(updated, "=", " ", 1)
 			parts = strings.Split(updated, " ")
 			key = strings.Trim(parts[0], " ")
 
@@ -210,9 +212,11 @@ func (client ScifClient) installLabels(name string, lookup map[string]string) {
 			}
 		}
 
-		// Write to json file
-		if err := util.WriteJson(labels, lookup["applabels"]); err != nil {
-			logger.Exitf("%s", err)
+		// Write to json file, if we have labels
+		if len(labels) > 0 {
+			if err := util.WriteJson(labels, lookup["applabels"]); err != nil {
+				logger.Exitf("%s", err)
+			}
 		}
 	}
 }
