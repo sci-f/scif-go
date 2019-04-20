@@ -32,3 +32,4 @@ $ make fmt
 
  - [Documentation for Scif](docs) including development, history, and organization
  - [Docker](docker) including instructions for building development (and tiny) Docker containers for scif
+ - [Specification](https://sci-f.github.io/) the specification for the scientific filesystem
