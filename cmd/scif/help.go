@@ -27,7 +27,7 @@ func init() {
 	ScifCmd.AddCommand(HelpCmd)
 }
 
-// HelpCmd: scif help <appname>
+// HelpCmd is to show scif help <appname>
 var HelpCmd = &cobra.Command{
 	DisableFlagsInUseLine: true,
 	Args:                  cobra.ArbitraryArgs,

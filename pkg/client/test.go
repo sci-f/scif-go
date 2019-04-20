@@ -21,7 +21,7 @@ import (
 	"os"
 )
 
-// Run an app for a scientific filesystem. If a user chooses
+// Test an app for a scientific filesystem. If a user chooses
 // This option, we know we are loading a Filesystem first.
 func Test(name string, cmd []string) (err error) {
 

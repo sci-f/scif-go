@@ -23,26 +23,26 @@ import (
 )
 
 var (
-	InspectRunscript bool
-	InspectEnv       bool
-	InspectLabels    bool
-	InspectAll       bool // default for inspect
-	InspectInstall   bool
-	InspectFiles     bool
-	InspectTest      bool
+	inspectRunscript bool
+	inspectEnv       bool
+	inspectLabels    bool
+	inspectAll       bool // default for inspect
+	inspectInstall   bool
+	inspectFiles     bool
+	inspectTest      bool
 )
 
 func init() {
 	InspectCmd.Flags().SetInterspersed(false)
-	InspectCmd.Flags().BoolVarP(&InspectRunscript, "runscript", "r", false, "inspect the runscript for one or more scientific filesystem applications.")
-	InspectCmd.Flags().BoolVarP(&InspectEnv, "environment", "e", false, "inspect the environment for one or more scientific filesystem applications")
-	InspectCmd.Flags().BoolVarP(&InspectLabels, "labels", "l", false, "inspect the labels for one or more scientific filesystem applications.")
-	InspectCmd.Flags().BoolVarP(&InspectAll, "all", "a", false, "inspect all attributes for one or more scientific filesystem applications.")
-	InspectCmd.Flags().BoolVarP(&InspectInstall, "install", "i", false, "inspect install commands for one or more scientific filesystem applications.")
+	InspectCmd.Flags().BoolVarP(&inspectRunscript, "runscript", "r", false, "inspect the runscript for one or more scientific filesystem applications.")
+	InspectCmd.Flags().BoolVarP(&inspectEnv, "environment", "e", false, "inspect the environment for one or more scientific filesystem applications")
+	InspectCmd.Flags().BoolVarP(&inspectLabels, "labels", "l", false, "inspect the labels for one or more scientific filesystem applications.")
+	InspectCmd.Flags().BoolVarP(&inspectAll, "all", "a", false, "inspect all attributes for one or more scientific filesystem applications.")
+	InspectCmd.Flags().BoolVarP(&inspectInstall, "install", "i", false, "inspect install commands for one or more scientific filesystem applications.")
 	ScifCmd.AddCommand(InspectCmd)
 }
 
-// InspectCmd: scif Inspect <appname>
+// InspectCmd is the command group for scif Inspect <appname>
 var InspectCmd = &cobra.Command{
 	DisableFlagsInUseLine: true,
 	Args:                  cobra.ArbitraryArgs,
@@ -51,12 +51,12 @@ var InspectCmd = &cobra.Command{
 		logger.Debugf("Inspect called with args %v", args)
 
 		// If all are false, default to showing labels
-		if !InspectRunscript && !InspectEnv && !InspectLabels && !InspectAll && !InspectInstall && !InspectFiles && !InspectTest {
-			InspectLabels = true
+		if !inspectRunscript && !inspectEnv && !inspectLabels && !inspectAll && !inspectInstall && !inspectFiles && !inspectTest {
+			inspectLabels = true
 		}
 
 		// appname is optional, so likely args could be empty
-		err := client.Inspect(InspectRunscript, InspectEnv, InspectLabels, InspectInstall, InspectFiles, InspectTest, InspectAll, args)
+		err := client.Inspect(inspectRunscript, inspectEnv, inspectLabels, inspectInstall, inspectFiles, inspectTest, inspectAll, args)
 		if err != nil {
 			logger.Exitf("%v", err)
 		}

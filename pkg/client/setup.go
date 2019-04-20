@@ -29,6 +29,8 @@ import (
 // all apps loaded in the recipe will necessarily be requested for use.
 // .............................................................................
 
+// Load is the main loading function that determines calling load of a recipe
+// or of a filesystem
 func (client ScifClient) Load(path string) *ScifClient {
 
 	// Initialize config and Empty environment
@@ -76,7 +78,6 @@ func (client ScifClient) Load(path string) *ScifClient {
 // loadRecipe is called on Load() if the path provided is a recipe file. It
 // should populate the Scif.config structs
 // .............................................................................
-
 func (client ScifClient) loadRecipe(path string) error {
 	logger.Debugf("recipe %s", path)
 
@@ -137,12 +138,14 @@ func (client ScifClient) loadRecipe(path string) error {
 	return nil
 }
 
-// add a new settings section, calls getSettings (but doesn't return them)
+// addSetting adds new settings section, calls getSettings (but doesn't return them)
 // Resulting data structure is Self.config[name]AppSettings
 func addSettings(name string) {
 	getSettings(name)
 }
 
+// getSettings will return appSettings based on an app name, and create if
+// doesn't exist yet.
 func getSettings(name string) AppSettings {
 
 	// If the config doesn't contain apps lookup, add it
@@ -156,7 +159,7 @@ func getSettings(name string) AppSettings {
 	return settings
 }
 
-// Read a section into Scif.config, stop when we hit the next section
+// ReadSection into Scif.config, stop when we hit the next section
 func readSection(lines []string, section string, name string) []string {
 
 	// If the config doesn't contain apps lookup, add it
@@ -259,7 +262,7 @@ func (client ScifClient) loadFilesystem(path string) error {
 	return nil
 }
 
-// finish load includes final steps to add to the runtime for an app.
+// finishLoad includes final steps to add to the runtime for an app.
 // Currently, this just means adding a command to source an environment
 // before running, if appenv is defined. The client should handle putting
 // variables in the environment, however in some cases (if the variable

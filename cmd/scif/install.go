@@ -27,7 +27,7 @@ func init() {
 	ScifCmd.AddCommand(InstallCmd)
 }
 
-// RunCmd: scif run <appname>
+// InstallCmd: scif run <appname>
 var InstallCmd = &cobra.Command{
 	DisableFlagsInUseLine: true,
 	Args:                  cobra.ArbitraryArgs,

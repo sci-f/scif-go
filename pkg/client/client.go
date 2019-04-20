@@ -30,7 +30,6 @@ import (
 // setup.go:    Setup() that should be called to auto load a scif
 // install.go:  installation of base, apps, data folders
 // defaults.go: used below to load defaults for client
-
 type ScifClient struct {
 	Base     string // /scif is the overall base
 	Data     string // <Base>/data is the data base
@@ -53,7 +52,6 @@ type ScifClient struct {
 // AppSettings: ScifClient data objects (under apps) include:
 // Env, Labels, Help, Runscript, Test, Install.
 // Each has it's own Data structure under the config["apps"]
-
 type AppSettings struct {
 	labels    []string
 	environ   []string
@@ -64,7 +62,7 @@ type AppSettings struct {
 	files     []string
 }
 
-// Printing
+// String handles printing
 func (client ScifClient) String() string {
 	return fmt.Sprintf("[scif-client][base:%s]", Scif.Base)
 }
@@ -114,5 +112,5 @@ func NewScifClient() *ScifClient {
 	return client
 }
 
-// provide client to user as "Scif"
+// Scif provide client to user as "Scif"
 var Scif ScifClient = *NewScifClient()

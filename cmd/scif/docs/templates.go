@@ -15,6 +15,7 @@
 
 package docs
 
+// HelpTemplate is the template exported to be used in other packages
 const (
 	HelpTemplate string = `{{.Short}}
 

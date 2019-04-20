@@ -27,7 +27,7 @@ func init() {
 	ScifCmd.AddCommand(ShellCmd)
 }
 
-// ShellCmd: scif shell <appname>
+// ShellCmd is the command group for scif shell <appname>
 var ShellCmd = &cobra.Command{
 	DisableFlagsInUseLine: true,
 	Args:                  cobra.ArbitraryArgs,
