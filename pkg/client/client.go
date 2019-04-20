@@ -49,8 +49,8 @@ type ScifClient struct {
 	config      map[string]AppSettings // a loaded configuration
 }
 
-// AppSettings: ScifClient data objects (under apps) include:
-// Env, Labels, Help, Runscript, Test, Install.
+// AppSettings includes ScifClient data objects (under apps), meaning
+// Env, Labels, Help, Runscript, Test, and Install.
 // Each has it's own Data structure under the config["apps"]
 type AppSettings struct {
 	labels    []string

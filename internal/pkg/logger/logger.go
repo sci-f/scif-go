@@ -133,7 +133,7 @@ func Errorf(format string, a ...interface{}) {
 	writef(error, format, a...)
 }
 
-// ExitF throws a Fatal error and exits!
+// Exitf throws a Fatal error and exits!
 func Exitf(format string, a ...interface{}) {
 	writef(fatal, format, a...)
 	os.Exit(255)
