@@ -25,35 +25,28 @@ import (
 
 // Inspect one or more apps for a scientific filesystem. If None defined, inspect all.
 // The boolean for "all" trumps all other settings.
-func Inspect(runscript bool, environ bool, labels bool, install bool, files bool, test bool, all bool, printJson bool, apps []string) (err error) {
+func Inspect(name string, runscript bool, environ bool, labels bool, install bool, files bool, test bool, all bool, printJson bool) (err error) {
 
 	// Running an app means we load from the filesystem first
 	cli := ScifClient{}.Load(Scif.Base)
 
-	// If no apps provided, default to using all
-	if len(apps) == 0 {
-		apps = cli.apps()
-	}
+	// Ensure that the app exists on the filesystem
+	if ok := util.Contains(name, cli.apps()); ok {
 
-	// Inspect each app
-	for _, app := range apps {
-
-		// Ensure that the app exists on the filesystem
-		if ok := util.Contains(app, cli.apps()); ok {
-
-			// inspect the app, with Json or Not
-			if printJson {
-				err := cli.inspect(app, runscript, environ, labels, install, files, test, all)
-				if err != nil {
-					return err
-				}
-			} else {
-				cli.inspectJson(app, runscript, environ, labels, install, files, test, all)
-				if err != nil {
-					return err
-				}
+		// inspect the app, with Json or Not
+		if printJson {
+			err := cli.inspect(name, runscript, environ, labels, install, files, test, all)
+			if err != nil {
+				return err
+			}
+		} else {
+			cli.inspectJson(name, runscript, environ, labels, install, files, test, all)
+			if err != nil {
+				return err
 			}
 		}
+	} else {
+		logger.Warningf("%s is not an installed application.", name)
 	}
 	return err
 }

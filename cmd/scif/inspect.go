@@ -57,8 +57,13 @@ var InspectCmd = &cobra.Command{
 			inspectLabels = true
 		}
 
-		// appname is optional, so likely args could be empty
-		err := client.Inspect(inspectRunscript, inspectEnv, inspectLabels, inspectInstall, inspectFiles, inspectTest, inspectAll, inspectJson, args)
+		// User must select an app to inspect
+		if len(args) == 0 {
+			logger.Exitf("Please specify an app to inspect (scif apps to view installed).")
+		}
+
+		// Inspect the desired application
+		err := client.Inspect(args[0], inspectRunscript, inspectEnv, inspectLabels, inspectInstall, inspectFiles, inspectTest, inspectAll, inspectJson)
 		if err != nil {
 			logger.Exitf("%v", err)
 		}
