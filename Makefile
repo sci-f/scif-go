@@ -33,6 +33,9 @@ deps:
 dev: fmtcheck
 	go install -mod=vendor .
 
+docs: fmt
+	godoc -notes="TODO|BUG" -http=:6060
+
 fmt:
 	gofmt -w $(GOFILES)
 

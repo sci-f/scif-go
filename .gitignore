@@ -10,6 +10,9 @@ _extra
 *.so
 *.dylib
 
+# bin in pwd
+bin/
+
 # Test binary, build with `go test -c`
 *.test
 

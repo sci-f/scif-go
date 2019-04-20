@@ -4,6 +4,7 @@ This is the GoLang implementation of the Scientific Filesystem, and the first fu
 that I'm developing. 
 
 [![CircleCI](https://circleci.com/gh/sci-f/scif-go.svg?style=svg)](https://circleci.com/gh/sci-f/scif-go)
+[![Go Report Card](https://goreportcard.com/badge/github.com/sci-f/scif-go?style=flat-square)](https://goreportcard.com/report/github.com/sci-f/scif-go)
 
 ## Development
 
