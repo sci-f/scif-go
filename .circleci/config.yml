@@ -85,7 +85,7 @@ workflows:
                    docker tag vanessa/scif-go:hello-world vanessa/scif-go:hello-world-${DOCKER_TAG}
 
 jobs:
-  build:
+  test:
     docker:
       - image: circleci/golang:1.9
     working_directory: /go/src/github.com/sci-f/scif-go
