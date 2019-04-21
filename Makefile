@@ -68,4 +68,7 @@ release:
 simplify:
 	@gofmt -s -l -w $(SRC)
 
-.PHONY: all build clean deps docs dev fmt fmtcheck get install uninstall vet simplify quickdev release
+test:
+	@GOPATH=$(GOPATH) GOBIN=$(GOBIN) go test -v github.com/sci-f/scif-go/internal/pkg/logger
+
+.PHONY: all build clean deps docs dev fmt fmtcheck get install uninstall vet simplify quickdev release test

@@ -53,6 +53,7 @@ var messageColors = map[messageLevel]string{
 	error: "\x1b[31m",
 	warn:  "\x1b[33m",
 	info:  "\x1b[34m",
+	log:   "\x1b[30m",
 	debug: "\x1b[32m",
 }
 
@@ -161,6 +162,7 @@ func DisableColor() {
 		error: "",
 		warn:  "",
 		info:  "",
+		log:   "",
 		debug: "",
 	}
 	colorReset = ""
