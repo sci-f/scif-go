@@ -36,7 +36,7 @@ func ParseEntrypoint(entrypoint string) []string {
 	entrypoint = strings.Replace(entrypoint, "[in]", "<", -1)
 	entrypoint = strings.Replace(entrypoint, "[pipe]", "|", -1)
 	entrypoint = strings.Replace(entrypoint, "[append]", "|", -1)
-
+	entrypoint = os.ExpandEnv(entrypoint)
 	entrylist, _ := shlex.Split(entrypoint)
 	return entrylist
 }

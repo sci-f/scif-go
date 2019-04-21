@@ -106,6 +106,10 @@ jobs:
             make fmt
             make fmtcheck
       - run:
+          name: Run Tests
+          command: |
+            make test
+      - run:
           name: Testing Release Build
           command: |
             make release
