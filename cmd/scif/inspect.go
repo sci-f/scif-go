@@ -39,6 +39,7 @@ func init() {
 	InspectCmd.Flags().BoolVarP(&inspectEnv, "environment", "e", false, "inspect the environment for one or more scientific filesystem applications.")
 	InspectCmd.Flags().BoolVarP(&inspectLabels, "labels", "l", false, "inspect the labels for one or more scientific filesystem applications.")
 	InspectCmd.Flags().BoolVarP(&inspectAll, "all", "a", false, "inspect all attributes for one or more scientific filesystem applications.")
+	InspectCmd.Flags().BoolVarP(&inspectFiles, "files", "f", false, "inspect files for one or more scientific filesystem applications.")
 	InspectCmd.Flags().BoolVarP(&inspectInstall, "install", "i", false, "inspect install commands for one or more scientific filesystem applications.")
 	InspectCmd.Flags().BoolVarP(&inspectJson, "json", "j", false, "Print json instead of raw output.")
 	ScifCmd.AddCommand(InspectCmd)

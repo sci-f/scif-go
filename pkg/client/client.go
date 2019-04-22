@@ -45,7 +45,6 @@ type ScifClient struct {
 	allowAppend bool              // allow appending to path
 	appendPaths [3]string
 	scifApps    []string
-	activeApp   string                 // the active app (if one is defined)
 	config      map[string]AppSettings // a loaded configuration
 }
 
@@ -72,6 +71,8 @@ func NewScifClient() *ScifClient {
 
 	base := getenv("SCIF_BASE", getStringDefault("BASE"))
 	scifApps := getenvNamespace("SCIF_APP")
+
+	fmt.Printf("scientific filesystem base %s", base)
 
 	// Set the default apps and data (overridden if user sets)
 	data := fmt.Sprintf(path.Join(base, "data"))

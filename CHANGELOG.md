@@ -11,5 +11,6 @@ and **Merged pull requests**. Critical items to know are:
  - changed behaviour
 
 ## [master](https://github.com/sci-f/scif-go/tree/master)
- - first release candidate with all client functions, documentation, basic CI (0.0.1rc)
+ - first release candidate with all client functions, documentation, basic CI (0.0.1.rc)
  - added --json option for inspect, saving labels to json file
+ - adding tests for util, version, logger, and client package

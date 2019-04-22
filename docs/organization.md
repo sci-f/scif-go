@@ -28,9 +28,8 @@ type ScifClient struct {
 	Base        string   // /scif is the overall base
 	Data        string   // <Base>/data is the data base
 	Apps        string   // <Base>/apps is the apps base
-	ShellCmd    string   // default shell
 ...
-	activeApp   string // the active app (if one is defined)
+	ShellCmd    string   // default shell
 }
 ```
 

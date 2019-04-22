@@ -34,7 +34,7 @@ func Test(name string, cmd []string) (err error) {
 		return err
 	}
 
-	// Activate the app, meaning we set the environment and Scif.activeApp
+	// Activate the app, meaning we set the active app environment
 	cli.activate(name)
 
 	// Get a lookup for the folders (not created)
