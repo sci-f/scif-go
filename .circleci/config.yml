@@ -31,6 +31,7 @@ workflows:
                 command: |
                    DOCKER_TAG=$(docker run vanessa/scif-go:latest version)
                    echo "Version for Docker tag is ${DOCKER_TAG}"
+                   echo "GitHub Commit is ${CIRCLE_SHA1}"
 
       - docker-publish/publish:
           image: vanessa/scif-go
@@ -48,6 +49,7 @@ workflows:
                 command: |
                    DOCKER_TAG=$(docker run vanessa/scif-go:hello-world version)
                    echo "Version for Docker tag is hello-world-${DOCKER_TAG}"
+                   echo "GitHub Commit is ${CIRCLE_SHA1}"
 
   # This workflow will deploy images on merge to master only
   docker_with_lifecycle:
@@ -66,6 +68,7 @@ workflows:
                    DOCKER_TAG=$(docker run vanessa/scif-go:latest version)
                    echo "Version for Docker tag is ${DOCKER_TAG}"
                    docker tag vanessa/scif-go:latest vanessa/scif-go:${DOCKER_TAG}
+                   docker tag vanessa/scif-go:latest vanessa/scif-go:${CIRCLE_SHA1}
 
       - docker-publish/publish:
           image: vanessa/scif-go
@@ -81,7 +84,7 @@ workflows:
                    DOCKER_TAG=$(docker run vanessa/scif-go:hello-world version)
                    echo "Version for Docker tag is hello-world-${DOCKER_TAG}"
                    docker tag vanessa/scif-go:hello-world vanessa/scif-go:hello-world-${DOCKER_TAG}
-
+                   docker tag vanessa/scif-go:hello-world vanessa/scif-go:hello-world-${CIRCLE_SHA1}
 jobs:
   test:
     docker:
