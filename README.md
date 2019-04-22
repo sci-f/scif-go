@@ -28,6 +28,12 @@ To format all the files pretty:
 $ make fmt
 ```
 
+And to test!
+
+```bash
+$ make test
+```
+
 ### Documentation
 
  - [Documentation for Scif](docs) including development, history, and organization
