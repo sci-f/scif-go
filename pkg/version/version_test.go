@@ -15,5 +15,26 @@
 
 package version
 
-// Version is a constant variable containing the version number for the Merlin package
-const Version = "0.0.1.rc"
+import (
+	"regexp"
+	"testing"
+)
+
+// TestVersion ensures that the version string confirms to semvar
+func TestVersionSemvar(t *testing.T) {
+
+	// Matches <>.<>.<> with optional rc (release candidate)
+	const SemVerRegex string = `v?([0-9]+)(\.[0-9]+)?(\.[0-9]+)?` +
+		`(-([0-9A-Za-z\-]+(\.[0-9A-Za-z\-]+)*))?` +
+		`(\+([0-9A-Za-z\-]+(\.[0-9A-Za-z\-]+)*))?(\.rc)?`
+
+	// compile the regular expression
+	var versionRegex *regexp.Regexp
+	versionRegex = regexp.MustCompile("^" + SemVerRegex + "$")
+
+	// Check that the version matches
+	match := versionRegex.FindStringSubmatch(Version)
+	if match == nil {
+		t.Errorf("Version string %v does not conform to Semvar XX.XX.XX with optional .rc (release candidate).", Version)
+	}
+}
