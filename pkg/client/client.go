@@ -45,7 +45,6 @@ type ScifClient struct {
 	allowAppend bool              // allow appending to path
 	appendPaths [3]string
 	scifApps    []string
-	activeApp   string                 // the active app (if one is defined)
 	config      map[string]AppSettings // a loaded configuration
 }
 

@@ -36,7 +36,7 @@ func Execute(name string, executable string, cmd []string) (err error) {
 		return err
 	}
 
-	// Activate the app, meaning we set the environment and Scif.activeApp
+	// Activate the app, meaning we set the active app environment
 	cli.activate(name)
 
 	// Full path and existence checked by client.execute

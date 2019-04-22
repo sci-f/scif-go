@@ -72,5 +72,6 @@ test:
 	@GOPATH=$(GOPATH) GOBIN=$(GOBIN) go test -v github.com/sci-f/scif-go/internal/pkg/logger
 	@GOPATH=$(GOPATH) GOBIN=$(GOBIN) go test -v github.com/sci-f/scif-go/pkg/util
 	@GOPATH=$(GOPATH) GOBIN=$(GOBIN) go test -v github.com/sci-f/scif-go/pkg/version
+	@GOPATH=$(GOPATH) GOBIN=$(GOBIN) go test github.com/sci-f/scif-go/pkg/client
 
 .PHONY: all build clean deps docs dev fmt fmtcheck get install uninstall vet simplify quickdev release test

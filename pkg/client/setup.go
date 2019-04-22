@@ -230,6 +230,11 @@ func readSection(lines []string, section string, name string) []string {
 func (client ScifClient) loadFilesystem(path string) error {
 
 	logger.Debugf("scientific filesystem base %s", path)
+
+	// Update the apps and data bases
+	Scif.Apps = filepath.Join(path, "apps")
+	Scif.Data = filepath.Join(path, "data")
+
 	logger.Debugf("scientific filesystem apps %s", Scif.Apps)
 
 	// We've already checked that the base exists, now check for apps

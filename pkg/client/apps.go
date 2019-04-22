@@ -102,9 +102,6 @@ func (client ScifClient) activate(name string) {
 		Scif.EntryFolder = lookup["approot"]
 	}
 
-	// Set the app to be active
-	Scif.activeApp = name
-
 	// export the changes
 	client.exportEnv()
 
@@ -113,7 +110,6 @@ func (client ScifClient) activate(name string) {
 // deactivate will deactivate all apps
 func (client ScifClient) deactivate() {
 
-	client.activeApp = ""
 	Scif.EntryFolder = Scif.defaultEntryFolder
 	Scif.EntryPoint = Scif.defaultEntryPoint
 
@@ -122,4 +118,5 @@ func (client ScifClient) deactivate() {
 
 	// export the changes
 	client.exportEnv()
+	client.unsetActiveAppEnv()
 }

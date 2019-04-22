@@ -87,9 +87,23 @@ func (client ScifClient) setActiveAppEnv(name string) {
 
 	// update the values in the envars
 	for k, v := range appenv {
-		// SCIF_APPENV_<name>
+		// SCIF_APPENV
 		k = envPrefix + strings.ToUpper(k)
 		Scif.Environment[k] = v
+	}
+}
+
+// unsetActiveAppEnv unsets the active app environment
+func (client ScifClient) unsetActiveAppEnv() {
+
+	// Get the keys to unset
+	keys := client.getAppenvKeys()
+
+	// update the values in the envars
+	for _, k := range keys {
+		// SCIF_APPENV_<name>
+		k = envPrefix + strings.ToUpper(k)
+		os.Unsetenv(k)
 	}
 }
 
@@ -251,4 +265,13 @@ func (client ScifClient) getAppenvLookup(name string) map[string]string {
 	envars["appname"] = name
 	return envars
 
+}
+
+// getAppEnvKeys returns a list of keys to create an app environment
+// The intended use is to unset any exported app environment
+func (client ScifClient) getAppenvKeys() []string {
+	keys := []string{"appdata", "approot", "appmeta", "appbin", "applib",
+		"apprun", "apphelp", "appenv", "apptest", "applabels",
+		"apprecipe", "appname"}
+	return keys
 }
