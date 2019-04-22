@@ -18,10 +18,11 @@ package client
 import (
 	"io/ioutil"
 	"os"
+	"path/filepath"
 	"testing"
 )
 
-// TestShell tests running a scif shell
+// TestShell tests running a scif shell after installing to a temporary base
 func TestShell(t *testing.T) {
 
 	// Create faux scif base
@@ -33,22 +34,23 @@ func TestShell(t *testing.T) {
 	// This will clean up after
 	defer os.RemoveAll(dir)
 
-	// Set the base via an envar
-	os.Setenv("SCIF_BASE", dir)
+	// Set the base, apps, data, for testing
+	Scif.Base = dir
+	Scif.Apps = filepath.Join(dir, "apps")
+	Scif.Data = filepath.Join(dir, "data")
 
-	// Create faux scif and get apps
-	cli := ScifClient{}.Load("../../hello-world.scif")
-	apps := cli.apps()
-
-	// Test shell without selecting an application
-	err = Shell([]string{})
+	// Install recipe to the temporary base
+	err = Install("../../hello-world.scif", []string{}, true)
 	if err != nil {
-		t.Errorf("Error running scif shell with no app selected")
+		t.Errorf("Error installing temporary SCIF")
 	}
 
-	// Test shell with selecting one
-	err = Shell(apps)
+	// Load the filesystem that was installed
+	cli := ScifClient{}.Load(dir)
+
+	// Test shell without selecting an application
+	err = cli.shell()
 	if err != nil {
-		t.Errorf("Error running scif shell with app selection")
+		t.Errorf("Error running scif shell.")
 	}
 }
