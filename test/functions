@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+
+# This is the init script for running SCIF tests. Here we create a dummy
+# base folder for the tests to interact with.
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+# Provide the name of the test, expected error code, then the comand
+# sciftest NAME 0 bin/scif --help
+sciftest() {
+
+    # The expected error code should be the first argument
+    NAME="${1:-}"
+    shift
+
+    ERROR="${1:-}"
+    shift
+
+    # Run the remainder of the command, get the return value
+    "$@" > /dev/null 2>&1
+    RETVAL=$?
+
+    # Case 1: We expected success, but it wasn't
+    if [ "$ERROR" = "0" -a "$RETVAL" != "0" ]; then
+        echo "Expected success, got ${RETVAL}"
+        "$@"
+        exit 1
+
+    # Case 2: We expected error, but got success
+    elif [ "$ERROR" != "0" -a "$RETVAL" = "0" ]; then
+        echo "Expected error code, got ${RETVAL}"
+        "$@"
+        exit 1
+
+    # Case 3: we got what we expected
+    elif [ "$ERROR" == "$RETVAL" ]; then
+        echo "${NAME} PASS"
+    else
+        echo "Unexpected result, (retval=$RETVAL)"
+    fi
+}
