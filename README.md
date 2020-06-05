@@ -5,6 +5,7 @@ that I'm developing.
 
 [![CircleCI](https://circleci.com/gh/sci-f/scif-go.svg?style=svg)](https://circleci.com/gh/sci-f/scif-go)
 [![Go Report Card](https://goreportcard.com/badge/github.com/sci-f/scif-go)](https://goreportcard.com/report/github.com/sci-f/scif-go)
+[![Release](https://img.shields.io/github/release/sci-f/scif-go.svg?style=flat-square)](https://github.com/sci-f/scif-go/releases/latest)
 
 ## Development
 
