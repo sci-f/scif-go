@@ -16,8 +16,9 @@ workflows:
   build_without_publishing_job:
     jobs:
       - docker-publish/publish:
-          image: vanessa/scif-go
+          image: scif/scif-go
           dockerfile: docker/Dockerfile
+          registry: quay.io
           deploy: false
           tag: latest
           filters:
@@ -29,12 +30,13 @@ workflows:
             - run:
                 name: Preview Docker Tag for Build
                 command: |
-                   DOCKER_TAG=$(docker run vanessa/scif-go:latest version)
+                   DOCKER_TAG=$(docker run quay.io/scif/scif-go:latest version)
                    echo "Version for Docker tag is ${DOCKER_TAG}"
                    echo "GitHub Commit is ${CIRCLE_SHA1}"
 
       - docker-publish/publish:
-          image: vanessa/scif-go
+          image: scif/scif-go
+          registry: quay.io
           dockerfile: docker/Dockerfile.hello-world
           deploy: false
           tag: hello-world
@@ -47,7 +49,7 @@ workflows:
             - run:
                 name: Preview Docker Tag for Build
                 command: |
-                   DOCKER_TAG=$(docker run vanessa/scif-go:hello-world version)
+                   DOCKER_TAG=$(docker run quay.io/scif/scif-go:hello-world version)
                    echo "Version for Docker tag is hello-world-${DOCKER_TAG}"
                    echo "GitHub Commit is ${CIRCLE_SHA1}"
 
@@ -55,7 +57,8 @@ workflows:
   docker_with_lifecycle:
     jobs:
       - docker-publish/publish:
-          image: vanessa/scif-go
+          image: scif/scif-go
+          registry: quay.io
           dockerfile: docker/Dockerfile
           tag: latest
           filters:
@@ -65,13 +68,14 @@ workflows:
             - run:
                 name: Publish Docker Tag with SCIF Version
                 command: |
-                   DOCKER_TAG=$(docker run vanessa/scif-go:latest version)
+                   DOCKER_TAG=$(docker run quay.io/scif/scif-go:latest version)
                    echo "Version for Docker tag is ${DOCKER_TAG}"
-                   docker tag vanessa/scif-go:latest vanessa/scif-go:${DOCKER_TAG}
-                   docker tag vanessa/scif-go:latest vanessa/scif-go:${CIRCLE_SHA1}
+                   docker tag quay.io/scif/scif-go:latest quay.io/scif/scif-go:${DOCKER_TAG}
+                   docker tag quay.io/scif/scif-go:latest quay.io/scif/scif-go:${CIRCLE_SHA1}
 
       - docker-publish/publish:
-          image: vanessa/scif-go
+          image: scif/scif-go
+          registry: quay.io
           dockerfile: docker/Dockerfile.hello-world
           tag: hello-world
           filters:
@@ -81,10 +85,12 @@ workflows:
             - run:
                 name: Publish Docker Tag with SCIF Version
                 command: |
-                   DOCKER_TAG=$(docker run vanessa/scif-go:hello-world version)
+                   DOCKER_TAG=$(docker run quay.io/scif/scif-go:hello-world version)
                    echo "Version for Docker tag is hello-world-${DOCKER_TAG}"
-                   docker tag vanessa/scif-go:hello-world vanessa/scif-go:hello-world-${DOCKER_TAG}
-                   docker tag vanessa/scif-go:hello-world vanessa/scif-go:hello-world-${CIRCLE_SHA1}
+                   docker tag quay.io/scif/scif-go:hello-world quay.io/scif/scif-go:hello-world-${DOCKER_TAG}
+                   docker tag quay.io/scif/scif-go:hello-world quay.io/scif/scif-go:hello-world-${CIRCLE_SHA1}
+
+
 jobs:
   test:
     docker:
