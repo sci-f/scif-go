@@ -22,3 +22,5 @@ root of the repository, do:
 ```bash
 $ docker build -f docker/Dockerfile.dev -t vanessa/scif-go .
 ```
+
+The containers are also built automatically on [quay.io/scif/scif-go](https://quay.io/repository/scif/scif-go?tab=tags).

@@ -45,7 +45,7 @@ func TestParseEntrypoint(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			entrypoint := ParseEntrypoint(tt.original)
 			if !Equal(entrypoint, tt.parsed) {
-				t.Errorf("got %d, want %d", entrypoint, tt.parsed)
+				t.Errorf("got %s, want %s", entrypoint, tt.parsed)
 			}
 		})
 	}
@@ -73,7 +73,7 @@ func TestParseEntrypointList(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			entrypoint := ParseEntrypointList(tt.original)
 			if !Equal(entrypoint, tt.parsed) {
-				t.Errorf("got %d, want %d", entrypoint, tt.parsed)
+				t.Errorf("got %s, want %s", entrypoint, tt.parsed)
 			}
 		})
 	}

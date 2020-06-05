@@ -3,6 +3,7 @@
 
 vendor/
 _extra
+scif
 
 # Binaries for programs and plugins
 *.exe

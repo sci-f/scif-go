@@ -53,7 +53,7 @@ func init() {
 	ScifCmd.SetUsageTemplate(docs.UseTemplate)
 
 	// Set a custom version template string
-	vt := fmt.Sprintf("scif version {{printf \"%%s\" .Version}}\n", version.Version)
+        vt := fmt.Sprintf("{{printf \"%%s\" .Version}}\n")
 	ScifCmd.SetVersionTemplate(vt)
 
 	ScifCmd.Flags().BoolVarP(&debug, "debug", "d", false, "print debugging information (highest verbosity)")

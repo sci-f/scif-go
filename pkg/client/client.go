@@ -72,8 +72,6 @@ func NewScifClient() *ScifClient {
 	base := getenv("SCIF_BASE", getStringDefault("BASE"))
 	scifApps := getenvNamespace("SCIF_APP")
 
-	fmt.Printf("scientific filesystem base %s", base)
-
 	// Set the default apps and data (overridden if user sets)
 	data := fmt.Sprintf(path.Join(base, "data"))
 	apps := fmt.Sprintf(path.Join(base, "apps"))

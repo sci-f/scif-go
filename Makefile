@@ -18,6 +18,7 @@ $(TARGET): $(SRC)
 	@GOPATH=$(GOPATH) GOBIN=$(GOBIN) go build $(LDFLAGS) -o $(TARGET)
 
 build:
+	@echo "GOPATH: $(GOPATH)"
 	@echo "LDFLAGS: $(LDFLAGS)"
 	@echo "GOFILES: $(GOFILES)"
 	@GOPATH=$(GOPATH) GOBIN=$(GOBIN) go build $(LDFLAGS) -o bin/$(GONAME) ./cmd/scif
